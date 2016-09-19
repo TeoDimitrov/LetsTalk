@@ -1,5 +1,6 @@
 package com.example.letstalk;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.*;
 import android.os.Message;
@@ -20,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends Activity implements View.OnClickListener {
 
     private ListView listView;
     private EditText editMessageText;
