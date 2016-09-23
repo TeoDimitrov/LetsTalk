@@ -6,10 +6,24 @@
     android:background="@color/colorAccent">
 
     <include layout="@layout/sessions_toolbar"
-        android:id="@+id/sessions_toolbar"></include>
+        android:id="@+id/sessionsToolbar">
+
+    </include>
+
     <include layout="@layout/session_buttons"
+        android:id="@+id/sessionButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/sessions_toolbar"></include>
+        android:layout_below="@id/sessionsToolbar">
+    </include>
+
+    <!-- to be fixed -->
+    <fragment
+        android:name="com.example.letstalk.ChatActivity"
+        android:id="@+id/chatFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/sessionButtons">
+    </fragment>
 
 </RelativeLayout>

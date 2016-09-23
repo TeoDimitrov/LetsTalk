@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#f14266</color>
     <color name="colorAccent">#fef7f9</color>
     <color name="popupItems">#565656</color>
+    <color name="colorContrastBlue">#00bcd4</color>
 </resources>

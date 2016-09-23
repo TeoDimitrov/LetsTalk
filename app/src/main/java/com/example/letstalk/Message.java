@@ -8,4 +8,6 @@ public interface Message {
     String getAuthor();
 
     String getMessage();
+
+    String getTime();
 }
