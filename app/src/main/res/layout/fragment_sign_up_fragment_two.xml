@@ -4,10 +4,54 @@
     android:layout_height="match_parent"
     tools:context="com.example.letstalk.signin_fragments.SignUpFragmentTwo">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:layout_alignParentTop="true">
+
+        <EditText
+            android:id="@+id/enter_birth_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            android:textSize="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="68dp"
+            android:layout_marginStart="68dp" />
+
+        <EditText
+            android:id="@+id/gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:textSize="20dp"
+            android:layout_alignBottom="@+id/button"
+            android:layout_toLeftOf="@+id/button"
+            android:layout_toStartOf="@+id/button" />
+
+        <EditText
+            android:id="@+id/confirm_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Confirm Password"
+            android:textSize="20dp"
+            android:layout_below="@+id/gender"
+            android:layout_alignLeft="@+id/gender"
+            android:layout_alignStart="@+id/gender" />
+
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:id="@+id/button"
+            android:layout_below="@+id/enter_birth_year"
+            android:layout_toRightOf="@+id/enter_birth_year"
+            android:layout_toEndOf="@+id/enter_birth_year" />
+    </RelativeLayout>
 
 </FrameLayout>
