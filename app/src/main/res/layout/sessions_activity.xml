@@ -5,25 +5,45 @@
     android:layout_height="match_parent"
     android:background="@color/colorAccent">
 
-    <include layout="@layout/sessions_toolbar"
-        android:id="@+id/sessionsToolbar">
-
-    </include>
-
-    <include layout="@layout/session_buttons"
-        android:id="@+id/sessionButtons"
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/sessionsToolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/sessionsToolbar">
-    </include>
+        android:layout_height="50dp"
+        android:background="?attr/colorPrimary"
+        android:elevation="0dp"
+        android:theme="@style/Toolbar">
 
-    <!-- to be fixed -->
-    <fragment
-        android:name="com.example.letstalk.ChatActivity"
-        android:id="@+id/chatFragment"
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/btns_session"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/sessionButtons">
-    </fragment>
+        android:layout_height="58dp"
+        android:layout_below="@+id/sessionsToolbar"
+        android:background="@drawable/sessions_shadow">
+        <Button
+            android:id="@+id/btn_chat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginBottom="@dimen/session_buttons_margin"
+            android:background="@drawable/button_selector"
+            android:text="@string/chat"
+            android:textSize="@dimen/session_buttons_text_size"
+            android:textColor="@color/colorAccent"/>
+        <Button
+            android:id="@+id/btn_talk"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginBottom="@dimen/session_buttons_margin"
+            android:background="@drawable/button_selector"
+            android:text="@string/talk"
+            android:textSize="@dimen/session_buttons_text_size"
+            android:textColor="@color/colorAccent"/>
+    </LinearLayout>
+
 
 </RelativeLayout>

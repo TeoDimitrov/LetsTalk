@@ -1,7 +1,6 @@
 package com.example.letstalk;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,7 +9,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-public class LogInStepOne extends Activity implements OnClickListener {
+public class SignInActivity extends Activity implements OnClickListener {
 
     private EditText birthyear;
     private Button signUp;
@@ -22,7 +21,7 @@ public class LogInStepOne extends Activity implements OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in_step_one);
+        setContentView(R.layout.activity_sign_in);
 
         birthyear = (EditText) findViewById(R.id.enter_birth_year);
 
