@@ -119,7 +119,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         Map<String, Object> messageDetails = new HashMap<>();
         messageDetails.put("message", message.getMessage());
         messageDetails.put("author", message.getAuthor());
-        messageDetails.put("time", message.getTime());
+        messageDetails.put("date", message.getUTCDate());
 
         DatabaseReference messageRootDatabase = databaseReference.child(messageKey);
         messageRootDatabase.updateChildren(messageDetails);

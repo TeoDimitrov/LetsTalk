@@ -9,5 +9,9 @@ public interface Message {
 
     String getMessage();
 
-    String getTime();
+    String getDate();
+
+    String getUTCDate();
+
+    String getLocalTime();
 }

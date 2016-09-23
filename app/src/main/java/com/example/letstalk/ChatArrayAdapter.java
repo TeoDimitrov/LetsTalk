@@ -82,7 +82,7 @@ public class ChatArrayAdapter extends ArrayAdapter<Message> {
         TextView textViewChatMessage = (TextView) convertView.findViewById(R.id.chatMessage);
         textViewChatMessage.setText(message.getMessage());
         TextView textViewTime = (TextView) convertView.findViewById(R.id.chatTime);
-        textViewTime.setText(message.getTime());
+        textViewTime.setText(message.getLocalTime());
 
         return convertView;
     }
