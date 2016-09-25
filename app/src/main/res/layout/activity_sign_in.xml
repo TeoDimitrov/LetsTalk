@@ -22,11 +22,11 @@
         android:layout_height="150dp"
         android:src="@drawable/letstalk_logo"
         android:layout_gravity="center_horizontal"
-        android:layout_above="@+id/btns_session"
+        android:layout_above="@+id/buttonsSessions"
         android:layout_centerHorizontal="true" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/btns_session"
+        android:id="@+id/buttonsSessions"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="58dp"
