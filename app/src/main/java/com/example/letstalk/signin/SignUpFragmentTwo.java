@@ -1,7 +1,5 @@
-package com.example.letstalk.signin_fragments;
+package com.example.letstalk.signin;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,11 +9,11 @@ import android.view.ViewGroup;
 
 import com.example.letstalk.R;
 
-public class SignUpFragmentOne extends Fragment {
+public class SignUpFragmentTwo extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_sign_in_fragment_one, container, false);
+        return inflater.inflate(R.layout.fragment_sign_up_fragment_two, container, false);
     }
 }

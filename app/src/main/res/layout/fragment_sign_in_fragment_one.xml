@@ -1,72 +1,96 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".signin_fragments.SignUpFragmentOne">
+    tools:context=".signin.SignUpFragmentOne">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/enter_birth_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Enter your birth year"
-            android:textSize="20dp"
-            android:layout_centerVertical="true"
+            android:hint="@string/prompt_birthyear"
+            android:textColor="@color/text"
+            android:textSize="@dimen/sign_in_text_size"
+            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="68dp"
-            android:layout_marginStart="68dp" />
+            android:layout_marginTop="60dp" />
 
         <TextView
             android:id="@+id/gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/enter_birth_year"
-            android:layout_alignStart="@+id/enter_birth_year"
-            android:layout_below="@+id/enter_birth_year"
-            android:text="Gender"
-            android:textSize="20dp" />
+            android:text="@string/gender"
+            android:textColor="@color/text"
+            android:textSize="@dimen/sign_in_text_size"
+            android:layout_alignTop="@+id/gender_radio_buttons"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"/>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/gender_radio_buttons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_below="@+id/enter_birth_year"
-            android:layout_toRightOf="@+id/gender"
             android:layout_toEndOf="@+id/gender"
-            android:layout_marginLeft="38dp"
-            android:layout_marginStart="38dp"
-            android:id="@+id/gender_radio_buttons">
+            android:layout_toRightOf="@+id/gender"
+            android:orientation="horizontal"
+            android:textColor="@color/text">
 
             <RadioButton
                 android:id="@+id/male_radio_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onRadioButtonClicked"
-                android:text="M" />
+                android:text="@string/gender_m"
+                android:textColor="@color/text"
+                android:textSize="@dimen/sign_in_text_size" />
 
             <RadioButton
                 android:id="@+id/female_radio_button"
-                android:layout_width="wrap_content"
+                android:layout_width="56dp"
                 android:layout_height="wrap_content"
                 android:onClick="onRadioButtonClicked"
-                android:text="F" />
+                android:text="@string/gender_f"
+                android:textColor="@color/text"
+                android:textSize="@dimen/sign_in_text_size" />
         </RadioGroup>
 
         <Button
+            android:id="@+id/button_next"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next"
-            android:id="@+id/button"
-            android:layout_below="@+id/enter_birth_year"
-            android:layout_toRightOf="@+id/enter_birth_year"
-            android:layout_toEndOf="@+id/enter_birth_year" />
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/arrow"
+            android:layout_alignBottom="@+id/gender_radio_buttons"
+            android:layout_toRightOf="@+id/btn_fb"
+            android:layout_toEndOf="@+id/btn_fb" />
+
+        <Button
+            android:id="@+id/btn_fb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/fb"
+            android:drawablePadding="7dp"
+            android:text="@string/sing_up_with_fb"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/sign_in_text_size"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="50dp"
+            android:layout_below="@+id/gender"/>
+
     </RelativeLayout>
 
-</FrameLayout>
+</RelativeLayout>

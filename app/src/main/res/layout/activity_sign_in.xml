@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/activity_sign_in"
     android:background="@color/colorAccent"
-    tools:context=".SignInActivity">
+    tools:context=".signin.SignInActivity">
 
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/sessionsToolbar"
+        android:id="@+id/sessionToolbar"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="?attr/colorPrimary"
@@ -29,7 +30,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="58dp"
-        android:layout_below="@id/sessionsToolbar"
+        android:layout_below="@id/sessionToolbar"
         android:background="@drawable/sessions_shadow">
         <Button
             android:id="@+id/btn_signup"
@@ -53,5 +54,14 @@
             android:textColor="@color/colorAccent"/>
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/sing_in_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/btns_session"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+    </RelativeLayout>
 
 </RelativeLayout>

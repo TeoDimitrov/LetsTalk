@@ -6,4 +6,5 @@
     <dimen name="session_layout_shadow_size">4dp</dimen>
     <dimen name="session_buttons_margin">4dp</dimen>
     <dimen name="session_buttons_text_size">16dp</dimen>
+    <dimen name="sign_in_text_size">20dp</dimen>
 </resources>
