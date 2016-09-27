@@ -20,10 +20,6 @@ public class SignInActivity extends AppCompatActivity implements OnClickListener
     private Button signUp;
     private Button signIn;
 
-    private Button next2;
-    private RadioButton male;
-    private RadioButton female;
-    private TextView textView;
     private RelativeLayout container;
     private Toolbar toolbar;
 
@@ -61,9 +57,8 @@ public class SignInActivity extends AppCompatActivity implements OnClickListener
     public void onClick(View view) {
         if (view.getId() == R.id.btn_signup) {
         }
-    }
+        else if (view.getId() == R.id.btn_signin){
 
-    private void onClickSignUp(Bundle savedInstanceState) {
-
+        }
     }
 }

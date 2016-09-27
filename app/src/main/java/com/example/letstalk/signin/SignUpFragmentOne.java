@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 
 import com.example.letstalk.R;
@@ -19,6 +20,9 @@ import com.example.letstalk.R;
 import static android.view.View.OnClickListener;
 
 public class SignUpFragmentOne extends Fragment implements OnClickListener {
+
+    private RadioButton male;
+    private RadioButton female;
 
     private Button next1;
     private RelativeLayout relativeLayout;
@@ -29,15 +33,21 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         this.relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_sign_in_fragment_one, container, false);
-        this.next1 = (Button) this.relativeLayout.findViewById(R.id.button_next);
+        this.next1 = (Button) this.relativeLayout.findViewById(R.id.button_next1);
         this.next1.setOnClickListener(this);
+
+        this.male = (RadioButton) this.relativeLayout.findViewById(R.id.male_radio_button);
+        this.male.setOnClickListener(this);
+        this.female = (RadioButton) this.relativeLayout.findViewById(R.id.female_radio_button);
+        this.female.setOnClickListener(this);
+
         this.signUpFragmentTwo = new SignUpFragmentTwo();
         return this.relativeLayout;
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.button_next) {
+        if (view.getId() == R.id.button_next1) {
            replaceFragment();
         }
     }
@@ -48,5 +58,20 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         transaction.replace(R.id.sing_in_container, this.signUpFragmentTwo);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    public void onRadioButtonClicked(View view) {
+
+        boolean checked = ((RadioButton) view).isChecked();
+        switch(view.getId()) {
+            case R.id.female_radio_button:
+                if (checked)
+
+                    break;
+            case R.id.male_radio_button:
+                if (checked)
+
+                    break;
+        }
     }
 }

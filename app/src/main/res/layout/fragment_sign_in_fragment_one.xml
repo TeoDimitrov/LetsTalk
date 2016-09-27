@@ -52,7 +52,8 @@
                 android:onClick="onRadioButtonClicked"
                 android:text="@string/gender_m"
                 android:textColor="@color/text"
-                android:textSize="@dimen/sign_in_text_size" />
+                android:textSize="@dimen/sign_in_text_size"
+                />
 
             <RadioButton
                 android:id="@+id/female_radio_button"
@@ -65,7 +66,7 @@
         </RadioGroup>
 
         <Button
-            android:id="@+id/button_next"
+            android:id="@+id/button_next1"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,7 +74,7 @@
             android:drawableLeft="@drawable/arrow"
             android:layout_alignBottom="@+id/gender_radio_buttons"
             android:layout_toRightOf="@+id/btn_fb"
-            android:layout_toEndOf="@+id/btn_fb" />
+            android:layout_toEndOf="@+id/btn_fb"/>
 
         <Button
             android:id="@+id/btn_fb"

@@ -32,7 +32,7 @@ public class SessionsActivity extends AppCompatActivity {
     }
 
     private void initToolbar(){
-        this.setToolbar(findViewById(R.id.sessionsToolbar));
+        this.setToolbar(findViewById(R.id.sessionToolbar));
         setSupportActionBar(this.getToolbar());
     }
 

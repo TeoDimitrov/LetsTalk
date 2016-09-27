@@ -10,7 +10,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="58dp"
-        android:layout_below="@+id/sessionsToolbar"
+        android:layout_below="@+id/sessionToolbar"
         android:background="@drawable/sessions_shadow">
         <Button
             android:id="@+id/buttonChat"
