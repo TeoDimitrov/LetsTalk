@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -23,6 +24,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
 
     private RadioButton male;
     private RadioButton female;
+    private EditText etBirthYear;
 
     private Button next1;
     private RelativeLayout relativeLayout;

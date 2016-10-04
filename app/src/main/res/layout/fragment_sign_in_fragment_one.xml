@@ -7,15 +7,19 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_alignParentTop="true"
-        android:orientation="vertical">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <EditText
             android:id="@+id/enter_birth_year"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_birthyear"
             android:textColor="@color/text"
+            android:inputType="date"
+            android:textColorHint="@drawable/et_selector"
             android:textSize="@dimen/sign_in_text_size"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -32,8 +36,8 @@
             android:layout_alignTop="@+id/gender_radio_buttons"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"/>
+            android:paddingLeft="5dp"
+            android:paddingRight="50dp"/>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/gender_radio_buttons"
@@ -52,8 +56,9 @@
                 android:onClick="onRadioButtonClicked"
                 android:text="@string/gender_m"
                 android:textColor="@color/text"
-                android:textSize="@dimen/sign_in_text_size"
-                />
+                android:theme="@style/MyRadioButton"
+                android:paddingRight="20dp"
+                android:textSize="@dimen/sign_in_text_size"/>
 
             <RadioButton
                 android:id="@+id/female_radio_button"
@@ -62,6 +67,7 @@
                 android:onClick="onRadioButtonClicked"
                 android:text="@string/gender_f"
                 android:textColor="@color/text"
+                android:theme="@style/MyRadioButton"
                 android:textSize="@dimen/sign_in_text_size" />
         </RadioGroup>
 
@@ -91,6 +97,26 @@
             android:layout_centerHorizontal="true"
             android:paddingTop="50dp"
             android:layout_below="@+id/gender"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="you will remain anonymous"
+            android:paddingTop="3dp"
+            android:textColor="@color/text"
+            android:id="@+id/textView"
+            android:layout_below="@+id/btn_fb"
+            android:layout_centerHorizontal="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 

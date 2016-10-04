@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:theme="@style/Toolbar"
+    android:theme="@style/AppTheme"
     tools:context=".activities.SessionsActivity">
     <item
         android:id="@+id/action_profile"

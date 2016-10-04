@@ -14,7 +14,7 @@
         android:layout_height="150dp"
         android:background="?attr/colorPrimary"
         android:elevation="0dp"
-        android:theme="@style/Toolbar"/>
+        android:theme="@style/AppTheme"/>
 
     <ImageView
         android:id="@+id/image"

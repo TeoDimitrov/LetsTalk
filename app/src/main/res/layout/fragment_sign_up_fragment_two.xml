@@ -13,28 +13,39 @@
 
         <EditText
             android:id="@+id/username"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Username"
+            android:textColorHint="@drawable/et_selector"
+            android:textColor="@color/text"
             android:textSize="@dimen/sign_in_text_size"
+            android:inputType="textVisiblePassword|textNoSuggestions"
             android:layout_alignParentTop="true"
             android:layout_marginTop="50dp" />
 
         <EditText
             android:id="@+id/password"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
+            android:textColorHint="@drawable/et_selector"
+            android:textColor="@color/text"
             android:textSize="@dimen/sign_in_text_size"
+            android:ellipsize="start"
+            android:inputType="textPassword"
             android:layout_below="@+id/username"
             android:layout_alignLeft="@+id/username"
             android:layout_alignStart="@+id/username" />
 
         <EditText
             android:id="@+id/confirm_password"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Confirm Password"
+            android:textColorHint="@drawable/et_selector"
+            android:textColor="@color/text"
+            android:ellipsize="start"
+            android:inputType="textPassword"
             android:textSize="@dimen/sign_in_text_size"
             android:layout_below="@+id/password"
             android:layout_alignLeft="@+id/password"
@@ -49,7 +60,8 @@
             android:drawableLeft="@drawable/arrow"
             android:layout_alignTop="@+id/confirm_password"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:onClick="login"/>
     </RelativeLayout>
 
 </FrameLayout>
