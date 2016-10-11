@@ -1,4 +1,4 @@
-package com.example.letstalk;
+package com.example.letstalk.deleted;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -11,6 +11,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.letstalk.ChatArrayAdapter;
+import com.example.letstalk.ChatMessage;
+import com.example.letstalk.Config;
+import com.example.letstalk.Message;
+import com.example.letstalk.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
