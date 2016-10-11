@@ -1,9 +1,6 @@
-package com.example.letstalk.signin;
+package com.example.letstalk.sign_in;
 
 
-import android.app.DatePickerDialog;
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -14,18 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.example.letstalk.R;
-
-import java.util.Locale;
 
 import static android.view.View.OnClickListener;
 
@@ -89,7 +80,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         //ArticleFragment newFragment = new ArticleFragment();
         Bundle args = new Bundle();
         args.putInt("birthYear", this.year);
-        args.putString("gender",this.gender);
+        args.putString("gender", this.gender);
         signUpFragmentTwo.setArguments(args);
 
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

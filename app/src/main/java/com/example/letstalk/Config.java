@@ -7,5 +7,7 @@ public final class Config {
 
     public final static String CHILD_CHATS = "Chats";
 
+    public final static String CHILD_USERS = "Users";
+
     public final static String USER_SUFIX = "@letstalk";
 }

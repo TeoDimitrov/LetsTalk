@@ -1,17 +1,39 @@
 package com.example.letstalk.users;
 
+import com.example.letstalk.users.roles.Customer;
+import com.example.letstalk.users.roles.Role;
+
 import java.util.Calendar;
 public class User {
+
+    private static final int START_CHATS = 0;
+
+    private static final int START_TALKS = 0;
+
+    private static final Role DEFAULT_ROLE = new Customer();
+
     private int birthDate;
+
     private String gender;
+
     private String username;
+
     private String password;
 
+    private int chats;
+
+    private int talks;
+
+    private Role role;
+
     public User(int birthDate, String gender, String username, String password) {
-        this.birthDate = birthDate;
-        this.gender = gender;
-        this.username = username;
-        this.password = password;
+        this.setBirthDate(birthDate);
+        this.setGender(gender);
+        this.setUsername(username);
+        this.setPassword(password);
+        this.setChats(START_CHATS);
+        this.setTalks(START_TALKS);
+        this.setRole(DEFAULT_ROLE);
     }
 
     public int getBirthDate() {
@@ -68,5 +90,29 @@ public class User {
         }
 
         this.username = username;
+    }
+
+    public int getChats() {
+        return this.chats;
+    }
+
+    public void setChats(int chats) {
+        this.chats = chats;
+    }
+
+    public int getTalks() {
+        return this.talks;
+    }
+
+    public void setTalks(int talks) {
+        this.talks = talks;
+    }
+
+    public Role getRole() {
+        return this.role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

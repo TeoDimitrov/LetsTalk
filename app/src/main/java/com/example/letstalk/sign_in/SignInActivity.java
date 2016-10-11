@@ -1,4 +1,4 @@
-package com.example.letstalk.signin;
+package com.example.letstalk.sign_in;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,9 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 
 import com.example.letstalk.R;

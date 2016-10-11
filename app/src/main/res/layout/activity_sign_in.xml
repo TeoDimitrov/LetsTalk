@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/activity_sign_in"
     android:background="@color/colorAccent"
-    tools:context=".signin.SignInActivity">
+    tools:context=".sign_in.SignInActivity">
 
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
