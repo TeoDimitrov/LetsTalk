@@ -19,7 +19,6 @@
             android:hint="@string/prompt_birthyear"
             android:textColor="@color/text"
             android:inputType="date"
-            android:textColorHint="@drawable/et_selector"
             android:textSize="@dimen/sign_in_text_size"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
