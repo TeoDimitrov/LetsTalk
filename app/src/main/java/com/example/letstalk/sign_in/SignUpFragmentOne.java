@@ -1,11 +1,11 @@
 package com.example.letstalk.sign_in;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,23 +17,48 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import com.example.letstalk.R;
+import com.example.letstalk.sign_in.interfaces.TabFragmentListener;
 
 import static android.view.View.OnClickListener;
 
 public class SignUpFragmentOne extends Fragment implements OnClickListener {
 
     private RadioButton male;
+
     private RadioButton female;
+
     private RadioGroup genderRadioButtons;
+
     private EditText etBirthYear;
 
     private Button next1;
+
     private RelativeLayout relativeLayout;
+
     private SignUpFragmentTwo signUpFragmentTwo;
 
-    private Integer year;
-    private String gender;
+    public Integer year;
 
+    public String gender;
+
+    private TabFragmentListener tabListener;
+
+    public SignUpFragmentOne() {
+        super();
+    }
+
+    @SuppressLint("ValidFragment")
+    public SignUpFragmentOne(TabFragmentListener tabFragmentListener) {
+        this.setTabListener(tabFragmentListener);
+    }
+
+    public TabFragmentListener getTabListener() {
+        return this.tabListener;
+    }
+
+    public void setTabListener(TabFragmentListener tabListener) {
+        this.tabListener = tabListener;
+    }
 
     @Nullable
     @Override
@@ -77,16 +102,19 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
     private void replaceFragment() {
 
         // Create fragment and give it an argument specifying the article it should show
-        //ArticleFragment newFragment = new ArticleFragment();
         Bundle args = new Bundle();
         args.putInt("birthYear", this.year);
         args.putString("gender", this.gender);
         signUpFragmentTwo.setArguments(args);
 
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.sing_in_container, this.signUpFragmentTwo);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        if(this.getTabListener() != null){
+           this.getTabListener().onSwitchToNextFragment();
+        }
+
+//        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//        transaction.replace(R.id.singInContainer, this.signUpFragmentTwo);
+//        transaction.addToBackStack(null);
+//        transaction.commit();
     }
 
     public void onRadioButtonClicked(View view) {
@@ -102,5 +130,10 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
 
                     break;
         }
+    }
+
+    public static SignUpFragmentOne newInstance(TabFragmentListener tabFragmentListener){
+        SignUpFragmentOne signUpFragmentOne = new SignUpFragmentOne(tabFragmentListener);
+        return signUpFragmentOne;
     }
 }

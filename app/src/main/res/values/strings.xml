@@ -34,4 +34,7 @@
     <!-- Firebase Database Secret -->
     <string name="my_firebase_key">AIzaSyD4yKLH4sNvt8X793ymSZtLIcHEH7HnkZ8</string>
     <string name="my_firebase_secret">9XwR9KcdZoqfWnfUF1N19jpiiIgvrl7JvrrIp7Td</string>
+    <string name="tab_sign_up">Sign Up</string>
+    <string name="tab_sign_in">Sign In</string>
+    <string name="sing_in_with_fb">Sign in with Facebook</string>
 </resources>

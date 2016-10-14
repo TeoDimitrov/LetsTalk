@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -267,15 +266,13 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener{
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("T", "createUserWithEmail:onComplete:" + task.isSuccessful());
+                        if(task.isSuccessful()){
+                            insertInDatabase(user);
+                            startActivity(getSessionActivityIntent());
+                            destroyActivity();
+                        }
 
 
-                        insertInDatabase(user);
-                        startActivity(getSessionActivityIntent());
-                        destroyActivity();
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Toast.makeText(getActivity(), "Login has failed",
                                     Toast.LENGTH_SHORT).show();
@@ -310,5 +307,10 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener{
 
     private void destroyActivity(){
         getActivity().finish();
+    }
+
+    public static SignUpFragmentTwo newInstance(){
+        SignUpFragmentTwo signUpFragmentTwo = new SignUpFragmentTwo();
+        return signUpFragmentTwo;
     }
 }

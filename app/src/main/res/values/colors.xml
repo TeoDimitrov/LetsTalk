@@ -3,6 +3,7 @@
     <color name="colorPrimary">#f06d84</color>
     <color name="colorPrimaryDark">#f14266</color>
     <color name="colorAccent">#fef7f9</color>
+    <color name="colorInactiveTab">#e8c0cb</color>
     <color name="popupItems">#565656</color>
     <color name="colorContrastBlue">#7000bcd4</color>
     <color name="text">#808080</color>
