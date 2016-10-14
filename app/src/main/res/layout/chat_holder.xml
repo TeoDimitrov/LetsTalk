@@ -30,20 +30,46 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:ems="10"
+            android:hint="Write a message..."
             android:id="@+id/messageText"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/buttonSendMessage" />
+            android:layout_toLeftOf="@+id/btn_geolocation" />
 
         <Button
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Send"
+            android:background="@android:color/transparent"
+            android:drawableBottom="@android:drawable/ic_menu_send"
             android:id="@+id/buttonSendMessage"
             android:layout_alignBottom="@+id/messageText"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:drawableBottom="@android:drawable/ic_menu_camera"
+            android:id="@+id/btn_camera"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/buttonSendMessage"
+            android:layout_toStartOf="@+id/buttonSendMessage" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:drawableBottom="@drawable/geolocation_icon"
+            android:id="@+id/btn_geolocation"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/btn_camera"
+            android:layout_toStartOf="@+id/btn_camera" />
+
     </RelativeLayout>
 
 </RelativeLayout>
