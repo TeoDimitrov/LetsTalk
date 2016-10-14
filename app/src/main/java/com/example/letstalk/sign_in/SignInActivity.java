@@ -1,62 +1,79 @@
 package com.example.letstalk.sign_in;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 
 import com.example.letstalk.R;
 
-public class SignInActivity extends AppCompatActivity implements OnClickListener {
+public class SignInActivity extends AppCompatActivity{
 
-    private EditText birthyear;
-    private Button signUp;
-    private Button signIn;
+    private ViewPager signViewPager;
+
+    private TabLayout signTabLayout;
 
     private RelativeLayout container;
-    private Toolbar toolbar;
 
     private SignUpFragmentOne signUpFragmentOne;
+
+    private ViewPager getSignViewPager() {
+        return this.signViewPager;
+    }
+
+    private void setSignViewPager(ViewPager signViewPager) {
+        this.signViewPager = signViewPager;
+    }
+
+    private TabLayout getSignTabLayout() {
+        return this.signTabLayout;
+    }
+
+    private void setSignTabLayout(TabLayout signTabLayout) {
+        this.signTabLayout = signTabLayout;
+    }
+
+    private RelativeLayout getContainer() {
+        return this.container;
+    }
+
+    private void setContainer(RelativeLayout container) {
+        this.container = container;
+    }
+
+    private SignUpFragmentOne getSignUpFragmentOne() {
+        return this.signUpFragmentOne;
+    }
+
+    private void setSignUpFragmentOne(SignUpFragmentOne signUpFragmentOne) {
+        this.signUpFragmentOne = signUpFragmentOne;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        toolbar = (Toolbar) findViewById(R.id.sessionToolbar);
-        //setSupportActionBar(toolbar);
 
-        birthyear = (EditText) findViewById(R.id.enter_birth_year);
+        //this.setContainer((RelativeLayout) findViewById(R.id.singInContainer));
+        this.setSignViewPager((ViewPager) findViewById(R.id.viewPagerSign));
+        this.getSignViewPager().setAdapter(new SignFragmentPagerAdapter(getSupportFragmentManager()));
 
-        this.signUp = (Button) findViewById(R.id.btn_signup);
-        this.signUp.setOnClickListener(this);
-        this.signIn = (Button) findViewById(R.id.btn_signin);
-        this.signIn.setOnClickListener(this);
+        this.setSignTabLayout((TabLayout) findViewById(R.id.tabLayoutSign));
+        this.getSignTabLayout().setupWithViewPager(this.getSignViewPager());
 
-        this.container = (RelativeLayout) findViewById(R.id.sing_in_container);
 
-        this.signUpFragmentOne = new SignUpFragmentOne();
-
-        if (findViewById(R.id.sing_in_container) != null) {
-
-            if (savedInstanceState != null) {
-                return;
-            }
-
-            getSupportFragmentManager().beginTransaction().add(this.container.getId(), signUpFragmentOne).commit();
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_signup) {
-        }
-        else if (view.getId() == R.id.btn_signin){
-
-        }
+//        this.setSignUpFragmentOne(new SignUpFragmentOne());
+//
+//        if (findViewById(R.id.singInContainer) != null) {
+//
+//            if (savedInstanceState != null) {
+//                return;
+//            }
+//
+//            getSupportFragmentManager().beginTransaction().add(this.container.getId(), signUpFragmentOne).commit();
+//        }
     }
 }

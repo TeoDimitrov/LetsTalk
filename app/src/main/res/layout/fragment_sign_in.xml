@@ -1,0 +1,78 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.letstalk.sign_in.SignUpFragmentTwo"
+    android:id="@+id/fragment_two">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true">
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            android:textColorHint="@drawable/et_selector"
+            android:textColor="@color/text"
+            android:textSize="@dimen/sign_in_text_size"
+            android:inputType="textVisiblePassword|textNoSuggestions"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:textColorHint="@drawable/et_selector"
+            android:textColor="@color/text"
+            android:textSize="@dimen/sign_in_text_size"
+            android:ellipsize="start"
+            android:inputType="textPassword"
+            android:layout_below="@+id/username"
+            android:layout_alignLeft="@+id/username"
+            android:layout_alignStart="@+id/username" />
+
+        <Button
+            android:id="@+id/button_next"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/arrow"
+            android:layout_alignTop="@+id/password"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:onClick="login"/>
+
+        <Button
+            android:id="@+id/btn_fb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/fb"
+            android:drawablePadding="7dp"
+            android:text="@string/sing_in_with_fb"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/sign_in_text_size"
+            android:layout_below="@+id/button_next"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="you will remain anonymous"
+            android:paddingTop="3dp"
+            android:textColor="@color/text"
+            android:id="@+id/textView"
+            android:layout_below="@+id/btn_fb"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+</RelativeLayout>
