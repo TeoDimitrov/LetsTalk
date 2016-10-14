@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true">
 
         <EditText
-            android:id="@+id/username"
+            android:id="@+id/username_sing_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Username"
@@ -24,7 +24,7 @@
             android:layout_marginTop="50dp" />
 
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/password_sign_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
@@ -33,24 +33,24 @@
             android:textSize="@dimen/sign_in_text_size"
             android:ellipsize="start"
             android:inputType="textPassword"
-            android:layout_below="@+id/username"
-            android:layout_alignLeft="@+id/username"
-            android:layout_alignStart="@+id/username" />
+            android:layout_below="@+id/username_sing_in"
+            android:layout_alignLeft="@+id/username_sing_in"
+            android:layout_alignStart="@+id/username_sing_in" />
 
         <Button
-            android:id="@+id/button_next"
+            android:id="@+id/button_next_sign_in"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:drawableLeft="@drawable/arrow"
-            android:layout_alignTop="@+id/password"
+            android:layout_alignTop="@+id/password_sign_in"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:onClick="login"/>
 
         <Button
-            android:id="@+id/btn_fb"
+            android:id="@+id/btn_fb_sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -60,9 +60,8 @@
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/sign_in_text_size"
-            android:layout_below="@+id/button_next"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"/>
+            android:layout_below="@+id/button_next_sign_in"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -70,8 +69,8 @@
             android:text="you will remain anonymous"
             android:paddingTop="3dp"
             android:textColor="@color/text"
-            android:id="@+id/textView"
-            android:layout_below="@+id/btn_fb"
+            android:id="@+id/textViewSignIn"
+            android:layout_below="@+id/btn_fb_sign_in"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
