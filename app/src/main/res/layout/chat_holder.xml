@@ -46,8 +46,7 @@
             android:id="@+id/buttonSendMessage"
             android:layout_alignBottom="@+id/messageText"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:onClick="onGeolocationButtonClick"/>
+            android:layout_alignParentEnd="true"/>
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -58,8 +57,7 @@
             android:id="@+id/btn_camera"
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/buttonSendMessage"
-            android:layout_toStartOf="@+id/buttonSendMessage"
-            android:onClick="onCameraButtonClick"/>
+            android:layout_toStartOf="@+id/buttonSendMessage"/>
 
         <Button
             style="?android:attr/buttonStyleSmall"
