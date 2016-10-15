@@ -77,35 +77,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:drawableLeft="@drawable/arrow"
-            android:layout_alignBottom="@+id/gender_radio_buttons"
-            android:layout_toRightOf="@+id/btn_fb"
-            android:layout_toEndOf="@+id/btn_fb"/>
-
-        <Button
-            android:id="@+id/btn_fb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/fb"
-            android:drawablePadding="7dp"
-            android:text="@string/sing_up_with_fb"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/sign_in_text_size"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:paddingTop="50dp"
-            android:layout_below="@+id/gender"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="you will remain anonymous"
-            android:paddingTop="3dp"
-            android:textColor="@color/text"
-            android:id="@+id/textView"
-            android:layout_below="@+id/btn_fb"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignBottom="@+id/gender_radio_buttons" />
 
     </RelativeLayout>
 

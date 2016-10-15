@@ -46,8 +46,7 @@
             android:drawableLeft="@drawable/arrow"
             android:layout_alignTop="@+id/password_sign_in"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:onClick="login"/>
+            android:layout_alignParentEnd="true" />
 
         <Button
             android:id="@+id/btn_fb_sign_in"

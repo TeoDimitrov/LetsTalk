@@ -26,6 +26,11 @@ public class User {
 
     private Role role;
 
+    @SuppressWarnings("unused")
+    public User(){
+        super();
+    }
+
     public User(int birthDate, String gender, String username, String password) {
         this.setBirthDate(birthDate);
         this.setGender(gender);

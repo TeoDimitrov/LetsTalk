@@ -204,7 +204,6 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener{
             this.setBirthYear(args.getInt("birthYear"));
         }
 
-
         this.setDatabaseReference(FirebaseDatabase.getInstance().getReference().child(Config.CHILD_USERS));
         this.setmAuth(FirebaseAuth.getInstance());
 

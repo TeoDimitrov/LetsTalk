@@ -105,8 +105,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener{
         this.getSendMessageButton().setOnClickListener(this);
         this.getListView().setAdapter(this.getChatArrayAdapter());
 
-        authenticateUser();
-
         this.getDatabaseReference().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -137,28 +135,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener{
         return this.getChatHolderRelativeLayout();
     }
 
-    private void authenticateUser() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
-        builder.setTitle("LogIn");
-        final EditText editText = new EditText(this.getActivity());
-        builder.setView(editText);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                user = editText.getText().toString() + Config.USER_SUFIX;
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-                authenticateUser();
-            }
-        });
-
-        builder.show();
-    }
 
     @Override
     public void onClick(View v) {
