@@ -167,11 +167,12 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                String userName = firebaseUser.getEmail();
-                Query usersQuery = getDatabaseReference().orderByChild("UserName").equalTo(userName).limitToFirst(1);
+//                String userName = firebaseUser.getEmail();
+//                Query usersQuery = getDatabaseReference().orderByChild("UserName").equalTo(userName).limitToFirst(1);
 
                 if (firebaseUser != null) {
                     // User is signed in
+                    //FirebaseAuth.getInstance().signOut();
                     startActivity(getSessionActivityIntent());
                     Log.d("TAG", "onAuthStateChanged:signed_in:" + firebaseUser.getUid());
                 }
