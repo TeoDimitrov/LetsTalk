@@ -64,7 +64,6 @@ public class SessionsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sessions_activity);
-        this.setSessionTabLayout((TabLayout) findViewById(R.id.tabLayoutSessions));
 
         this.setSessionsViewPager((ViewPager) findViewById(R.id.viewPagerSessions));
         this.getSessionsViewPager().setAdapter(new SessionsFragmentPagerAdapter(getSupportFragmentManager()));
