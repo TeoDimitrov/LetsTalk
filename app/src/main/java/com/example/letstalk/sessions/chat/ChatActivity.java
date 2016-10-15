@@ -38,8 +38,6 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    protected GoogleApiClient mGoogleApiClient;
-
     private RelativeLayout chatHolderRelativeLayout;
     private ListView listView;
     private EditText editMessageText;
@@ -173,15 +171,8 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
         });
     }
 
-    protected void onStart() {
-        mGoogleApiClient.connect();
-        super.onStart();
-    }
 
-    protected void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
+
 
     @Override
     public void onClick(View v) {
