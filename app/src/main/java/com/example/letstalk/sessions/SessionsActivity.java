@@ -73,7 +73,7 @@ public class SessionsActivity extends AppCompatActivity {
 
         this.initChatContainer();
         this.setIntent(new Intent(this, ChatActivity.class));
-//        startActivity(this.getIntent());
+        startActivity(this.getIntent());
     }
 
     @Override
