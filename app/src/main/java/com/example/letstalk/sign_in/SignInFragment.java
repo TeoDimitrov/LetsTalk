@@ -1,7 +1,10 @@
 package com.example.letstalk.sign_in;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.icu.text.DateFormat;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,12 +26,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by teodo on 14/10/2016.
@@ -169,10 +171,10 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 //                String userName = firebaseUser.getEmail();
 //                Query usersQuery = getDatabaseReference().orderByChild("UserName").equalTo(userName).limitToFirst(1);
-
+                insertLogs();
                 if (firebaseUser != null) {
                     // User is signed in
-                    //FirebaseAuth.getInstance().signOut();
+                    FirebaseAuth.getInstance().signOut();
                     startActivity(getSessionActivityIntent());
                     Log.d("TAG", "onAuthStateChanged:signed_in:" + firebaseUser.getUid());
                 }
@@ -195,8 +197,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
             this.getmAuth().removeAuthStateListener(this.getmListener());
         }
     }
-
-
 
     public static Fragment newInstance() {
         SignInFragment signInFragment = new SignInFragment();
@@ -253,5 +253,17 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                 this.signInClick();
                 break;
         }
+    }
+
+    private void insertLogs() {
+        LoginSQLiteHelper loginSQLiteHelper = new LoginSQLiteHelper(this.getContext());
+        SQLiteDatabase db = loginSQLiteHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(LoginSQLiteHelper.COLUMN_NAME, new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
+
+        long newRowId = db.insert(LoginSQLiteHelper.TABLE_NAME, null, values);
+
+        Log.d("SQL Lite", String.valueOf(newRowId));
     }
 }

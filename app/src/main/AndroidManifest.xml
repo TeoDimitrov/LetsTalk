@@ -8,7 +8,9 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-feature android:name="android.hardware.camera"
+
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <application
@@ -25,8 +27,12 @@
         </activity>
         <activity
             android:name=".SessionsActivity"
-            android:label="Sessions activity">
+            android:label="Sessions activity"></activity>
+        <activity
+            android:name=".ChatActivity"
+            android:label="Chat Activity">
         </activity>
     </application>
+
 
 </manifest>
