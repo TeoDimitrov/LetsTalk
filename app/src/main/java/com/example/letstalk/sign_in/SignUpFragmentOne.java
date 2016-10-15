@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -91,6 +93,86 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         this.tabListener = tabListener;
     }
 
+    public RadioButton getMale() {
+        return male;
+    }
+
+    public void setMale(RadioButton male) {
+        this.male = male;
+    }
+
+    public RadioButton getFemale() {
+        return female;
+    }
+
+    public void setFemale(RadioButton female) {
+        this.female = female;
+    }
+
+    public RadioGroup getGenderRadioButtons() {
+        return genderRadioButtons;
+    }
+
+    public void setGenderRadioButtons(RadioGroup genderRadioButtons) {
+        this.genderRadioButtons = genderRadioButtons;
+    }
+
+    public EditText getEtBirthYear() {
+        return etBirthYear;
+    }
+
+    public void setEtBirthYear(EditText etBirthYear) {
+        this.etBirthYear = etBirthYear;
+    }
+
+    public Button getFbBtn() {
+        return fbBtn;
+    }
+
+    public void setFbBtn(Button fbBtn) {
+        this.fbBtn = fbBtn;
+    }
+
+    public Button getNext1() {
+        return next1;
+    }
+
+    public void setNext1(Button next1) {
+        this.next1 = next1;
+    }
+
+    public RelativeLayout getRelativeLayout() {
+        return relativeLayout;
+    }
+
+    public void setRelativeLayout(RelativeLayout relativeLayout) {
+        this.relativeLayout = relativeLayout;
+    }
+
+    public SignUpFragmentTwo getSignUpFragmentTwo() {
+        return signUpFragmentTwo;
+    }
+
+    public void setSignUpFragmentTwo(SignUpFragmentTwo signUpFragmentTwo) {
+        this.signUpFragmentTwo = signUpFragmentTwo;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -158,6 +240,10 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
     }
 
     private void clickNext() {
+        if (!validateForm()) {
+            return;
+        }
+
         String etValue = etBirthYear.getText().toString();
         this.year = Integer.parseInt(etValue);
         int radioButtonID = genderRadioButtons.getCheckedRadioButtonId();
@@ -180,19 +266,19 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         }
     }
 
-    public void onRadioButtonClicked(View view) {
 
-        boolean checked = ((RadioButton) view).isChecked();
-        switch (view.getId()) {
-            case R.id.female_radio_button:
-                if (checked)
 
-                    break;
-            case R.id.male_radio_button:
-                if (checked)
+    private boolean validateForm() {
+        boolean valid = true;
 
-                    break;
+        if (TextUtils.isEmpty(this.getEtBirthYear().getText().toString())) {
+            this.getEtBirthYear().setError("Birth year is required.");
+            valid = false;
+        } else {
+            this.getEtBirthYear().setError(null);
         }
+
+        return valid;
     }
 
     public static SignUpFragmentOne newInstance(TabFragmentListener tabFragmentListener){

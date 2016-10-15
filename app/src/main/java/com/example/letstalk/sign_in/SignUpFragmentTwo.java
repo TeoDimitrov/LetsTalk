@@ -235,7 +235,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener{
 
         String email = this.getUsernameValue();
         if (TextUtils.isEmpty(email)) {
-            this.getEtUsername().setError("Required.");
+            this.getEtUsername().setError("Username is required.");
             valid = false;
         } else {
             this.getEtUsername().setError(null);
@@ -243,9 +243,22 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener{
 
         String password = this.getPasswordValue();
         if (TextUtils.isEmpty(password)) {
-            this.getEtPassword().setError("Required.");
+            this.getEtPassword().setError("Password is required.");
             valid = false;
         } else {
+            this.getEtPassword().setError(null);
+        }
+
+        String confirmPassword = this.getConfirmPasswordValue();
+        if (TextUtils.isEmpty(confirmPassword)) {
+            this.getEtConfirmPassword().setError("Confirm password is required.");
+            valid = false;
+        }
+        else if(!confirmPassword.equals(password)){
+            this.getEtConfirmPassword().setError("Passwords does not match.");
+            valid = false;
+        }
+        else {
             this.getEtPassword().setError(null);
         }
 

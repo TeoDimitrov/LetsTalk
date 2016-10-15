@@ -1,20 +1,13 @@
 package com.example.letstalk;
 
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +16,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,10 +38,8 @@ import static android.view.View.*;
 public class ChatActivity extends AppCompatActivity implements OnClickListener{
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final String JPEG_FILE_PREFIX = "IMG_";
-    private static final String JPEG_FILE_SUFFIX = ".jpg";
 
-    private String mCurrentPhotoPath;
+    protected GoogleApiClient mGoogleApiClient;
 
     private RelativeLayout chatHolderRelativeLayout;
     private ListView listView;
@@ -138,19 +130,20 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
         setContentView(R.layout.chat_holder);
 
         this.setDatabaseReference(FirebaseDatabase.getInstance().getReference().child(Config.CHILD_CHATS).child("advisor_user"));
-        this.setListView((ListView) this.getChatHolderRelativeLayout().findViewById(R.id.listViewMessageHolder));
-        this.setEditMessageText( (EditText) this.getChatHolderRelativeLayout().findViewById(R.id.messageText));
-        this.setSendMessageButton((Button) this.getChatHolderRelativeLayout().findViewById(R.id.buttonSendMessage));
-        this.setCameraButton((Button) this.getChatHolderRelativeLayout().findViewById(R.id.btn_camera));
-        this.setGeolocationButton((Button) this.getChatHolderRelativeLayout().findViewById(R.id.btn_geolocation));
+        this.setListView((ListView) findViewById(R.id.listViewMessageHolder));
+        this.setEditMessageText( (EditText) findViewById(R.id.messageText));
+        this.setSendMessageButton((Button) findViewById(R.id.buttonSendMessage));
+        this.setCameraButton((Button) findViewById(R.id.btn_camera));
+        this.setGeolocationButton((Button) findViewById(R.id.btn_geolocation));
         this.setChatArrayAdapter(new ChatArrayAdapter(this, R.layout.chat_message));
+        this.setPicture((ImageView)findViewById(R.id.imageView_picture));
 
         this.getSendMessageButton().setOnClickListener(this);
         this.getCameraButton().setOnClickListener(this);
         this.getGeolocationButton().setOnClickListener(this);
 
         this.getListView().setAdapter(this.getChatArrayAdapter());
-        
+
         this.getDatabaseReference().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -176,9 +169,19 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
     }
 
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
 
     @Override
     public void onClick(View v) {
@@ -186,6 +189,13 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
             case R.id.buttonSendMessage:
                 sendMessage();
                 eraseText();
+                break;
+            case R.id.btn_camera:
+                dispatchTakePictureIntent();
+            break;
+            case R.id.btn_geolocation:
+
+                break;
         }
     }
 
@@ -210,16 +220,6 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
         Message message = dataSnapshot.getValue(ChatMessage.class);
         this.chatArrayAdapter.add(message);
         ((BaseAdapter)this.listView.getAdapter()).notifyDataSetChanged();
-    }
-
-    private void onCameraButtonClick(View view){
-        dispatchTakePictureIntent();
-    }
-
-
-
-    private void onGeolocationButtonClick(View view){
-
     }
 
     private void dispatchTakePictureIntent() {

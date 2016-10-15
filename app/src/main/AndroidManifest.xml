@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.letstalk">
+    package="com.google.android.gms.location.sample.basiclocationsample" >
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -26,6 +28,10 @@
         <activity
             android:name=".SessionsActivity"
             android:label="Sessions activity">
+        </activity>
+        <activity
+            android:name=".ChatActivity"
+            android:label="Chat Activity">
         </activity>
     </application>
 

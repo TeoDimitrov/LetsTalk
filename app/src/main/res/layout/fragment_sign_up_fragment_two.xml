@@ -18,11 +18,7 @@
             android:hint="Username"
             android:textColor="@color/text"
             android:textSize="@dimen/sign_in_text_size"
-<<<<<<< HEAD
             android:inputType="textVisiblePassword|textNoSuggestions"/>
-=======
-            android:inputType="textVisiblePassword|textNoSuggestions" />
->>>>>>> 12b9e6eecb56c93bd7b71a9f6b11f2a86f46a2fa
 
         <EditText
             android:id="@+id/password"
