@@ -18,12 +18,10 @@
             android:hint="Username"
             android:textColor="@color/text"
             android:textSize="@dimen/sign_in_text_size"
-            android:inputType="textVisiblePassword|textNoSuggestions"
-            android:layout_alignBottom="@+id/password"
-            android:layout_alignParentTop="true" />
+            android:inputType="textVisiblePassword|textNoSuggestions"/>
 
         <EditText
-            android:id="@+id/et_password"
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"

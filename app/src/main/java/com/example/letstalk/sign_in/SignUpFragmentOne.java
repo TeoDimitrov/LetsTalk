@@ -64,7 +64,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        this.relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_sign_in_fragment_one, container, false);
+        this.relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_sign_up_fragment_one, container, false);
         this.next1 = (Button) this.relativeLayout.findViewById(R.id.button_next1);
         this.next1.setOnClickListener(this);
 
