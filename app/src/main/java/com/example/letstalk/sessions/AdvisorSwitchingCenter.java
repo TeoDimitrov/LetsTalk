@@ -1,4 +1,6 @@
-package com.example.letstalk;
+package com.example.letstalk.sessions;
+
+import com.example.letstalk.Config;
 
 /**
  * Created by teodo on 22/09/2016.

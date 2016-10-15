@@ -1,4 +1,4 @@
-package com.example.letstalk;
+package com.example.letstalk.messages.interfaces;
 
 /**
  * Created by teodo on 16/09/2016.

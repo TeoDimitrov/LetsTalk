@@ -26,10 +26,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SessionsActivity"
+            android:name=".sessions.SessionsActivity"
             android:label="Sessions activity"></activity>
         <activity
-            android:name=".ChatActivity"
+            android:name=".sessions.chat.ChatActivity"
             android:label="Chat Activity">
         </activity>
     </application>

@@ -1,4 +1,6 @@
-package com.example.letstalk;
+package com.example.letstalk.messages;
+
+import com.example.letstalk.messages.interfaces.Message;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
