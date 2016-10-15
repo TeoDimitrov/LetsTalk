@@ -130,11 +130,12 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
         setContentView(R.layout.chat_holder);
 
         this.setDatabaseReference(FirebaseDatabase.getInstance().getReference().child(Config.CHILD_CHATS).child("advisor_user"));
-        this.setListView((ListView) findViewById(R.id.listViewMessageHolder));
-        this.setEditMessageText( (EditText) findViewById(R.id.messageText));
-        this.setSendMessageButton((Button) findViewById(R.id.buttonSendMessage));
-        this.setCameraButton((Button) findViewById(R.id.btn_camera));
-        this.setGeolocationButton((Button) findViewById(R.id.btn_geolocation));
+
+        this.setListView((ListView)findViewById(R.id.listViewMessageHolder));
+        this.setEditMessageText( (EditText)findViewById(R.id.messageText));
+        this.setSendMessageButton((Button)findViewById(R.id.buttonSendMessage));
+        this.setCameraButton((Button)findViewById(R.id.btn_camera));
+        this.setGeolocationButton((Button)findViewById(R.id.btn_geolocation));
         this.setChatArrayAdapter(new ChatArrayAdapter(this, R.layout.chat_message));
         this.setPicture((ImageView)findViewById(R.id.imageView_picture));
 
