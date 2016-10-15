@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -226,7 +227,33 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         this.hideProgressDialog();
     }
 
+    private boolean validateForm() {
+        boolean valid = true;
+
+        String email = this.getUsernameValue();
+        if (TextUtils.isEmpty(email)) {
+            this.getEtUsername().setError("Username is required.");
+            valid = false;
+        } else {
+            this.getEtUsername().setError(null);
+        }
+
+        String password = this.getPasswordValue();
+        if (TextUtils.isEmpty(password)) {
+            this.getEtPassword().setError("Password is required.");
+            valid = false;
+        } else {
+            this.getEtPassword().setError(null);
+        }
+
+        return valid;
+    }
+
     private void signInClick(){
+        if (!validateForm()) {
+            return;
+        }
+
         this.showProgressDialog();
         this.setUsernameValue(this.getEtUsername().getText().toString());
         this.setPasswordValue(this.getEtPassword().getText().toString());
