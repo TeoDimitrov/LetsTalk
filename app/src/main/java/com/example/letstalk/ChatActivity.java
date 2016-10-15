@@ -150,7 +150,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
         this.getGeolocationButton().setOnClickListener(this);
 
         this.getListView().setAdapter(this.getChatArrayAdapter());
-
+        
         this.getDatabaseReference().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
