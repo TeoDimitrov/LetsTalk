@@ -230,7 +230,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     private boolean validateForm() {
         boolean valid = true;
 
-        String email = this.getUsernameValue();
+        String email = this.getEtUsername().getText().toString();
         if (TextUtils.isEmpty(email)) {
             this.getEtUsername().setError("Username is required.");
             valid = false;
@@ -238,7 +238,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
             this.getEtUsername().setError(null);
         }
 
-        String password = this.getPasswordValue();
+        String password = this.getEtPassword().getText().toString();
         if (TextUtils.isEmpty(password)) {
             this.getEtPassword().setError("Password is required.");
             valid = false;
