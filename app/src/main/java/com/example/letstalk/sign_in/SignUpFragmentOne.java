@@ -2,6 +2,7 @@ package com.example.letstalk.sign_in;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,11 +21,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.letstalk.sessions.SessionsActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -37,6 +40,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import static android.view.View.OnClickListener;
 
@@ -54,6 +58,8 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
 
     private Button fbBtn;
 
+    private LoginButton loginButton;
+
     private RelativeLayout relativeLayout;
 
     private SignUpFragmentTwo signUpFragmentTwo;
@@ -66,7 +72,11 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
 
     private FirebaseAuth mAuth;
 
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
     private CallbackManager mCallbackManager;
+
+    private Intent sessionsIntent;
 
     public SignUpFragmentOne() {
         super();
@@ -176,12 +186,12 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        FacebookSdk.sdkInitialize(this.getActivity().getApplicationContext());
+        AppEventsLogger.activateApp(this.getContext());
 
         this.relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_sign_up_fragment_one, container, false);
         this.next1 = (Button) this.relativeLayout.findViewById(R.id.button_next1);
         this.next1.setOnClickListener(this);
-
-
 
         this.male = (RadioButton) this.relativeLayout.findViewById(R.id.male_radio_button);
         this.male.setOnClickListener(this);
@@ -195,36 +205,70 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
 
         this.setmAuth(FirebaseAuth.getInstance());
 
-
         this.fbBtn = (Button) this.relativeLayout.findViewById(R.id.btn_fb);
         this.fbBtn.setOnClickListener(this);
-//        mCallbackManager = CallbackManager.Factory.create();
-//        this.fbBtn.setReadPermissions("email", "public_profile");
-//
-//        fbBtn.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-//            @Override
-//            public void onSuccess(LoginResult loginResult) {
-//                Log.d("T", "facebook:onSuccess:" + loginResult);
-//                handleFacebookAccessToken(loginResult.getAccessToken());
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//                Log.d("T", "facebook:onCancel");
-//                // [START_EXCLUDE]
-//                // [END_EXCLUDE]
-//            }
-//
-//            @Override
-//            public void onError(FacebookException error) {
-//                Log.d("T", "facebook:onError", error);
-//                // [START_EXCLUDE]
-//                // [END_EXCLUDE]
-//            }
-//        });
-//        // [END initialize_fblogin]
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    goToSessions();
+                    Log.d("TAG", "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d("TAG", "onAuthStateChanged:signed_out");
+                }
+                // [START_EXCLUDE]
+                // [END_EXCLUDE]
+            }
+        };
+
+        this.mCallbackManager = CallbackManager.Factory.create();
+        this.loginButton = (LoginButton) this.relativeLayout.findViewById(R.id.facebook_button);
+        this.loginButton.setReadPermissions("email", "public_profile");
+        this.loginButton.setOnClickListener(this);
+        this.loginButton.registerCallback(this.mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d("T", "facebook:onSuccess:" + loginResult);
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("T", "facebook:onCancel");
+                // [START_EXCLUDE]
+                // [END_EXCLUDE]
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d("T", "facebook:onError", error);
+                // [START_EXCLUDE]
+                // [END_EXCLUDE]
+            }
+        });
+        // [END initialize_fblogin]
 
         return this.relativeLayout;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+    // [END on_start_add_listener]
+
+    // [START on_stop_remove_listener]
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 
     @Override
@@ -235,6 +279,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
                 clickNext();
                 break;
             case R.id.btn_fb:
+                loginButton.performClick();
                 break;
         }
     }
@@ -266,8 +311,6 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         }
     }
 
-
-
     private boolean validateForm() {
         boolean valid = true;
 
@@ -286,25 +329,45 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         return signUpFragmentOne;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    // [START auth_with_facebook]
     private void handleFacebookAccessToken(AccessToken token) {
-        Log.d("t", "handleFacebookAccessToken:" + token);
+        Log.d("TAG", "handleFacebookAccessToken:" + token);
+        // [START_EXCLUDE silent]
+        // [END_EXCLUDE]
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("T", "signInWithCredential:onComplete:" + task.isSuccessful());
+                        Log.d("TAG", "signInWithCredential:onComplete:" + task.isSuccessful());
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Log.w("T", "signInWithCredential", task.getException());
-                            Toast.makeText(getActivity(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Log.w("TAG", "signInWithCredential", task.getException());
                         }
+
+                        // [START_EXCLUDE]
+                        // [END_EXCLUDE]
                     }
                 });
+    }
+
+    private void goToSessions(){
+        sessionsIntent = new Intent(getActivity(), SessionsActivity.class);
+        startActivity(sessionsIntent);
+    }
+
+    public void signOut() {
+        mAuth.signOut();
+        LoginManager.getInstance().logOut();
     }
 }

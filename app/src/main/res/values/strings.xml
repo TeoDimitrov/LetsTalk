@@ -37,4 +37,7 @@
     <string name="tab_sign_up">Sign Up</string>
     <string name="tab_sign_in">Sign In</string>
     <string name="sing_in_with_fb">Sign in with Facebook</string>
+
+    <!-- Facebook Id -->
+    <string name="facebook_app_id">1203077203071376</string>
 </resources>

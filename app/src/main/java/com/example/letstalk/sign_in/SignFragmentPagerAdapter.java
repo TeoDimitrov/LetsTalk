@@ -17,7 +17,7 @@ public class SignFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private static final String[] TABS = new String[]{"Sign Up", "Sign In"};
 
-    private Fragment fragmentSignIn;
+    private Fragment fragmentSignUp;
 
     private FragmentManager fragmentManager;
 
@@ -26,12 +26,12 @@ public class SignFragmentPagerAdapter extends FragmentStatePagerAdapter {
         this.setFragmentManager(fragmentManager);
     }
 
-    private Fragment getFragmentSignIn() {
-        return this.fragmentSignIn;
+    public Fragment getFragmentSignUp() {
+        return this.fragmentSignUp;
     }
 
-    private void setFragmentSignIn(Fragment fragmentSignIn) {
-        this.fragmentSignIn = fragmentSignIn;
+    private void setFragmentSignUp(Fragment fragmentSignUp) {
+        this.fragmentSignUp = fragmentSignUp;
     }
 
     public FragmentManager getFragmentManager() {
@@ -47,21 +47,21 @@ public class SignFragmentPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                if (fragmentSignIn == null) {
-                    fragmentSignIn = SignUpFragmentOne.newInstance(new TabFragmentListener() {
+                if (fragmentSignUp == null) {
+                    fragmentSignUp = SignUpFragmentOne.newInstance(new TabFragmentListener() {
                         public void onSwitchToNextFragment() {
                             Bundle args = new Bundle();
-                            args.putInt("birthYear", ((SignUpFragmentOne)fragmentSignIn).year);
-                            args.putString("gender", ((SignUpFragmentOne)fragmentSignIn).gender);
-                            getFragmentManager().beginTransaction().remove(fragmentSignIn).commit();
-                            fragmentSignIn = SignUpFragmentTwo.newInstance();
-                            fragmentSignIn.setArguments(args);
+                            args.putInt("birthYear", ((SignUpFragmentOne) fragmentSignUp).year);
+                            args.putString("gender", ((SignUpFragmentOne) fragmentSignUp).gender);
+                            getFragmentManager().beginTransaction().remove(fragmentSignUp).commit();
+                            fragmentSignUp = SignUpFragmentTwo.newInstance();
+                            fragmentSignUp.setArguments(args);
                             notifyDataSetChanged();
                         }
                     });
                 }
 
-                return getFragmentSignIn();
+                return getFragmentSignUp();
             case 1:
                 return new SignInFragment().newInstance();
             default:
@@ -82,9 +82,10 @@ public class SignFragmentPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getItemPosition(Object object)
     {
-        if (object instanceof SignUpFragmentOne && this.getFragmentSignIn() instanceof SignUpFragmentTwo) {
+        if (object instanceof SignUpFragmentOne && this.getFragmentSignUp() instanceof SignUpFragmentTwo) {
             return POSITION_NONE;
         }
+
         return POSITION_UNCHANGED;
     }
 }

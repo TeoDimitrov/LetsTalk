@@ -1,5 +1,7 @@
 package com.example.letstalk.sign_in;
 
+import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -12,6 +14,8 @@ import com.example.letstalk.R;
 
 public class SignInActivity extends AppCompatActivity{
 
+    private final static String FRAGMENT_SIGN_UP_TAG = "FRAGMENT_SING_UP";
+
     private ViewPager signViewPager;
 
     private TabLayout signTabLayout;
@@ -19,6 +23,8 @@ public class SignInActivity extends AppCompatActivity{
     private RelativeLayout container;
 
     private SignUpFragmentOne signUpFragmentOne;
+
+    private SignFragmentPagerAdapter signFragmentPagerAdapter;
 
     private ViewPager getSignViewPager() {
         return this.signViewPager;
@@ -59,21 +65,16 @@ public class SignInActivity extends AppCompatActivity{
 
         //this.setContainer((RelativeLayout) findViewById(R.id.singInContainer));
         this.setSignViewPager((ViewPager) findViewById(R.id.viewPagerSign));
-        this.getSignViewPager().setAdapter(new SignFragmentPagerAdapter(getSupportFragmentManager()));
+        this.signFragmentPagerAdapter = new SignFragmentPagerAdapter(getSupportFragmentManager());
+        this.getSignViewPager().setAdapter(this.signFragmentPagerAdapter);
 
         this.setSignTabLayout((TabLayout) findViewById(R.id.tabLayoutSign));
         this.getSignTabLayout().setupWithViewPager(this.getSignViewPager());
+    }
 
-
-//        this.setSignUpFragmentOne(new SignUpFragmentOne());
-//
-//        if (findViewById(R.id.singInContainer) != null) {
-//
-//            if (savedInstanceState != null) {
-//                return;
-//            }
-//
-//            getSupportFragmentManager().beginTransaction().add(this.container.getId(), signUpFragmentOne).commit();
-//        }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        this.signFragmentPagerAdapter.getFragmentSignUp().onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -58,7 +58,8 @@
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/sign_in_text_size"
             android:layout_below="@+id/button_next_sign_in"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:paddingTop="30dp"/>
 
         <TextView
             android:layout_width="wrap_content"

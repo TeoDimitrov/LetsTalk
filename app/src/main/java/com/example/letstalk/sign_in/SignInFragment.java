@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,6 +46,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     private EditText etPassword;
 
     private Button btnNext;
+
+    private Button btnFb;
 
     private ProgressDialog pdSignUser;
 
@@ -90,6 +94,14 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
 
     public void setBtnNext(Button btnNext) {
         this.btnNext = btnNext;
+    }
+
+    public Button getBtnFb() {
+        return this.btnFb;
+    }
+
+    public void setBtnFb(Button btnFb) {
+        this.btnFb = btnFb;
     }
 
     public ProgressDialog getPdSignUser() {
@@ -160,6 +172,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         this.setEtPassword((EditText) this.getRelativeLayout().findViewById(R.id.password_sign_in));
         this.setBtnNext((Button) this.getRelativeLayout().findViewById(R.id.button_next_sign_in));
         this.getBtnNext().setOnClickListener(this);
+        this.setBtnFb((Button) this.relativeLayout.findViewById(R.id.btn_fb_sign_in));
+        this.getBtnFb().setOnClickListener(this);
         this.setPdSignUser();
         this.setSessionActivityIntent(new Intent(getActivity(), SessionsActivity.class));
 
@@ -171,7 +185,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 //                String userName = firebaseUser.getEmail();
 //                Query usersQuery = getDatabaseReference().orderByChild("UserName").equalTo(userName).limitToFirst(1);
-                insertLogs();
                 if (firebaseUser != null) {
                     // User is signed in
                     FirebaseAuth.getInstance().signOut();
@@ -278,18 +291,10 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
             case R.id.button_next_sign_in:
                 this.signInClick();
                 break;
+            case R.id.btn_fb_sign_in:
+
+                break;
         }
     }
 
-    private void insertLogs() {
-        LoginSQLiteHelper loginSQLiteHelper = new LoginSQLiteHelper(this.getContext());
-        SQLiteDatabase db = loginSQLiteHelper.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(LoginSQLiteHelper.COLUMN_NAME, new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
-
-        long newRowId = db.insert(LoginSQLiteHelper.TABLE_NAME, null, values);
-
-        Log.d("SQL Lite", String.valueOf(newRowId));
-    }
 }
