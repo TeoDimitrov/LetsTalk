@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorAccent"
     android:orientation="vertical"
-    tools:context=".sign_in.SignInActivity">
+    tools:context=".activity.sign_in.SignInActivity">
 
     <View android:id="@+id/topRectangle"
         android:layout_width="match_parent"

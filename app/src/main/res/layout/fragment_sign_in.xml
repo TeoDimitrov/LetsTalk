@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.letstalk.sign_in.SignUpFragmentTwo"
+    tools:context=".activity.sign_in.SignUpFragmentTwo"
     android:id="@+id/fragment_two">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -70,6 +70,17 @@
             android:id="@+id/textViewSignIn"
             android:layout_below="@+id/btn_fb_sign_in"
             android:layout_centerHorizontal="true" />
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/facebook_button_sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:layout_below="@id/textViewSignIn"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 
 </RelativeLayout>

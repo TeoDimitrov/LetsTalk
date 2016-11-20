@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/signUpFragmentOne"
-    tools:context=".sign_in.SignUpFragmentOne">
+    tools:context=".activity.sign_in.SignUpFragmentOne">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -109,7 +109,7 @@
             android:layout_centerHorizontal="true" />
 
         <com.facebook.login.widget.LoginButton
-            android:id="@+id/facebook_button"
+            android:id="@+id/facebook_button_sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
