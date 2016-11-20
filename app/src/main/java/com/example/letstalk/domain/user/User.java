@@ -1,6 +1,6 @@
 package com.example.letstalk.domain.user;
 
-import com.example.letstalk.domain.roles.Customer;
+import com.example.letstalk.domain.roles.CustomerRole;
 import com.example.letstalk.domain.roles.Role;
 
 import java.util.Calendar;
@@ -10,7 +10,7 @@ public class User {
 
     private static final int START_TALKS = 0;
 
-    private static final Role DEFAULT_ROLE = new Customer();
+    private static final Role DEFAULT_ROLE = new CustomerRole();
 
     private int birthDate;
 

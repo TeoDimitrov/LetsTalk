@@ -1,11 +1,10 @@
 package com.example.letstalk.domain.roles;
 
-/**
- * Created by teodo on 11/10/2016.
- */
-public abstract class Role {
+public class Role {
 
     private String name;
+
+    protected Role(){}
 
     protected Role(String name) {
         this.setName(name);
