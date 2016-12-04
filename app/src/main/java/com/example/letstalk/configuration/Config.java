@@ -10,4 +10,6 @@ public final class Config {
     public final static String CHILD_USERS = "Users";
 
     public final static String USER_SUFIX = "@letstalk";
+
+    public final static String USER_EXTRA = "User";
 }

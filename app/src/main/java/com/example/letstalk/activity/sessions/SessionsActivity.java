@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 
 import com.example.letstalk.activity.sessions.chat.ChatActivity;
 import com.example.letstalk.R;
+import com.example.letstalk.configuration.Config;
+import com.example.letstalk.domain.user.User;
 
 public class SessionsActivity extends AppCompatActivity {
 
@@ -24,55 +26,23 @@ public class SessionsActivity extends AppCompatActivity {
 
     private Intent nextActivityChat;
 
-    public Intent getNextActivityChat() {
-        return nextActivityChat;
-    }
-
-    public void setNextActivityChat(Intent nextActivityChat) {
-        this.nextActivityChat = nextActivityChat;
-    }
-    private ViewGroup getChatContainer() {
-        return this.chatContainer;
-    }
-
-    private void setChatContainer(ViewGroup chatContainer) {
-        this.chatContainer = chatContainer;
-    }
-
-    private void initChatContainer(){
-        this.setChatContainer((ViewGroup) findViewById(R.id.fragmentContainer));
-    }
-
-    public TabLayout getSessionTabLayout() {
-        return this.sessionTabLayout;
-    }
-
-    public void setSessionTabLayout(TabLayout sessionTabLayout) {
-        this.sessionTabLayout = sessionTabLayout;
-    }
-
-    public ViewPager getSessionsViewPager() {
-        return this.sessionsViewPager;
-    }
-
-    public void setSessionsViewPager(ViewPager sessionsViewPager) {
-        this.sessionsViewPager = sessionsViewPager;
-    }
+    private User currentUser;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sessions_activity);
-
-        this.setSessionsViewPager((ViewPager) findViewById(R.id.viewPagerSessions));
-        this.getSessionsViewPager().setAdapter(new SessionsFragmentPagerAdapter(getSupportFragmentManager()));
-
-        this.setSessionTabLayout((TabLayout) findViewById(R.id.tabLayoutSessions));
-        this.getSessionTabLayout().setupWithViewPager(this.getSessionsViewPager());
-
-        this.initChatContainer();
-        this.setIntent(new Intent(this, ChatActivity.class));
-        startActivity(this.getIntent());
+        this.sessionsViewPager = ((ViewPager) findViewById(R.id.viewPagerSessions));
+        this.sessionsViewPager.setAdapter(new SessionsFragmentPagerAdapter(getSupportFragmentManager()));
+        this.sessionTabLayout = ((TabLayout) findViewById(R.id.tabLayoutSessions));
+        this.sessionTabLayout.setupWithViewPager(this.sessionsViewPager);
+        this.chatContainer = ((ViewGroup) findViewById(R.id.fragmentContainer));
+        if (savedInstanceState == null) {
+            Intent i = getIntent();
+            Bundle extras = i.getExtras();
+            this.currentUser = extras.getParcelable(Config.USER_EXTRA);
+            System.out.println();
+        }
     }
 
     @Override
@@ -83,7 +53,6 @@ public class SessionsActivity extends AppCompatActivity {
     }
 
     private void addFragment(Fragment fragment){
-        getSupportFragmentManager().beginTransaction().add(this.getChatContainer().getId(),fragment).commit();
+        getSupportFragmentManager().beginTransaction().add(this.chatContainer.getId(),fragment).commit();
     }
-
 }

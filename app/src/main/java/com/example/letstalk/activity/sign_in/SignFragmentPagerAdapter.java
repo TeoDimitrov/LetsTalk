@@ -7,10 +7,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.example.letstalk.activity.sign_in.interfaces.TabFragmentListener;
 
-
-/**
- * Created by teodo on 12/10/2016.
- */
 public class SignFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private static final int PAGE_COUNT = 2;

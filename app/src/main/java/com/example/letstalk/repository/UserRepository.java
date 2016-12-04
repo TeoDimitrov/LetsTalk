@@ -1,7 +1,6 @@
 package com.example.letstalk.repository;
 
 import com.example.letstalk.domain.user.User;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -12,7 +11,7 @@ public class UserRepository {
 
     private DatabaseReference mDatabaseReference;
 
-    private User user = new User();
+    private User user;
 
     public UserRepository(String url) {
         this.mDatabaseReference = com.google.firebase.database.FirebaseDatabase.getInstance().getReference().child(url);
@@ -24,12 +23,13 @@ public class UserRepository {
         this.mDatabaseReference.child(userPath).setValue(user);
     }
 
-    public User findByUserName(String userName){
-        Query query = this.mDatabaseReference.orderByChild("username").equalTo(userName);
+    public User findByUserName(String username){
+        final String userPath = this.clearUserName(username);
+        Query query = this.mDatabaseReference.orderByChild("username").equalTo(username);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
+                user = dataSnapshot.child(userPath).getValue(User.class);
             }
 
             @Override
@@ -39,6 +39,16 @@ public class UserRepository {
         });
 
         return this.user;
+    }
+
+    public boolean isUserExist(String username){
+        User user = this.findByUserName(username);
+        boolean isUserExist = true;
+        if(user == null){
+            isUserExist = false;
+        }
+
+        return isUserExist;
     }
 
     public DatabaseReference getmDatabaseReference() {

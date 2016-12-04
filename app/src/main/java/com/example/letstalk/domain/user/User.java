@@ -1,16 +1,26 @@
 package com.example.letstalk.domain.user;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.example.letstalk.domain.roles.CustomerRole;
 import com.example.letstalk.domain.roles.Role;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.Calendar;
-public class User {
 
+@IgnoreExtraProperties
+public class User implements Parcelable {
+
+    @Exclude
     private static final int START_CHATS = 0;
 
-    private static final int START_TALKS = 0;
+    @Exclude
+    private static final transient int START_TALKS = 0;
 
-    private static final Role DEFAULT_ROLE = new CustomerRole();
+    @Exclude
+    private static final transient Role DEFAULT_ROLE = new CustomerRole();
 
     private int birthDate;
 
@@ -29,6 +39,9 @@ public class User {
     @SuppressWarnings("unused")
     public User(){
         super();
+        this.setChats(START_CHATS);
+        this.setTalks(START_TALKS);
+        this.setRole(DEFAULT_ROLE);
     }
 
     public User(int birthDate, String gender, String username, String password) {
@@ -39,6 +52,16 @@ public class User {
         this.setChats(START_CHATS);
         this.setTalks(START_TALKS);
         this.setRole(DEFAULT_ROLE);
+    }
+
+    protected User(Parcel in) {
+        birthDate = in.readInt();
+        gender = in.readString();
+        username = in.readString();
+        password = in.readString();
+        chats = in.readInt();
+        talks = in.readInt();
+        role = (Role) in.readValue(Role.class.getClassLoader());
     }
 
     public int getBirthDate() {
@@ -120,4 +143,33 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(birthDate);
+        dest.writeString(gender);
+        dest.writeString(username);
+        dest.writeString(password);
+        dest.writeInt(chats);
+        dest.writeInt(talks);
+        dest.writeValue(role);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }
