@@ -4,13 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.letstalk.activity.sessions.chat.ChatFragment;
-import com.example.letstalk.activity.sessions.talk.TalkFragment;
 
-
-/**
- * Created by teodo on 12/10/2016.
- */
 public class SessionsFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private static final int PAGE_COUNT = 2;
@@ -36,9 +30,9 @@ public class SessionsFragmentPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return ChatFragment.newInstance();
+                return SessionChatFragment.newInstance();
             case 1:
-                return TalkFragment.newInstance();
+                return SessionTalkFragment.newInstance();
             default:
                 return null;
         }

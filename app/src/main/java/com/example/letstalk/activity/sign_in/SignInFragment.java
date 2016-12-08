@@ -174,20 +174,11 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         // Application code
                         try {
-                            final User user = new User();
                             String email = response.getJSONObject().getString("email");
                             String gender = response.getJSONObject().getString("gender");
                             String bday = response.getJSONObject().getString("birthday");
-                            user.setUsername(email);
-                            int birthyear = Integer.parseInt(bday.substring(bday.length()-4));
-                            user.setBirthDate(birthyear);
-                            user.setGender(gender);
-                            boolean isUserExist = userRepository.isUserExist(email);
-                            if(!isUserExist){
-                                userRepository.create(user);
-                            }
-
-                            sessionsActivityIntent.putExtra(Config.USER_EXTRA,user);
+                            int birthyear = Integer.parseInt(bday.substring(bday.length() - 4));
+                            userRepository.findByUserName(email,gender, birthyear, sessionsActivityIntent);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -5,10 +5,13 @@ import android.os.Parcelable;
 
 import com.example.letstalk.domain.roles.CustomerRole;
 import com.example.letstalk.domain.roles.Role;
+import com.example.letstalk.domain.timeFrames.TimeFrame;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 @IgnoreExtraProperties
 public class User implements Parcelable {
@@ -36,22 +39,25 @@ public class User implements Parcelable {
 
     private Role role;
 
+    private List<TimeFrame> schedule;
+
+    private String notes;
+
     @SuppressWarnings("unused")
     public User(){
         super();
         this.setChats(START_CHATS);
         this.setTalks(START_TALKS);
         this.setRole(DEFAULT_ROLE);
+        this.setSchedule(new ArrayList<TimeFrame>());
     }
 
     public User(int birthDate, String gender, String username, String password) {
+        this();
         this.setBirthDate(birthDate);
         this.setGender(gender);
         this.setUsername(username);
         this.setPassword(password);
-        this.setChats(START_CHATS);
-        this.setTalks(START_TALKS);
-        this.setRole(DEFAULT_ROLE);
     }
 
     protected User(Parcel in) {
@@ -62,6 +68,13 @@ public class User implements Parcelable {
         chats = in.readInt();
         talks = in.readInt();
         role = (Role) in.readValue(Role.class.getClassLoader());
+        if (in.readByte() == 0x01) {
+            schedule = new ArrayList<TimeFrame>();
+            in.readList(schedule, TimeFrame.class.getClassLoader());
+        } else {
+            schedule = null;
+        }
+        notes = in.readString();
     }
 
     public int getBirthDate() {
@@ -69,16 +82,6 @@ public class User implements Parcelable {
     }
 
     public void setBirthDate(int birthDate) {
-        Calendar c = Calendar.getInstance();
-        int currentYear = c.get(Calendar.YEAR);
-
-        if (birthDate > currentYear - 18){
-            //throw
-        }
-        else if (birthDate<1900){
-            //throw
-        }
-
         this.birthDate = birthDate;
     }
 
@@ -87,13 +90,6 @@ public class User implements Parcelable {
     }
 
     public void setGender(String gender) {
-        if (gender == " "){
-            //throw
-        }
-        if (gender !="m" || gender != "f"){
-            //throw
-        }
-
         this.gender = gender;
     }
 
@@ -102,9 +98,6 @@ public class User implements Parcelable {
     }
 
     public void setPassword(String password) {
-        if (password ==null){
-            //throw
-        }
         this.password = password;
     }
 
@@ -113,10 +106,6 @@ public class User implements Parcelable {
     }
 
     public void setUsername(String username) {
-        if (username == null){
-            //throw
-        }
-
         this.username = username;
     }
 
@@ -144,6 +133,26 @@ public class User implements Parcelable {
         this.role = role;
     }
 
+    public List<TimeFrame> getSchedule() {
+        return this.schedule;
+    }
+
+    public void setSchedule(List<TimeFrame> schedule) {
+        this.schedule = schedule;
+    }
+
+    public void addTimeFrame(TimeFrame timeFrame){
+        this.getSchedule().add(timeFrame);
+    }
+
+    public String getNotes() {
+        return this.notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -158,6 +167,13 @@ public class User implements Parcelable {
         dest.writeInt(chats);
         dest.writeInt(talks);
         dest.writeValue(role);
+        if (schedule == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(schedule);
+        }
+        dest.writeString(notes);
     }
 
     @SuppressWarnings("unused")

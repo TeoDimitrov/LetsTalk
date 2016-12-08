@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import com.example.letstalk.activity.sessions.SessionsActivity;
 import com.example.letstalk.activity.sign_in.interfaces.TabFragmentListener;
 import com.example.letstalk.configuration.Config;
+import com.example.letstalk.domain.timeFrames.TimeFrame;
 import com.example.letstalk.domain.user.User;
 import com.example.letstalk.firebase.FirebaseFacebookAuthenticator;
 import com.example.letstalk.repository.UserRepository;
@@ -41,6 +42,7 @@ import com.example.letstalk.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static android.view.View.OnClickListener;
@@ -183,20 +185,11 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         // Application code
                         try {
-                            final User user = new User();
                             String email = response.getJSONObject().getString("email");
                             String gender = response.getJSONObject().getString("gender");
                             String bday = response.getJSONObject().getString("birthday");
-                            user.setUsername(email);
-                            int birthyear = Integer.parseInt(bday.substring(bday.length()-4));
-                            user.setBirthDate(birthyear);
-                            user.setGender(gender);
-                            boolean isUserExist = userRepository.isUserExist(email);
-                            if(!isUserExist){
-                                userRepository.create(user);
-                            }
-
-                            sessionsActivityIntent.putExtra(Config.USER_EXTRA,user);
+                            int birthyear = Integer.parseInt(bday.substring(bday.length() - 4));
+                            userRepository.findByUserName(email,gender, birthyear, sessionsActivityIntent);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
