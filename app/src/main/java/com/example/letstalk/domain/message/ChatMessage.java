@@ -1,33 +1,35 @@
 package com.example.letstalk.domain.message;
 
-import com.example.letstalk.domain.message.interfaces.Message;
-import com.example.letstalk.domain.timeFrames.TimeFrame;
+import android.graphics.Bitmap;
+
+import com.example.letstalk.utils.BitmapUtil;
 import com.example.letstalk.utils.DateTimeUtil;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.Calendar;
+import java.util.Date;
 
-/**
- * Created by teodo on 16/09/2016.
- */
-public class ChatMessage implements Message {
+@IgnoreExtraProperties
+public class ChatMessage {
 
     private String author;
 
     private String message;
 
-    private String date;
+    private String encodedImage;
+
+    private String messageDate;
 
     @SuppressWarnings("unused")
-    private ChatMessage() {
-
+    public ChatMessage() {
     }
 
-    public ChatMessage(String message, String author) {
+    public ChatMessage(String message, String author, Date messageDate) {
         this.setAuthor(author);
         this.setMessage(message);
+        this.setUTCDate(messageDate);
     }
 
-    @Override
     public String getAuthor() {
         return this.author;
     }
@@ -36,7 +38,6 @@ public class ChatMessage implements Message {
         this.author = author;
     }
 
-    @Override
     public String getMessage() {
         return this.message;
     }
@@ -46,26 +47,43 @@ public class ChatMessage implements Message {
         this.message = message;
     }
 
-    @Override
-    public String getDate() {
-        return this.date;
+    public String getEncodedImage() {
+        return this.encodedImage;
     }
 
-    private void setDate(String date) {
-        this.date = date;
+    @Exclude
+    public Bitmap getEncodedBitmapImage() {
+        Bitmap decodedImage = BitmapUtil.decodeImage(this.encodedImage);
+        return decodedImage;
     }
 
-
-    @Override
-    public String getUTCDate() {
-        Calendar calendar = Calendar.getInstance();
-        this.setDate(DateTimeUtil.getUTCTime(calendar.getTime()));
-        return this.getDate();
+    public void setEncodedImage(String encodedImage) {
+        this.encodedImage = encodedImage;
     }
 
-    @Override
+    @Exclude
+    public void setEncodedImageFromFile (String path) {
+        String encodedImage = BitmapUtil.encodeImage(path);
+        this.encodedImage = encodedImage;
+    }
+
+    public String getMessageDate() {
+        return this.messageDate;
+    }
+
+    private void setMessageDate(String messageDate) {
+        this.messageDate = messageDate;
+    }
+
+    @Exclude
+    public String setUTCDate(Date messageDate) {
+        String utcDate = DateTimeUtil.getUTCDateTime(messageDate);
+        return this.messageDate = utcDate;
+    }
+
+    @Exclude
     public String getLocalTime() {
-        String time = DateTimeUtil.getLocalTime(this.getDate());
-        return time;
+        String localTime = DateTimeUtil.getLocalTime(this.messageDate);
+        return localTime;
     }
 }

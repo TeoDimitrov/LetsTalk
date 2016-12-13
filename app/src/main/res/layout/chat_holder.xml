@@ -35,7 +35,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/btn_geolocation" />
+            android:layout_toLeftOf="@+id/buttonSendMessage" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -48,6 +48,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
 
+
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
@@ -55,20 +56,17 @@
             android:background="@android:color/transparent"
             android:drawableBottom="@android:drawable/ic_menu_camera"
             android:id="@+id/btn_camera"
-            android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@+id/buttonSendMessage"
-            android:layout_toStartOf="@+id/buttonSendMessage"/>
+            android:layout_above="@+id/messageText" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:drawableBottom="@drawable/geolocation_icon"
-            android:id="@+id/btn_geolocation"
-            android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@+id/btn_camera"
-            android:layout_toStartOf="@+id/btn_camera" />
+            android:drawableBottom="@android:drawable/ic_btn_speak_now"
+            android:id="@+id/btn_microphone"
+            android:layout_toRightOf="@+id/btn_camera"
+            android:layout_above="@+id/messageText"/>
 
         <ImageView
             android:layout_width="wrap_content"

@@ -39,8 +39,6 @@ public class User implements Parcelable {
 
     private Role role;
 
-    private List<TimeFrame> schedule;
-
     private String notes;
 
     @SuppressWarnings("unused")
@@ -49,7 +47,6 @@ public class User implements Parcelable {
         this.setChats(START_CHATS);
         this.setTalks(START_TALKS);
         this.setRole(DEFAULT_ROLE);
-        this.setSchedule(new ArrayList<TimeFrame>());
     }
 
     public User(int birthDate, String gender, String username, String password) {
@@ -68,12 +65,6 @@ public class User implements Parcelable {
         chats = in.readInt();
         talks = in.readInt();
         role = (Role) in.readValue(Role.class.getClassLoader());
-        if (in.readByte() == 0x01) {
-            schedule = new ArrayList<TimeFrame>();
-            in.readList(schedule, TimeFrame.class.getClassLoader());
-        } else {
-            schedule = null;
-        }
         notes = in.readString();
     }
 
@@ -133,18 +124,6 @@ public class User implements Parcelable {
         this.role = role;
     }
 
-    public List<TimeFrame> getSchedule() {
-        return this.schedule;
-    }
-
-    public void setSchedule(List<TimeFrame> schedule) {
-        this.schedule = schedule;
-    }
-
-    public void addTimeFrame(TimeFrame timeFrame){
-        this.getSchedule().add(timeFrame);
-    }
-
     public String getNotes() {
         return this.notes;
     }
@@ -167,12 +146,6 @@ public class User implements Parcelable {
         dest.writeInt(chats);
         dest.writeInt(talks);
         dest.writeValue(role);
-        if (schedule == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeList(schedule);
-        }
         dest.writeString(notes);
     }
 

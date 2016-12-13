@@ -19,21 +19,25 @@ public class TimeFrame implements Parcelable {
 
     private TimeFrameType type;
 
-    private String bookedUserName;
-
     private TimeFrameStatus status;
+
+    private String username;
+
+    private String advisorName;
+
 
     @SuppressWarnings("unused")
     public TimeFrame() {
         this.setStatus(TimeFrameStatus.UNCONFIRMED);
     }
 
-    public TimeFrame(Date startDateTime, Date endDateTime, TimeFrameType timeFrameType, String bookedUserName) {
+    public TimeFrame(Date startDateTime, Date endDateTime, TimeFrameType timeFrameType, String userName, String advisorName) {
         this();
         this.setUTCStartDateTime(startDateTime);
         this.setUTCEndDateTime(endDateTime);
         this.setType(timeFrameType);
-        this.setBookedUserName(bookedUserName);
+        this.setUsername(userName);
+        this.setAdvisorName(advisorName);
     }
 
     public String getStartDateTime() {
@@ -42,13 +46,13 @@ public class TimeFrame implements Parcelable {
 
     @Exclude
     public String getLocalStartDateTime() {
-        String localTime = DateTimeUtil.getLocalTime(this.startDateTime);
+        String localTime = DateTimeUtil.getLocalDateTime(this.startDateTime);
         return localTime;
     }
 
     @Exclude
     public void setUTCStartDateTime(Date startDateTime) {
-        String utcDate = DateTimeUtil.getUTCTime(startDateTime);
+        String utcDate = DateTimeUtil.getUTCDateTime(startDateTime);
         this.startDateTime = utcDate;
     }
 
@@ -62,13 +66,13 @@ public class TimeFrame implements Parcelable {
 
     @Exclude
     public String getLocalEndDateTime() {
-        String localTime = DateTimeUtil.getLocalTime(this.endDateTime);
+        String localTime = DateTimeUtil.getLocalDateTime(this.endDateTime);
         return localTime;
     }
 
     @Exclude
     public void setUTCEndDateTime(Date endDateTime) {
-        String utcDate = DateTimeUtil.getUTCTime(endDateTime);
+        String utcDate = DateTimeUtil.getUTCDateTime(endDateTime);
         this.endDateTime = utcDate;
     }
 
@@ -84,12 +88,20 @@ public class TimeFrame implements Parcelable {
         this.type = type;
     }
 
-    public String getBookedUserName() {
-        return this.bookedUserName;
+    public String getUsername() {
+        return this.username;
     }
 
-    public void setBookedUserName(String bookedUserName) {
-        this.bookedUserName = bookedUserName;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getAdvisorName() {
+        return this.advisorName;
+    }
+
+    public void setAdvisorName(String advisorName) {
+        this.advisorName = advisorName;
     }
 
     public TimeFrameStatus getStatus() {
@@ -104,7 +116,8 @@ public class TimeFrame implements Parcelable {
         startDateTime = in.readString();
         endDateTime = in.readString();
         type = (TimeFrameType) in.readValue(TimeFrameType.class.getClassLoader());
-        bookedUserName = in.readString();
+        username = in.readString();
+        advisorName = in.readString();
         status = (TimeFrameStatus) in.readValue(TimeFrameStatus.class.getClassLoader());
     }
 
@@ -118,7 +131,8 @@ public class TimeFrame implements Parcelable {
         dest.writeString(startDateTime);
         dest.writeString(endDateTime);
         dest.writeValue(type);
-        dest.writeString(bookedUserName);
+        dest.writeValue(username);
+        dest.writeString(advisorName);
         dest.writeValue(status);
     }
 

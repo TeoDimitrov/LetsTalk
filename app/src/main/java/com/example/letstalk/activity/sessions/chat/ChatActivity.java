@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
+import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -18,130 +18,67 @@ import android.widget.RelativeLayout;
 import com.example.letstalk.configuration.Config;
 import com.example.letstalk.R;
 import com.example.letstalk.domain.message.ChatMessage;
-import com.example.letstalk.domain.message.interfaces.Message;
+import com.example.letstalk.domain.user.User;
+import com.example.letstalk.repository.MessageRepository;
+import com.example.letstalk.utils.SpeechUtil;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Date;
 
 import static android.view.View.*;
 
-/**
- * Created by teodo on 25/09/2016.
- */
-public class ChatActivity extends AppCompatActivity implements OnClickListener{
+public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    private RelativeLayout chatHolderRelativeLayout;
-    private ListView listView;
-    private EditText editMessageText;
-    private Button sendMessageButton;
-    private Button cameraButton;
-    private Button geolocationButton;
-    private ImageView picture;
-    private ChatArrayAdapter chatArrayAdapter;
-    private DatabaseReference databaseReference;
-    private String user;
+    private RelativeLayout mChatHolderRelativeLayout;
 
-    private RelativeLayout getChatHolderRelativeLayout() {
-        return this.chatHolderRelativeLayout;
-    }
+    private ListView mListView;
 
-    private void setChatHolderRelativeLayout(RelativeLayout chatHolderRelativeLayout) {
-        this.chatHolderRelativeLayout = chatHolderRelativeLayout;
-    }
+    private EditText mEditMessageText;
 
-    private ListView getListView() {
-        return this.listView;
-    }
+    private Button mSendMessageButton;
 
-    private void setListView(ListView listView) {
-        this.listView = listView;
-    }
+    private Button mCameraButton;
 
-    private EditText getEditMessageText() {
-        return this.editMessageText;
-    }
+    private Button mMicrophoneButton;
 
-    private void setEditMessageText(EditText editMessageText) {
-        this.editMessageText = editMessageText;
-    }
+    private ImageView mPicture;
 
-    private Button getSendMessageButton() {
-        return this.sendMessageButton;
-    }
+    private ChatArrayAdapter mChatArrayAdapter;
 
-    private void setSendMessageButton(Button sendMessageButton) {
-        this.sendMessageButton = sendMessageButton;
-    }
-    public Button getGeolocationButton() {
-        return geolocationButton;
-    }
+    private MessageRepository messageRepository;
 
-    public void setGeolocationButton(Button geolocationButton) {
-        this.geolocationButton = geolocationButton;
-    }
+    private String mChatPath;
 
-    public Button getCameraButton() {
-        return cameraButton;
-    }
-
-    public void setCameraButton(Button cameraButton) {
-        this.cameraButton = cameraButton;
-    }
-
-    public ImageView getPicture() {
-        return picture;
-    }
-
-    public void setPicture(ImageView picture) {
-        this.picture = picture;
-    }
-
-
-    private ChatArrayAdapter getChatArrayAdapter() {
-        return this.chatArrayAdapter;
-    }
-
-    private void setChatArrayAdapter(ChatArrayAdapter chatArrayAdapter) {
-        this.chatArrayAdapter = chatArrayAdapter;
-    }
-
-    private DatabaseReference getDatabaseReference() {
-        return this.databaseReference;
-    }
-
-    private void setDatabaseReference(DatabaseReference databaseReference) {
-        this.databaseReference = databaseReference;
-    }
+    private User mUser;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            Intent i = this.getIntent();
+            Bundle extras = i.getExtras();
+            this.mChatPath = extras.getString(Config.CHAT_EXTRA);
+            this.mUser = extras.getParcelable(Config.USER_EXTRA);
+        }
         setContentView(R.layout.chat_holder);
-
-        this.setDatabaseReference(FirebaseDatabase.getInstance().getReference().child(Config.CHILD_CHATS).child("advisor_user"));
-
-        this.setListView((ListView)findViewById(R.id.listViewMessageHolder));
-        this.setEditMessageText( (EditText)findViewById(R.id.messageText));
-        this.setSendMessageButton((Button)findViewById(R.id.buttonSendMessage));
-        this.setCameraButton((Button)findViewById(R.id.btn_camera));
-        this.setGeolocationButton((Button)findViewById(R.id.btn_geolocation));
-        this.setChatArrayAdapter(new ChatArrayAdapter(this, R.layout.chat_message));
-        this.setPicture((ImageView)findViewById(R.id.imageView_picture));
-
-        this.getSendMessageButton().setOnClickListener(this);
-        this.getCameraButton().setOnClickListener(this);
-        this.getGeolocationButton().setOnClickListener(this);
-
-        this.getListView().setAdapter(this.getChatArrayAdapter());
-
-        this.getDatabaseReference().addChildEventListener(new ChildEventListener() {
+        this.mListView = (ListView) findViewById(R.id.listViewMessageHolder);
+        this.mEditMessageText = (EditText) findViewById(R.id.messageText);
+        this.mSendMessageButton = (Button) findViewById(R.id.buttonSendMessage);
+        this.mCameraButton = (Button) findViewById(R.id.btn_camera);
+        this.mMicrophoneButton = (Button) findViewById(R.id.btn_microphone);
+        this.mChatArrayAdapter = new ChatArrayAdapter(this, R.layout.chat_message, this.mUser);
+        this.mPicture = (ImageView) findViewById(R.id.imageView_picture);
+        this.mSendMessageButton.setOnClickListener(this);
+        this.mCameraButton.setOnClickListener(this);
+        this.mMicrophoneButton.setOnClickListener(this);
+        this.mListView.setAdapter(this.mChatArrayAdapter);
+        this.messageRepository = new MessageRepository(Config.CHILD_CHATS, this.mChatPath);
+        this.messageRepository.getmDatabaseReference().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 appendMessage(dataSnapshot);
@@ -149,7 +86,6 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                appendMessage(dataSnapshot);
             }
 
             @Override
@@ -173,41 +109,37 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.buttonSendMessage:
-                sendMessage();
-                eraseText();
+                this.sendMessage();
+                this.eraseText();
                 break;
             case R.id.btn_camera:
-                dispatchTakePictureIntent();
-            break;
-            case R.id.btn_geolocation:
-
+                this.dispatchTakePictureIntent();
+                break;
+            case R.id.btn_microphone:
+                this.recordMessage();
                 break;
         }
     }
 
+    private void recordMessage() {
+        SpeechUtil.promptSpeechInput(this);
+    }
+
     private void eraseText() {
-        this.editMessageText.setText(null);
+        this.mEditMessageText.setText(null);
     }
 
     private void sendMessage() {
-        String messageKey = databaseReference.push().getKey();
-        databaseReference.child(messageKey);
-        Message message = new ChatMessage(editMessageText.getText().toString(), user);
-        Map<String, Object> messageDetails = new HashMap<>();
-        messageDetails.put("message", message.getMessage());
-        messageDetails.put("author", message.getAuthor());
-        messageDetails.put("date", message.getUTCDate());
-
-        DatabaseReference messageRootDatabase = databaseReference.child(messageKey);
-        messageRootDatabase.updateChildren(messageDetails);
+        ChatMessage chatMessage = new ChatMessage(mEditMessageText.getText().toString(), mUser.getUsername(), new Date());
+        this.messageRepository.createWithKey(chatMessage);
     }
 
     private void appendMessage(DataSnapshot dataSnapshot) {
-        Message message = dataSnapshot.getValue(ChatMessage.class);
-        this.chatArrayAdapter.add(message);
-        ((BaseAdapter)this.listView.getAdapter()).notifyDataSetChanged();
+        ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
+        this.mChatArrayAdapter.add(chatMessage);
+        ((BaseAdapter) this.mListView.getAdapter()).notifyDataSetChanged();
     }
 
     private void dispatchTakePictureIntent() {
@@ -219,11 +151,21 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            this.getPicture().setImageBitmap(imageBitmap);
+
+        switch (requestCode) {
+            case Config.REQ_CODE_SPEECH_INPUT:
+                if (resultCode == RESULT_OK && null != data) {
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    mEditMessageText.setText(result.get(0));
+                    break;
+                }
+
+                if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    this.mPicture.setImageBitmap(imageBitmap);
+                }
         }
     }
-
 }

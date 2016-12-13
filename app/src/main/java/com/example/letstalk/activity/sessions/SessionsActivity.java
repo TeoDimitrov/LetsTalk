@@ -3,7 +3,6 @@ package com.example.letstalk.activity.sessions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 
 import com.example.letstalk.R;
 import com.example.letstalk.configuration.Config;
-import com.example.letstalk.domain.timeFrames.TimeFrame;
 import com.example.letstalk.domain.user.User;
 import com.example.letstalk.repository.UserRepository;
 
@@ -62,14 +60,5 @@ public class SessionsActivity extends AppCompatActivity {
     public String getCurrentUserPath() {
         String userPath = this.userRepository.clearUserName(this.currentUser.getUsername());
         return userPath;
-    }
-
-    public UserRepository getUserRepository() {
-        return this.userRepository;
-    }
-
-    public void updateUser(TimeFrame timeFrame) {
-        this.currentUser.addTimeFrame(timeFrame);
-        this.userRepository.updateUser(this.currentUser);
     }
 }
