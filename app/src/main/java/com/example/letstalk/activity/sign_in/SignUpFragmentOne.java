@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +21,29 @@ import android.widget.RelativeLayout;
 
 import com.example.letstalk.activity.sessions.SessionsActivity;
 import com.example.letstalk.activity.sign_in.interfaces.TabFragmentListener;
+import com.example.letstalk.configuration.Config;
+import com.example.letstalk.domain.timeFrames.TimeFrame;
+import com.example.letstalk.domain.user.User;
 import com.example.letstalk.firebase.FirebaseFacebookAuthenticator;
+import com.example.letstalk.repository.UserRepository;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 import com.example.letstalk.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static android.view.View.OnClickListener;
 
@@ -67,6 +81,8 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
 
     private FirebaseFacebookAuthenticator firebaseFacebookAuthenticator;
 
+    private UserRepository userRepository;
+
     public SignUpFragmentOne() {
         super();
     }
@@ -98,6 +114,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         this.firebaseFacebookAuthenticator = new FirebaseFacebookAuthenticator();
         this.initializePdLogin();
         this.initializeFbButton();
+        this.userRepository = new UserRepository(Config.CHILD_USERS);
 
         return this.relativeLayout;
     }
@@ -136,12 +153,16 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
 
         this.mCallbackManager = CallbackManager.Factory.create();
         this.fbLoginButton = (LoginButton) this.relativeLayout.findViewById(R.id.facebook_button_sign_up);
-        this.fbLoginButton.setReadPermissions("email", "public_profile");
+        this.fbLoginButton.setReadPermissions(Arrays.asList(
+                "public_profile", "email", "user_birthday", "user_friends"));
         this.fbLoginButton.setOnClickListener(this);
         this.fbLoginButton.registerCallback(this.mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 showProgressDialog();
+                //Get FB Data
+                setFacebookData(loginResult);
+                //Authneticate
                 firebaseFacebookAuthenticator.signIn(loginResult.getAccessToken(), getActivity(), sessionsActivityIntent);
             }
 
@@ -153,6 +174,31 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
             public void onError(FacebookException error) {
             }
         });
+    }
+
+    private void setFacebookData(final LoginResult loginResult)
+    {
+        GraphRequest request = GraphRequest.newMeRequest(
+                loginResult.getAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        // Application code
+                        try {
+                            String email = response.getJSONObject().getString("email");
+                            String gender = response.getJSONObject().getString("gender");
+                            String bday = response.getJSONObject().getString("birthday");
+                            int birthyear = Integer.parseInt(bday.substring(bday.length() - 4));
+                            userRepository.findByUserName(email,gender, birthyear, sessionsActivityIntent);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,email,gender,birthday");
+        request.setParameters(parameters);
+        request.executeAsync();
     }
 
     private void clickNext() {
@@ -221,5 +267,11 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
 
     private void showProgressDialog() {
         this.pdCreateUser.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        this.hideProgressDialog();
+        super.onDestroy();
     }
 }

@@ -1,28 +1,47 @@
 package com.example.letstalk.activity.sessions.chat;
 
 
+<<<<<<< HEAD
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+=======
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.speech.RecognizerIntent;
+>>>>>>> b1cb56d3f5edc5ece2bfc1565b5def3e9ad9b85e
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.example.letstalk.Utilities.Camera;
 import com.example.letstalk.configuration.Config;
 import com.example.letstalk.R;
 import com.example.letstalk.domain.message.ChatMessage;
-import com.example.letstalk.domain.message.interfaces.Message;
+import com.example.letstalk.domain.user.User;
+import com.example.letstalk.repository.MessageRepository;
+import com.example.letstalk.utils.BitmapUtil;
+import com.example.letstalk.utils.SpeechUtil;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
+<<<<<<< HEAD
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,12 +61,51 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
     private DatabaseReference databaseReference;
     private String user;
     private Camera camera;
+=======
+import java.util.ArrayList;
+import java.util.Date;
+
+import static android.view.View.*;
+
+public class ChatActivity extends AppCompatActivity implements OnClickListener {
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private RelativeLayout mChatHolderRelativeLayout;
+
+    private ListView mListView;
+
+    private EditText mEditMessageText;
+
+    private Button mSendMessageButton;
+
+    private Button mCameraButton;
+
+    private Button mMicrophoneButton;
+
+    private PopupWindow mPopupWindow;
+
+    private ChatArrayAdapter mChatArrayAdapter;
+
+    private MessageRepository mMessageRepository;
+
+    private String mChatPath;
+
+    private User mUser;
+>>>>>>> b1cb56d3f5edc5ece2bfc1565b5def3e9ad9b85e
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_holder);
+        if (savedInstanceState == null) {
+            Intent i = this.getIntent();
+            Bundle extras = i.getExtras();
+            this.mChatPath = extras.getString(Config.CHAT_EXTRA);
+            this.mUser = extras.getParcelable(Config.USER_EXTRA);
+        }
 
+<<<<<<< HEAD
         this.databaseReference = (FirebaseDatabase.getInstance().getReference().child(Config.CHILD_CHATS).child("advisor_user"));
 
         this.listView = ((ListView)findViewById(R.id.listViewMessageHolder));
@@ -65,6 +123,57 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
         this.listView.setAdapter(this.chatArrayAdapter);
 
         this.databaseReference.addChildEventListener(new ChildEventListener() {
+=======
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        this.mChatHolderRelativeLayout = (RelativeLayout) findViewById(R.id.chat_holder_id);
+        this.mEditMessageText = (EditText) findViewById(R.id.messageText);
+        this.mSendMessageButton = (Button) findViewById(R.id.buttonSendMessage);
+        this.mCameraButton = (Button) findViewById(R.id.btn_camera);
+        this.mPopupWindow = new PopupWindow(200,200);
+        this.mMicrophoneButton = (Button) findViewById(R.id.btn_microphone);
+        this.mSendMessageButton.setOnClickListener(this);
+        this.mCameraButton.setOnClickListener(this);
+        this.mMicrophoneButton.setOnClickListener(this);
+        this.mChatArrayAdapter = new ChatArrayAdapter(this, R.layout.chat_message, this.mUser);
+        this.mListView = (ListView) findViewById(R.id.listViewMessageHolder);
+        this.mListView.setAdapter(this.mChatArrayAdapter);
+        this.mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final ChatMessage chatMessage = (ChatMessage) parent.getItemAtPosition(position);
+                showEnlargedBitmap(chatMessage);
+            }
+
+            private void showEnlargedBitmap(ChatMessage chatMessage) {
+                if (chatMessage.getEncodedImage() != null) {
+                    Bitmap messageBitmap = chatMessage.getEncodedBitmapImage();
+                    Bitmap enlargedBitmap = BitmapUtil.scaleBitmap(messageBitmap, 500, 500);
+                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.chat_image_popup, null, false);
+                    ImageView imageView = (ImageView) relativeLayout.findViewById(R.id.enlarged_image_id);
+                    imageView.setImageBitmap(enlargedBitmap);
+                    Button backButton = (Button) relativeLayout.findViewById(R.id.enlarged_image_back_button_id);
+                    backButton.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mPopupWindow.dismiss();
+                        }
+                    });
+
+                    mPopupWindow.setContentView(relativeLayout);
+                    mPopupWindow.showAtLocation(mChatHolderRelativeLayout, Gravity.CENTER, 0, 0);
+                    mPopupWindow.update(500,500,500,500);
+                }
+            }
+        });
+
+        this.mMessageRepository = new MessageRepository(Config.CHILD_CHATS, this.mChatPath);
+        this.mMessageRepository.getmDatabaseReference().addChildEventListener(new ChildEventListener() {
+>>>>>>> b1cb56d3f5edc5ece2bfc1565b5def3e9ad9b85e
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 appendMessage(dataSnapshot);
@@ -72,7 +181,6 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                appendMessage(dataSnapshot);
             }
 
             @Override
@@ -94,46 +202,105 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.buttonSendMessage:
-                sendMessage();
-                eraseText();
+                this.sendMessage();
+                this.eraseText();
                 break;
             case R.id.btn_camera:
+<<<<<<< HEAD
                 this.camera = new Camera();
                 File photo = this.camera.dispatchTakePictureIntent(this);
             break;
             case R.id.btn_geolocation:
 
+=======
+                this.dispatchTakePictureIntent();
+                break;
+            case R.id.btn_microphone:
+                this.recordMessage();
+>>>>>>> b1cb56d3f5edc5ece2bfc1565b5def3e9ad9b85e
                 break;
         }
     }
 
+    private void recordMessage() {
+        SpeechUtil.promptSpeechInput(this);
+    }
+
     private void eraseText() {
-        this.editMessageText.setText(null);
+        this.mEditMessageText.setText(null);
     }
 
     private void sendMessage() {
-        String messageKey = databaseReference.push().getKey();
-        databaseReference.child(messageKey);
-        Message message = new ChatMessage(editMessageText.getText().toString(), user);
-        Map<String, Object> messageDetails = new HashMap<>();
-        messageDetails.put("message", message.getMessage());
-        messageDetails.put("author", message.getAuthor());
-        messageDetails.put("date", message.getUTCDate());
+        ChatMessage chatMessage = new ChatMessage(mEditMessageText.getText().toString(), mUser.getUsername(), new Date());
+        this.mMessageRepository.create(chatMessage);
+    }
 
-        DatabaseReference messageRootDatabase = databaseReference.child(messageKey);
-        messageRootDatabase.updateChildren(messageDetails);
+    private void sendMessage(Bitmap bitmapImage) {
+        ChatMessage chatMessage = new ChatMessage(bitmapImage, mUser.getUsername(), new Date());
+        this.mMessageRepository.create(chatMessage);
     }
 
     private void appendMessage(DataSnapshot dataSnapshot) {
-        Message message = dataSnapshot.getValue(ChatMessage.class);
-        this.chatArrayAdapter.add(message);
-        ((BaseAdapter)this.listView.getAdapter()).notifyDataSetChanged();
+        ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
+        this.mChatArrayAdapter.add(chatMessage);
+        ((BaseAdapter) this.mListView.getAdapter()).notifyDataSetChanged();
     }
 
 
+<<<<<<< HEAD
 
 
+=======
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        switch (requestCode) {
+            case Config.REQ_CODE_SPEECH_INPUT:
+                if (resultCode == RESULT_OK && null != data) {
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    mEditMessageText.setText(result.get(0));
+
+                }
+                break;
+            case REQUEST_IMAGE_CAPTURE:
+                if (resultCode == RESULT_OK) {
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    sendMessage(imageBitmap);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(this.mUser.getRole().getName().equals("AdvisorRole")) {
+            menu.add(0, 1, 0, "Notes").setIcon(R.drawable.ic_note_add_white_24dp)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            case R.drawable.ic_note_add_white_24dp:
+                this.goToNotes();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+>>>>>>> b1cb56d3f5edc5ece2bfc1565b5def3e9ad9b85e
+
+    private void goToNotes() {
+        
+    }
 }

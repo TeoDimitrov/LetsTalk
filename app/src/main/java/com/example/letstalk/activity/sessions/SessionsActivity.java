@@ -2,77 +2,48 @@ package com.example.letstalk.activity.sessions;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.ViewGroup;
 
-import com.example.letstalk.activity.sessions.chat.ChatActivity;
 import com.example.letstalk.R;
+import com.example.letstalk.configuration.Config;
+import com.example.letstalk.domain.user.User;
+import com.example.letstalk.repository.UserRepository;
 
 public class SessionsActivity extends AppCompatActivity {
 
     private ViewGroup chatContainer;
 
+    private SessionsFragmentPagerAdapter mSessionsFragmentPagerAdapter;
+
     private TabLayout sessionTabLayout;
 
     private ViewPager sessionsViewPager;
 
-    private Intent nextActivityChat;
+    private UserRepository userRepository;
 
-    public Intent getNextActivityChat() {
-        return nextActivityChat;
-    }
-
-    public void setNextActivityChat(Intent nextActivityChat) {
-        this.nextActivityChat = nextActivityChat;
-    }
-    private ViewGroup getChatContainer() {
-        return this.chatContainer;
-    }
-
-    private void setChatContainer(ViewGroup chatContainer) {
-        this.chatContainer = chatContainer;
-    }
-
-    private void initChatContainer(){
-        this.setChatContainer((ViewGroup) findViewById(R.id.fragmentContainer));
-    }
-
-    public TabLayout getSessionTabLayout() {
-        return this.sessionTabLayout;
-    }
-
-    public void setSessionTabLayout(TabLayout sessionTabLayout) {
-        this.sessionTabLayout = sessionTabLayout;
-    }
-
-    public ViewPager getSessionsViewPager() {
-        return this.sessionsViewPager;
-    }
-
-    public void setSessionsViewPager(ViewPager sessionsViewPager) {
-        this.sessionsViewPager = sessionsViewPager;
-    }
+    private User currentUser;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sessions_activity);
-
-        this.setSessionsViewPager((ViewPager) findViewById(R.id.viewPagerSessions));
-        this.getSessionsViewPager().setAdapter(new SessionsFragmentPagerAdapter(getSupportFragmentManager()));
-
-        this.setSessionTabLayout((TabLayout) findViewById(R.id.tabLayoutSessions));
-        this.getSessionTabLayout().setupWithViewPager(this.getSessionsViewPager());
-
-        this.initChatContainer();
-        this.setIntent(new Intent(this, ChatActivity.class));
-        startActivity(this.getIntent());
+        this.mSessionsFragmentPagerAdapter = new SessionsFragmentPagerAdapter(getSupportFragmentManager());
+        this.sessionsViewPager = ((ViewPager) findViewById(R.id.viewPagerSessions));
+        this.sessionsViewPager.setAdapter(this.mSessionsFragmentPagerAdapter);
+        this.sessionTabLayout = ((TabLayout) findViewById(R.id.tabLayoutSessions));
+        this.sessionTabLayout.setupWithViewPager(this.sessionsViewPager);
+        this.chatContainer = ((ViewGroup) findViewById(R.id.fragmentContainer));
+        this.userRepository = new UserRepository(Config.CHILD_USERS);
+        if (savedInstanceState == null) {
+            Intent i = getIntent();
+            Bundle extras = i.getExtras();
+            this.currentUser = extras.getParcelable(Config.USER_EXTRA);
+        }
     }
 
     @Override
@@ -82,8 +53,12 @@ public class SessionsActivity extends AppCompatActivity {
         return true;
     }
 
-    private void addFragment(Fragment fragment){
-        getSupportFragmentManager().beginTransaction().add(this.getChatContainer().getId(),fragment).commit();
+    public User getCurrentUser() {
+        return this.currentUser;
     }
 
+    public String getCurrentUserPath() {
+        String userPath = this.userRepository.clearUserName(this.currentUser.getUsername());
+        return userPath;
+    }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +24,20 @@ import com.example.letstalk.repository.UserRepository;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 public class SignInFragment extends Fragment implements View.OnClickListener {
 
@@ -62,7 +72,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_sign_in,container, false);
+        this.relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_sign_in, container, false);
         this.etUsername = (EditText) this.relativeLayout.findViewById(R.id.username_sing_in);
         this.etPassword = (EditText) this.relativeLayout.findViewById(R.id.password_sign_in);
         this.btnNext = (Button) this.relativeLayout.findViewById(R.id.button_next_sign_in);
@@ -102,8 +112,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         return signInFragment;
     }
 
-    private void signIn(String email, String password){
-        this.firebaseEmailAuthenticator.signIn(email,password,this.getActivity(),this.sessionsActivityIntent);
+    private void signIn(String email, String password) {
+        this.firebaseEmailAuthenticator.signIn(email, password, this.getActivity(), this.sessionsActivityIntent);
     }
 
     private boolean validateForm() {
@@ -128,16 +138,20 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         return valid;
     }
 
-    private void initializeFbButton(){
+    private void initializeFbButton() {
 
         this.mCallbackManager = CallbackManager.Factory.create();
         this.fbLoginButton = (LoginButton) this.relativeLayout.findViewById(R.id.facebook_button_sign_in);
-        this.fbLoginButton.setReadPermissions("email", "public_profile");
+        this.fbLoginButton.setReadPermissions(Arrays.asList(
+                "public_profile", "email", "user_birthday", "user_friends"));
         this.fbLoginButton.setOnClickListener(this);
         this.fbLoginButton.registerCallback(this.mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 showProgressDialog();
+                //Get FB Data
+                setFacebookData(loginResult);
+                //Authneticate
                 firebaseFacebookAuthenticator.signIn(loginResult.getAccessToken(), getActivity(), sessionsActivityIntent);
             }
 
@@ -151,8 +165,33 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         });
     }
 
+    private void setFacebookData(final LoginResult loginResult)
+    {
+        GraphRequest request = GraphRequest.newMeRequest(
+                loginResult.getAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        // Application code
+                        try {
+                            String email = response.getJSONObject().getString("email");
+                            String gender = response.getJSONObject().getString("gender");
+                            String bday = response.getJSONObject().getString("birthday");
+                            int birthyear = Integer.parseInt(bday.substring(bday.length() - 4));
+                            userRepository.findByUserName(email,gender, birthyear, sessionsActivityIntent);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,email,gender,birthday");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
     private void fbLogin(){
-        fbLoginButton.performClick();
+        this.fbLoginButton.performClick();
         this.hideProgressDialog();
     }
 
@@ -164,8 +203,9 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         this.showProgressDialog();
         this.usernameValue = this.etUsername.getText().toString();
         this.passwordValue = this.etPassword.getText().toString();
-        this.signIn(this.usernameValue, passwordValue);
         User user = this.userRepository.findByUserName(this.usernameValue);
+        this.sessionsActivityIntent.putExtra(Config.USER_EXTRA, user);
+        this.signIn(this.usernameValue, passwordValue);
         this.hideProgressDialog();
     }
 
@@ -195,5 +235,11 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                 this.fbLogin();
                 break;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        this.hideProgressDialog();
+        super.onDestroy();
     }
 }

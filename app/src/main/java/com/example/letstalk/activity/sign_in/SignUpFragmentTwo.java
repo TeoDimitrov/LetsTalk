@@ -102,6 +102,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener{
         this.confirmPasswordValue = this.etConfirmPassword.getText().toString();
         this.currentUser = new User(this.birthYear, this.gender, this.usernameValue, this.passwordValue);
         this.showProgressDialog();
+        this.sessionActivityIntent.putExtra(Config.USER_EXTRA, this.currentUser);
         this.createAccount(this.currentUser );
         this.userRepository.create(this.currentUser );
         this.hideProgressDialog();
@@ -171,5 +172,11 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener{
 
     private void showProgressDialog() {
         this.pdCreateUser.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        this.hideProgressDialog();
+        super.onDestroy();
     }
 }

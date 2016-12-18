@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/message_linear_layout_id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants" >
 
     <RelativeLayout
+        android:id="@+id/message_relative_layout_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:background="@drawable/chat_message_shape">
+        android:background="@drawable/chat_message_shape_other_user">
+
+        <ImageView
+            android:id="@+id/picture_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            />
         <TextView
-            android:id="@+id/chatMessage"
+            android:id="@+id/chat_message_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:inputType="textMultiLine"
-            android:textSize="16dp"
-            android:textStyle="normal" />
+            android:textSize="18dp"
+            android:textStyle="normal"
+            android:layout_below="@+id/picture_id"/>
         <TextView
             android:id="@+id/chatTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/chatMessage"
-            android:layout_alignBottom="@+id/chatMessage"
+            android:layout_toRightOf="@id/chat_message_id"
+            android:layout_alignBottom="@+id/chat_message_id"
             android:padding="5dp"
             android:textSize="12dp"
             android:textStyle="normal"
-            android:textColor="@color/popupItems"
-            android:text="10:29 PM"/>
+            android:textColor="@color/popupItems" />
     </RelativeLayout>
 
     <LinearLayout

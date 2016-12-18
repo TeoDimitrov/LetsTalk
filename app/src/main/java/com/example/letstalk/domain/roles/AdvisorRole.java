@@ -1,10 +1,12 @@
 package com.example.letstalk.domain.roles;
 
-/**
- * Created by teodo on 11/10/2016.
- */
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class AdvisorRole extends Role {
 
+    @Exclude
     public static final String DEFAULT_ROLE_NAME = "AdvisorRole";
 
     public AdvisorRole() {
