@@ -30,6 +30,12 @@ public class ChatMessage {
         this.setUTCDate(messageDate);
     }
 
+    public ChatMessage(Bitmap encodedImage,String author, Date messageDate) {
+        this.setAuthor(author);
+        this.setEncodedImageFromFile(encodedImage);
+        this.setUTCDate(messageDate);
+    }
+
     public String getAuthor() {
         return this.author;
     }
@@ -62,8 +68,8 @@ public class ChatMessage {
     }
 
     @Exclude
-    public void setEncodedImageFromFile (String path) {
-        String encodedImage = BitmapUtil.encodeImage(path);
+    public void setEncodedImageFromFile (Bitmap bitmapImage) {
+        String encodedImage = BitmapUtil.encodeImage(bitmapImage);
         this.encodedImage = encodedImage;
     }
 

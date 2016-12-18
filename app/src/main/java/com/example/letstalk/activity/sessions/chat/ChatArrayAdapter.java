@@ -1,11 +1,13 @@
 package com.example.letstalk.activity.sessions.chat;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -66,6 +68,7 @@ public class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
         ChatMessage chatMessage = this.getItem(position);
         LinearLayout messageLinearLayout = (LinearLayout) convertView.findViewById(R.id.message_linear_layout_id);
         RelativeLayout messageRelativeLayout = (RelativeLayout) convertView.findViewById(R.id.message_relative_layout_id);
+        ImageView picture = (ImageView) convertView.findViewById(R.id.picture_id);
         if (this.user.getUsername().equals(chatMessage.getAuthor())) {
             messageLinearLayout.setGravity(Gravity.RIGHT);
             messageRelativeLayout.setBackgroundResource(R.drawable.chat_message_shape_current_user);
@@ -74,10 +77,17 @@ public class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
             messageRelativeLayout.setBackgroundResource(R.drawable.chat_message_shape_other_user);
         }
 
-        TextView textViewChatMessage = (TextView) convertView.findViewById(R.id.chatMessage);
-        textViewChatMessage.setText(chatMessage.getMessage());
         TextView textViewTime = (TextView) convertView.findViewById(R.id.chatTime);
         textViewTime.setText(chatMessage.getLocalTime());
+        TextView textViewChatMessage = (TextView) convertView.findViewById(R.id.chat_message_id);
+        if (chatMessage.getEncodedImage() != null) {
+            Bitmap bitmapImage = chatMessage.getEncodedBitmapImage();
+            picture.setImageBitmap(bitmapImage);
+            textViewChatMessage.setText(null);
+        } else {
+            textViewChatMessage.setText(chatMessage.getMessage());
+            picture.setImageBitmap(null);
+        }
 
         return convertView;
     }

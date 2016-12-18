@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chat_popup_image_id"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:id="@+id/enlarged_image_back_button_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/image_back_button"
+        android:drawableLeft="@drawable/ic_keyboard_return_black_24dp"
+        android:text="@string/return_to_chat"
+        android:gravity="left|center_vertical" />
+    <ImageView
+        android:id="@+id/enlarged_image_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

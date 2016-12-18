@@ -1,18 +1,27 @@
 package com.example.letstalk.activity.sessions.chat;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.example.letstalk.configuration.Config;
@@ -20,6 +29,7 @@ import com.example.letstalk.R;
 import com.example.letstalk.domain.message.ChatMessage;
 import com.example.letstalk.domain.user.User;
 import com.example.letstalk.repository.MessageRepository;
+import com.example.letstalk.utils.BitmapUtil;
 import com.example.letstalk.utils.SpeechUtil;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -46,11 +56,11 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
     private Button mMicrophoneButton;
 
-    private ImageView mPicture;
+    private PopupWindow mPopupWindow;
 
     private ChatArrayAdapter mChatArrayAdapter;
 
-    private MessageRepository messageRepository;
+    private MessageRepository mMessageRepository;
 
     private String mChatPath;
 
@@ -59,26 +69,63 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.chat_holder);
         if (savedInstanceState == null) {
             Intent i = this.getIntent();
             Bundle extras = i.getExtras();
             this.mChatPath = extras.getString(Config.CHAT_EXTRA);
             this.mUser = extras.getParcelable(Config.USER_EXTRA);
         }
-        setContentView(R.layout.chat_holder);
-        this.mListView = (ListView) findViewById(R.id.listViewMessageHolder);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        this.mChatHolderRelativeLayout = (RelativeLayout) findViewById(R.id.chat_holder_id);
         this.mEditMessageText = (EditText) findViewById(R.id.messageText);
         this.mSendMessageButton = (Button) findViewById(R.id.buttonSendMessage);
         this.mCameraButton = (Button) findViewById(R.id.btn_camera);
+        this.mPopupWindow = new PopupWindow(200,200);
         this.mMicrophoneButton = (Button) findViewById(R.id.btn_microphone);
-        this.mChatArrayAdapter = new ChatArrayAdapter(this, R.layout.chat_message, this.mUser);
-        this.mPicture = (ImageView) findViewById(R.id.imageView_picture);
         this.mSendMessageButton.setOnClickListener(this);
         this.mCameraButton.setOnClickListener(this);
         this.mMicrophoneButton.setOnClickListener(this);
+        this.mChatArrayAdapter = new ChatArrayAdapter(this, R.layout.chat_message, this.mUser);
+        this.mListView = (ListView) findViewById(R.id.listViewMessageHolder);
         this.mListView.setAdapter(this.mChatArrayAdapter);
-        this.messageRepository = new MessageRepository(Config.CHILD_CHATS, this.mChatPath);
-        this.messageRepository.getmDatabaseReference().addChildEventListener(new ChildEventListener() {
+        this.mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final ChatMessage chatMessage = (ChatMessage) parent.getItemAtPosition(position);
+                showEnlargedBitmap(chatMessage);
+            }
+
+            private void showEnlargedBitmap(ChatMessage chatMessage) {
+                if (chatMessage.getEncodedImage() != null) {
+                    Bitmap messageBitmap = chatMessage.getEncodedBitmapImage();
+                    Bitmap enlargedBitmap = BitmapUtil.scaleBitmap(messageBitmap, 500, 500);
+                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.chat_image_popup, null, false);
+                    ImageView imageView = (ImageView) relativeLayout.findViewById(R.id.enlarged_image_id);
+                    imageView.setImageBitmap(enlargedBitmap);
+                    Button backButton = (Button) relativeLayout.findViewById(R.id.enlarged_image_back_button_id);
+                    backButton.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mPopupWindow.dismiss();
+                        }
+                    });
+
+                    mPopupWindow.setContentView(relativeLayout);
+                    mPopupWindow.showAtLocation(mChatHolderRelativeLayout, Gravity.CENTER, 0, 0);
+                    mPopupWindow.update(500,500,500,500);
+                }
+            }
+        });
+
+        this.mMessageRepository = new MessageRepository(Config.CHILD_CHATS, this.mChatPath);
+        this.mMessageRepository.getmDatabaseReference().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 appendMessage(dataSnapshot);
@@ -106,7 +153,6 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
         });
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -133,7 +179,12 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
     private void sendMessage() {
         ChatMessage chatMessage = new ChatMessage(mEditMessageText.getText().toString(), mUser.getUsername(), new Date());
-        this.messageRepository.createWithKey(chatMessage);
+        this.mMessageRepository.create(chatMessage);
+    }
+
+    private void sendMessage(Bitmap bitmapImage) {
+        ChatMessage chatMessage = new ChatMessage(bitmapImage, mUser.getUsername(), new Date());
+        this.mMessageRepository.create(chatMessage);
     }
 
     private void appendMessage(DataSnapshot dataSnapshot) {
@@ -158,14 +209,44 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
                     ArrayList<String> result = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     mEditMessageText.setText(result.get(0));
-                    break;
-                }
 
-                if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                }
+                break;
+            case REQUEST_IMAGE_CAPTURE:
+                if (resultCode == RESULT_OK) {
                     Bundle extras = data.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    this.mPicture.setImageBitmap(imageBitmap);
+                    sendMessage(imageBitmap);
                 }
+                break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(this.mUser.getRole().getName().equals("AdvisorRole")) {
+            menu.add(0, 1, 0, "Notes").setIcon(R.drawable.ic_note_add_white_24dp)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            case R.drawable.ic_note_add_white_24dp:
+                this.goToNotes();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void goToNotes() {
+        
     }
 }

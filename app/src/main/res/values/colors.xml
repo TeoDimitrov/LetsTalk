@@ -9,4 +9,5 @@
     <color name="text">#808080</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="image_back_button">#20545454</color>
 </resources>

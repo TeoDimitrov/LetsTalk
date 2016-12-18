@@ -72,7 +72,9 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                     getActivity().startActivity(chatIntent);
                 }
 
-                if (sessionsActivity.getCurrentUser().getRole().getName().equals("AdvisorRole") && timeFrame.getStatus() == TimeFrameStatus.UNCONFIRMED) {
+                if (sessionsActivity.getCurrentUser().getRole().getName().equals("AdvisorRole")
+                        && timeFrame.getStatus() == TimeFrameStatus.UNCONFIRMED
+                        && sessionsActivity.getCurrentUser().getUsername().equals(timeFrame.getAdvisorName())) {
                     new AlertDialog.Builder(getContext())
                             .setTitle("Confirm chat")
                             .setMessage("Are you sure you want to confirm this chat?")
@@ -155,8 +157,10 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
         String timeFrameAdvisorName = timeFrame.getAdvisorName();
         if (role.equals("CustomerRole") && userName.equals(timeFrameUserName)) {
             this.sessionChatAdapter.add(timeFrame);
-        } else if (role.equals("AdvisorRole") && userName.equals(timeFrameAdvisorName)) {
-            this.sessionChatAdapter.add(timeFrame);
+        } else if (role.equals("AdvisorRole") ) {
+            if(userName.equals(timeFrameAdvisorName) || userName.equals(timeFrameUserName)) {
+                this.sessionChatAdapter.add(timeFrame);
+            }
         }
 
         ((BaseAdapter) this.listView.getAdapter()).notifyDataSetChanged();
