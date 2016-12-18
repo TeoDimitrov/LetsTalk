@@ -3,7 +3,6 @@ package com.example.letstalk.activity.sign_in;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.example.letstalk.configuration.Config;
 import com.example.letstalk.R;
@@ -22,15 +20,6 @@ import com.example.letstalk.activity.sessions.SessionsActivity;
 import com.example.letstalk.domain.user.User;
 import com.example.letstalk.firebase.FirebaseEmailAuthenticator;
 import com.example.letstalk.repository.UserRepository;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SignUpFragmentTwo extends Fragment implements OnClickListener{
 
@@ -104,7 +93,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener{
         this.showProgressDialog();
         this.sessionActivityIntent.putExtra(Config.USER_EXTRA, this.currentUser);
         this.createAccount(this.currentUser );
-        this.userRepository.create(this.currentUser );
+        this.userRepository.save(this.currentUser );
         this.hideProgressDialog();
     }
 

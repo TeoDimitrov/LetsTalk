@@ -41,7 +41,7 @@ public class BitmapUtil {
         //get the original width and height
         int width = bitmapToScale.getWidth();
         int height = bitmapToScale.getHeight();
-        // create a matrix for the manipulation
+        // save a matrix for the manipulation
         Matrix matrix = new Matrix();
 
         // resize the bit map

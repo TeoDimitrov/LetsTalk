@@ -2,7 +2,6 @@ package com.example.letstalk.repository;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 
 import com.example.letstalk.configuration.Config;
 import com.example.letstalk.domain.user.User;
@@ -22,7 +21,7 @@ public class UserRepository {
         this.mDatabaseReference = com.google.firebase.database.FirebaseDatabase.getInstance().getReference().child(url);
     }
 
-    public void create(User user) {
+    public void save(User user) {
         String username = user.getUsername();
         String userPath = this.clearUserName(username);
         this.mDatabaseReference.child(userPath).setValue(user);
@@ -40,7 +39,7 @@ public class UserRepository {
                     user.setUsername(username);
                     user.setGender(gender);
                     user.setBirthDate(birthyear);
-                    create(user);
+                    save(user);
                 }
 
                 intent.putExtra(Config.USER_EXTRA, user);

@@ -4,14 +4,10 @@ package com.example.letstalk.activity.sessions.chat;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.icu.util.Calendar;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Layout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +22,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.example.letstalk.activity.sessions.note.NotesActivity;
 import com.example.letstalk.configuration.Config;
 import com.example.letstalk.R;
 import com.example.letstalk.domain.message.ChatMessage;
@@ -38,13 +35,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import static android.view.View.*;
 
 public class ChatActivity extends AppCompatActivity implements OnClickListener {
-
-    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private RelativeLayout mChatHolderRelativeLayout;
 
@@ -70,6 +66,8 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
     private User mClient;
 
+    private Intent mNotesIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,17 +80,18 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             this.mClient = extras.getParcelable(Config.CLIENT_USER_EXTRA);
         }
 
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
         this.setActionBarTitle(this.mClient);
         this.mChatHolderRelativeLayout = (RelativeLayout) findViewById(R.id.chat_holder_id);
+        this.mNotesIntent = new Intent(this, NotesActivity.class);
         this.mEditMessageText = (EditText) findViewById(R.id.messageText);
         this.mSendMessageButton = (Button) findViewById(R.id.buttonSendMessage);
         this.mCameraButton = (Button) findViewById(R.id.btn_camera);
-        this.mPopupWindow = new PopupWindow(200,200);
+        this.mPopupWindow = new PopupWindow(200, 200);
         this.mMicrophoneButton = (Button) findViewById(R.id.btn_microphone);
         this.mSendMessageButton.setOnClickListener(this);
         this.mCameraButton.setOnClickListener(this);
@@ -125,7 +124,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
                     mPopupWindow.setContentView(relativeLayout);
                     mPopupWindow.showAtLocation(mChatHolderRelativeLayout, Gravity.CENTER, 0, 0);
-                    mPopupWindow.update(500,500,500,500);
+                    mPopupWindow.update(500, 500, 500, 500);
                 }
             }
         });
@@ -202,7 +201,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            startActivityForResult(takePictureIntent, Config.REQUEST_IMAGE_CAPTURE);
         }
     }
 
@@ -218,11 +217,17 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
                 }
                 break;
-            case REQUEST_IMAGE_CAPTURE:
+            case Config.REQUEST_IMAGE_CAPTURE:
                 if (resultCode == RESULT_OK) {
                     Bundle extras = data.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
                     sendMessage(imageBitmap);
+                }
+                break;
+            case Config.REQUEST_RETURN_CLIENT:
+                if (resultCode == RESULT_OK) {
+                    Bundle extras = data.getExtras();
+                    this.mClient = extras.getParcelable(Config.CLIENT_USER_EXTRA);
                 }
                 break;
         }
@@ -230,7 +235,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(this.mUser.getRole().getName().equals("AdvisorRole")) {
+        if (this.mUser.getRole().getName().equals("AdvisorRole")) {
             menu.add(0, 1, 0, "Notes").setIcon(R.drawable.ic_note_add_white_24dp)
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
@@ -240,29 +245,33 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;
-            case R.drawable.ic_note_add_white_24dp:
+        }
+
+        if(item.getTitle() != null) {
+            if (item.getTitle().equals("Notes")) {
                 this.goToNotes();
-                break;
+            }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     private void goToNotes() {
-
+        this.mNotesIntent.putExtra(Config.CLIENT_USER_EXTRA, this.mClient);
+        this.startActivityForResult(this.mNotesIntent, Config.REQUEST_RETURN_CLIENT);
     }
 
-    private void setActionBarTitle(User client){
-//        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-//        int age = currentYear - client.getBirthDate();
-//        StringBuilder title = new StringBuilder();
-//        title.append(client.getGender());
-//        title.append(",");
-//        title.append(age);
-//        getSupportActionBar().setTitle(title);
+    private void setActionBarTitle(User client) {
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int age = currentYear - client.getBirthDate();
+        StringBuilder title = new StringBuilder();
+        title.append(client.getGender());
+        title.append(", ");
+        title.append(age);
+        getSupportActionBar().setTitle(title);
     }
 }

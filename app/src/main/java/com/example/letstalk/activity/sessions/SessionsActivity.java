@@ -40,8 +40,8 @@ public class SessionsActivity extends AppCompatActivity {
         this.chatContainer = ((ViewGroup) findViewById(R.id.fragmentContainer));
         this.userRepository = new UserRepository(Config.CHILD_USERS);
         if (savedInstanceState == null) {
-            Intent i = getIntent();
-            Bundle extras = i.getExtras();
+            Intent intent = getIntent();
+            Bundle extras = intent.getExtras();
             this.currentUser = extras.getParcelable(Config.USER_EXTRA);
         }
     }

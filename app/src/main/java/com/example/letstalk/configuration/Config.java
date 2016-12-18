@@ -19,4 +19,8 @@ public final class Config {
     public static final String CHAT_EXTRA = "chat";
 
     public static final int REQ_CODE_SPEECH_INPUT = 100;
+
+    public static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    public static final int REQUEST_RETURN_CLIENT = 2;
 }
