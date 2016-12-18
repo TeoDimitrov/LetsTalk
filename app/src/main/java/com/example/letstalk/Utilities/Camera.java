@@ -19,6 +19,11 @@ public class Camera {
     static final int REQUEST_TAKE_PHOTO = 1;
     private String mCurrentPhotoPath;
 
+    public Camera() {
+        this.mTakePictureIntent = new Intent();
+        this.mPhotoFile = new File(this.mCurrentPhotoPath);
+    }
+
     public File dispatchTakePictureIntent(Activity chatActivity) {
         this.mTakePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (this.mTakePictureIntent.resolveActivity(chatActivity.getPackageManager()) != null) {

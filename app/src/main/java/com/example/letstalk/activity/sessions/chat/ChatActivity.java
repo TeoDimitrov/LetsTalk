@@ -100,6 +100,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener{
                 eraseText();
                 break;
             case R.id.btn_camera:
+                this.camera = new Camera();
                 File photo = this.camera.dispatchTakePictureIntent(this);
             break;
             case R.id.btn_geolocation:
