@@ -6,11 +6,15 @@ public final class Config {
 
     public final static String CHILD_USERS = "users";
 
+    public final static String CHILD_USERS_USERNAME = "username";
+
     public final static String CHILD_TIMEFRAMES = "timeframes";
 
     public final static String USER_SUFIX = "@letstalk";
 
     public final static String USER_EXTRA = "user";
+
+    public static final String CLIENT_USER_EXTRA = "client";
 
     public static final String CHAT_EXTRA = "chat";
 

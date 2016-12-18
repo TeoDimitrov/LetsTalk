@@ -4,7 +4,9 @@ package com.example.letstalk.activity.sessions.chat;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
@@ -66,6 +68,8 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
     private User mUser;
 
+    private User mClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +79,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             Bundle extras = i.getExtras();
             this.mChatPath = extras.getString(Config.CHAT_EXTRA);
             this.mUser = extras.getParcelable(Config.USER_EXTRA);
+            this.mClient = extras.getParcelable(Config.CLIENT_USER_EXTRA);
         }
 
         if (getSupportActionBar() != null){
@@ -82,6 +87,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+        this.setActionBarTitle(this.mClient);
         this.mChatHolderRelativeLayout = (RelativeLayout) findViewById(R.id.chat_holder_id);
         this.mEditMessageText = (EditText) findViewById(R.id.messageText);
         this.mSendMessageButton = (Button) findViewById(R.id.buttonSendMessage);
@@ -247,6 +253,16 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void goToNotes() {
-        
+
+    }
+
+    private void setActionBarTitle(User client){
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+//        int age = currentYear - client.getBirthDate();
+//        StringBuilder title = new StringBuilder();
+//        title.append(client.getGender());
+//        title.append(",");
+//        title.append(age);
+        getSupportActionBar().setTitle("Opit");
     }
 }
