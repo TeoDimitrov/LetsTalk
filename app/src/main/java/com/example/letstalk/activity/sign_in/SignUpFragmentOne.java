@@ -26,6 +26,7 @@ import com.example.letstalk.domain.timeFrames.TimeFrame;
 import com.example.letstalk.domain.user.User;
 import com.example.letstalk.firebase.FirebaseFacebookAuthenticator;
 import com.example.letstalk.repository.UserRepository;
+import com.example.letstalk.utils.DateTimeUtil;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -44,6 +45,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 import static android.view.View.OnClickListener;
 
@@ -134,7 +137,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.button_next1:
                 clickNext();
                 break;
@@ -144,12 +147,12 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         }
     }
 
-    private void fbLogin(){
+    private void fbLogin() {
         fbLoginButton.performClick();
         this.hideProgressDialog();
     }
 
-    private void initializeFbButton(){
+    private void initializeFbButton() {
 
         this.mCallbackManager = CallbackManager.Factory.create();
         this.fbLoginButton = (LoginButton) this.relativeLayout.findViewById(R.id.facebook_button_sign_up);
@@ -176,8 +179,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         });
     }
 
-    private void setFacebookData(final LoginResult loginResult)
-    {
+    private void setFacebookData(final LoginResult loginResult) {
         GraphRequest request = GraphRequest.newMeRequest(
                 loginResult.getAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -189,7 +191,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
                             String gender = response.getJSONObject().getString("gender");
                             String bday = response.getJSONObject().getString("birthday");
                             int birthyear = Integer.parseInt(bday.substring(bday.length() - 4));
-                            userRepository.findByUserName(email,gender, birthyear, sessionsActivityIntent);
+                            userRepository.findByUserName(email, gender, birthyear, sessionsActivityIntent);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -223,16 +225,31 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         args.putString("gender", this.gender);
         signUpFragmentTwo.setArguments(args);
 
-        if(this.tabListener != null){
-           this.tabListener.onSwitchToNextFragment();
+        if (this.tabListener != null) {
+            this.tabListener.onSwitchToNextFragment();
         }
     }
 
     private boolean validateForm() {
         boolean valid = true;
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int birthYear = 0;
+        try {
+            birthYear = Integer.parseInt(etBirthYear.getText().toString());
+        } catch (Exception ex) {
+            this.etBirthYear.setError("Birth year should be number");
+        }
+
+        int age = currentYear - birthYear;
 
         if (TextUtils.isEmpty(this.etBirthYear.getText().toString())) {
             this.etBirthYear.setError("Birth year is required.");
+            valid = false;
+        } else if (age < 15) {
+            this.etBirthYear.setError("You should be older than 15");
+            valid = false;
+        } else if (age > 100) {
+            this.etBirthYear.setError("You should be younger than 100");
             valid = false;
         } else {
             this.etBirthYear.setError(null);
@@ -241,7 +258,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         return valid;
     }
 
-    public static SignUpFragmentOne newInstance(TabFragmentListener tabFragmentListener){
+    public static SignUpFragmentOne newInstance(TabFragmentListener tabFragmentListener) {
         SignUpFragmentOne signUpFragmentOne = new SignUpFragmentOne(tabFragmentListener);
         return signUpFragmentOne;
     }
