@@ -78,6 +78,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             this.mChatPath = extras.getString(Config.CHAT_EXTRA);
             this.mUser = extras.getParcelable(Config.USER_EXTRA);
             this.mClient = extras.getParcelable(Config.CLIENT_USER_EXTRA);
+
         }
 
         if (getSupportActionBar() != null) {
