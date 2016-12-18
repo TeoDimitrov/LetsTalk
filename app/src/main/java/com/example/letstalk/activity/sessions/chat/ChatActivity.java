@@ -1,6 +1,10 @@
 package com.example.letstalk.activity.sessions.chat;
 
 
+<<<<<<< HEAD
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+=======
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
+>>>>>>> b1cb56d3f5edc5ece2bfc1565b5def3e9ad9b85e
 import android.support.v7.app.AppCompatActivity;
 import android.text.Layout;
 import android.util.Log;
@@ -26,6 +31,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.example.letstalk.Utilities.Camera;
 import com.example.letstalk.configuration.Config;
 import com.example.letstalk.R;
 import com.example.letstalk.domain.message.ChatMessage;
@@ -37,6 +43,27 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
+<<<<<<< HEAD
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.view.View.*;
+
+public class ChatActivity extends AppCompatActivity implements OnClickListener{
+
+    private RelativeLayout chatHolderRelativeLayout;
+    private ListView listView;
+    private EditText editMessageText;
+    private Button sendMessageButton;
+    private Button cameraButton;
+    private Button geolocationButton;
+    private ImageView picture;
+    private ChatArrayAdapter chatArrayAdapter;
+    private DatabaseReference databaseReference;
+    private String user;
+    private Camera camera;
+=======
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -67,6 +94,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     private String mChatPath;
 
     private User mUser;
+>>>>>>> b1cb56d3f5edc5ece2bfc1565b5def3e9ad9b85e
 
     private User mClient;
 
@@ -82,6 +110,25 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             this.mClient = extras.getParcelable(Config.CLIENT_USER_EXTRA);
         }
 
+<<<<<<< HEAD
+        this.databaseReference = (FirebaseDatabase.getInstance().getReference().child(Config.CHILD_CHATS).child("advisor_user"));
+
+        this.listView = ((ListView)findViewById(R.id.listViewMessageHolder));
+        this.editMessageText = ( (EditText)findViewById(R.id.messageText));
+        this.sendMessageButton = ((Button)findViewById(R.id.buttonSendMessage));
+        this.cameraButton = ((Button)findViewById(R.id.btn_camera));
+        this.geolocationButton = ((Button)findViewById(R.id.btn_geolocation));
+        this.chatArrayAdapter = (new ChatArrayAdapter(this, R.layout.chat_message));
+        this.picture = ((ImageView)findViewById(R.id.imageView_picture));
+
+        this.sendMessageButton.setOnClickListener(this);
+        this.cameraButton.setOnClickListener(this);
+        this.geolocationButton.setOnClickListener(this);
+
+        this.listView.setAdapter(this.chatArrayAdapter);
+
+        this.databaseReference.addChildEventListener(new ChildEventListener() {
+=======
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -132,6 +179,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
         this.mMessageRepository = new MessageRepository(Config.CHILD_CHATS, this.mChatPath);
         this.mMessageRepository.getmDatabaseReference().addChildEventListener(new ChildEventListener() {
+>>>>>>> b1cb56d3f5edc5ece2bfc1565b5def3e9ad9b85e
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 appendMessage(dataSnapshot);
@@ -155,7 +203,6 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-
         });
     }
 
@@ -167,10 +214,18 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
                 this.eraseText();
                 break;
             case R.id.btn_camera:
+<<<<<<< HEAD
+                this.camera = new Camera();
+                File photo = this.camera.dispatchTakePictureIntent(this);
+            break;
+            case R.id.btn_geolocation:
+
+=======
                 this.dispatchTakePictureIntent();
                 break;
             case R.id.btn_microphone:
                 this.recordMessage();
+>>>>>>> b1cb56d3f5edc5ece2bfc1565b5def3e9ad9b85e
                 break;
         }
     }
@@ -199,13 +254,11 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
         ((BaseAdapter) this.mListView.getAdapter()).notifyDataSetChanged();
     }
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }
 
+<<<<<<< HEAD
+
+
+=======
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -251,6 +304,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
         return super.onOptionsItemSelected(item);
     }
+>>>>>>> b1cb56d3f5edc5ece2bfc1565b5def3e9ad9b85e
 
     private void goToNotes() {
 

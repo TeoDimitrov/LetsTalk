@@ -3,7 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     package="com.example.letstalk">
     package="com.google.android.gms.location.sample.basiclocationsample" >
+<<<<<<< HEAD
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+=======
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+>>>>>>> b1cb56d3f5edc5ece2bfc1565b5def3e9ad9b85e
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
