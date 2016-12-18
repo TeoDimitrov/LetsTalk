@@ -22,8 +22,8 @@ import com.example.letstalk.domain.timeFrames.TimeFrame;
 import com.example.letstalk.domain.timeFrames.TimeFrameStatus;
 import com.example.letstalk.domain.timeFrames.TimeFrameType;
 import com.example.letstalk.repository.TimeFrameRepository;
+import com.example.letstalk.repository.UserRepository;
 import com.example.letstalk.utils.HashUtil;
-import com.example.letstalk.utils.SpeechUtil;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,28 +36,34 @@ import static android.view.View.*;
 
 public class SessionChatFragment extends Fragment implements OnClickListener {
 
-    private RelativeLayout relativeLayout;
+    private RelativeLayout mRelativeLayout;
 
-    private ListView listView;
+    private ListView mListView;
 
-    private SessionChatAdapter sessionChatAdapter;
+    private SessionChatAdapter mSessionChatAdapter;
 
-    private FloatingActionButton btnAddChat;
+    private FloatingActionButton mBtnAddChat;
 
-    private SessionsActivity sessionsActivity;
+    private SessionsActivity mSessionsActivity;
 
-    private TimeFrameRepository timeFrameRepository;
+    private Intent mChatIntent;
+
+    private TimeFrameRepository mTimeFrameRepository;
+
+    private UserRepository mUserRepository;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_chat, container, false);
-        this.sessionsActivity = (SessionsActivity) this.getActivity();
-        this.listView = (ListView) this.relativeLayout.findViewById(R.id.session_chat_list_view_id);
-        this.timeFrameRepository = new TimeFrameRepository(Config.CHILD_TIMEFRAMES);
-        this.sessionChatAdapter = new SessionChatAdapter(this.getContext(), R.layout.session_item, new ArrayList<TimeFrame>());
-        this.listView.setAdapter(this.sessionChatAdapter);
-        this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        this.mRelativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_chat, container, false);
+        this.mSessionsActivity = (SessionsActivity) this.getActivity();
+        this.mListView = (ListView) this.mRelativeLayout.findViewById(R.id.session_chat_list_view_id);
+        this.mChatIntent = new Intent(getActivity().getBaseContext(), ChatActivity.class);
+        this.mTimeFrameRepository = new TimeFrameRepository(Config.CHILD_TIMEFRAMES);
+        this.mUserRepository = new UserRepository(Config.CHILD_USERS);
+        this.mSessionChatAdapter = new SessionChatAdapter(this.getContext(), R.layout.session_item, new ArrayList<TimeFrame>());
+        this.mListView.setAdapter(this.mSessionChatAdapter);
+        this.mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final TimeFrame timeFrame = (TimeFrame) parent.getItemAtPosition(position);
@@ -66,22 +72,22 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                     participants.append(timeFrame.getAdvisorName());
                     participants.append(timeFrame.getUsername());
                     String chat = HashUtil.getHashMD5(participants.toString());
-                    Intent chatIntent = new Intent(getActivity().getBaseContext(), ChatActivity.class);
-                    chatIntent.putExtra(Config.CHAT_EXTRA, chat);
-                    chatIntent.putExtra(Config.USER_EXTRA, sessionsActivity.getCurrentUser());
-                    getActivity().startActivity(chatIntent);
+                    mChatIntent.putExtra(Config.CHAT_EXTRA, chat);
+                    mChatIntent.putExtra(Config.USER_EXTRA, mSessionsActivity.getCurrentUser());
+                    String clientUserName = timeFrame.getUsername();
+                    mUserRepository.findByUserName(clientUserName, mChatIntent, getActivity());
                 }
 
-                if (sessionsActivity.getCurrentUser().getRole().getName().equals("AdvisorRole")
+                if (mSessionsActivity.getCurrentUser().getRole().getName().equals("AdvisorRole")
                         && timeFrame.getStatus() == TimeFrameStatus.UNCONFIRMED
-                        && sessionsActivity.getCurrentUser().getUsername().equals(timeFrame.getAdvisorName())) {
+                        && mSessionsActivity.getCurrentUser().getUsername().equals(timeFrame.getAdvisorName())) {
                     new AlertDialog.Builder(getContext())
                             .setTitle("Confirm chat")
                             .setMessage("Are you sure you want to confirm this chat?")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     timeFrame.setStatus(TimeFrameStatus.CONFIRMED);
-                                    timeFrameRepository.save(timeFrame);
+                                    mTimeFrameRepository.save(timeFrame);
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -93,9 +99,9 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                 }
             }
         });
-        this.btnAddChat = (FloatingActionButton) this.relativeLayout.findViewById(R.id.add_chat_id);
-        this.btnAddChat.setOnClickListener(this);
-        this.timeFrameRepository
+        this.mBtnAddChat = (FloatingActionButton) this.mRelativeLayout.findViewById(R.id.add_chat_id);
+        this.mBtnAddChat.setOnClickListener(this);
+        this.mTimeFrameRepository
                 .getmDatabaseReference()
                 .addChildEventListener(new ChildEventListener() {
                     @Override
@@ -105,7 +111,7 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+                        ((BaseAdapter) mListView.getAdapter()).notifyDataSetChanged();
                     }
 
                     @Override
@@ -124,7 +130,7 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                     }
                 });
 
-        return this.relativeLayout;
+        return this.mRelativeLayout;
     }
 
     public static Fragment newInstance() {
@@ -144,25 +150,25 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
     private void addChatTimeFrame() {
         Date startDate = new Date();
         Date endDate = new Date();
-        String userName = this.sessionsActivity.getCurrentUser().getUsername();
+        String userName = this.mSessionsActivity.getCurrentUser().getUsername();
         TimeFrame timeFrame = new TimeFrame(startDate, endDate, TimeFrameType.CHAT, userName, "teodor.dimitrov.90@gmail.com");
-        this.timeFrameRepository.save(timeFrame);
+        this.mTimeFrameRepository.save(timeFrame);
     }
 
     private void appendTimeFrame(DataSnapshot dataSnapshot) {
         TimeFrame timeFrame = dataSnapshot.getValue(TimeFrame.class);
-        String role = this.sessionsActivity.getCurrentUser().getRole().getName();
-        String userName = this.sessionsActivity.getCurrentUser().getUsername();
+        String role = this.mSessionsActivity.getCurrentUser().getRole().getName();
+        String userName = this.mSessionsActivity.getCurrentUser().getUsername();
         String timeFrameUserName = timeFrame.getUsername();
         String timeFrameAdvisorName = timeFrame.getAdvisorName();
         if (role.equals("CustomerRole") && userName.equals(timeFrameUserName)) {
-            this.sessionChatAdapter.add(timeFrame);
+            this.mSessionChatAdapter.add(timeFrame);
         } else if (role.equals("AdvisorRole") ) {
             if(userName.equals(timeFrameAdvisorName) || userName.equals(timeFrameUserName)) {
-                this.sessionChatAdapter.add(timeFrame);
+                this.mSessionChatAdapter.add(timeFrame);
             }
         }
 
-        ((BaseAdapter) this.listView.getAdapter()).notifyDataSetChanged();
+        ((BaseAdapter) this.mListView.getAdapter()).notifyDataSetChanged();
     }
 }

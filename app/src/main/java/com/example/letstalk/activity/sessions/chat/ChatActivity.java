@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
@@ -76,7 +77,8 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             Bundle extras = i.getExtras();
             this.mChatPath = extras.getString(Config.CHAT_EXTRA);
             this.mUser = extras.getParcelable(Config.USER_EXTRA);
-           // this.mClient = extras.getParcelable(Config.CLIENT_USER_EXTRA);
+            this.mClient = extras.getParcelable(Config.CLIENT_USER_EXTRA);
+
         }
 
         if (getSupportActionBar() != null){
@@ -254,12 +256,12 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void setActionBarTitle(User client){
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        int age = currentYear - client.getBirthDate();
-        StringBuilder title = new StringBuilder();
-        title.append(client.getGender());
-        title.append(",");
-        title.append(age);
-        getSupportActionBar().setTitle(title);
+//        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+//        int age = currentYear - client.getBirthDate();
+//        StringBuilder title = new StringBuilder();
+//        title.append(client.getGender());
+//        title.append(",");
+//        title.append(age);
+//        getSupportActionBar().setTitle(title);
     }
 }

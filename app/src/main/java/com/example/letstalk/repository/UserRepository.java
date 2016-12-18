@@ -1,5 +1,6 @@
 package com.example.letstalk.repository;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
@@ -29,7 +30,7 @@ public class UserRepository {
 
     public User findByUserName(final String username, final String gender, final int birthyear, final Intent intent) {
         final String userPath = this.clearUserName(username);
-        Query query = this.mDatabaseReference.orderByChild("username").equalTo(username);
+        Query query = this.mDatabaseReference.orderByChild(Config.CHILD_USERS_USERNAME).equalTo(username);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -55,11 +56,30 @@ public class UserRepository {
 
     public User findByUserName(String username) {
         final String userPath = this.clearUserName(username);
-        Query query = this.mDatabaseReference.orderByChild("username").equalTo(username);
+        Query query = this.mDatabaseReference.orderByChild(Config.CHILD_USERS_USERNAME).equalTo(username);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.child(userPath).getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        return this.user;
+    }
+
+    public User findByUserName(final String username, final Intent intent, final Activity activity) {
+        final String userPath = this.clearUserName(username);
+        Query query = this.mDatabaseReference.orderByChild(Config.CHILD_USERS_USERNAME).equalTo(username);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.child(userPath).getValue(User.class);
+                intent.putExtra(Config.CLIENT_USER_EXTRA, user);
+                activity.startActivity(intent);
             }
 
             @Override
