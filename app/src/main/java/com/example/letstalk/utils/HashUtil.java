@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class HashUtil {
 
-    public static String getHashMD5(String item){
+    public static String getHashMD5(String item) {
         try {
             // Create MD5 Hash
             MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
@@ -14,7 +14,7 @@ public class HashUtil {
 
             // Create Hex String
             StringBuffer hexString = new StringBuffer();
-            for (int i=0; i<messageDigest.length; i++)
+            for (int i = 0; i < messageDigest.length; i++)
                 hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
             return hexString.toString();
 

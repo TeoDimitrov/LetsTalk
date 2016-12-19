@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     package="com.example.letstalk">
     package="com.google.android.gms.location.sample.basiclocationsample" >
 
@@ -11,9 +10,24 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <!-- VoIP Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="true" />
+
+    <receiver
+        android:name=".receiver.IncomingCallReceiver"
+        android:label="Call Receiver" />
+
 
     <application
         android:allowBackup="true"
@@ -39,7 +53,9 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".activity.sign_in.SignInActivity" android:screenOrientation="portrait">
+        <activity
+            android:name=".activity.sign_in.SignInActivity"
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
@@ -54,6 +70,9 @@
             android:screenOrientation="portrait"
             android:name=".activity.sessions.note.NotesActivity"
             android:label="Notes"></activity>
+        <activity android:name=".activity.sessions.talk.TalkActivity"></activity>
     </application>
 
+    <!-- VoIP Permissions -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 </manifest>

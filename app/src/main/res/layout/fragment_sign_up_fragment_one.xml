@@ -37,7 +37,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:paddingLeft="5dp"
-            android:paddingRight="50dp"/>
+            android:paddingRight="50dp" />
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/gender_radio_buttons"
@@ -58,7 +58,7 @@
                 android:textColor="@color/text"
                 android:theme="@style/MyRadioButton"
                 android:paddingRight="20dp"
-                android:textSize="@dimen/sign_in_text_size"/>
+                android:textSize="@dimen/sign_in_text_size" />
 
             <RadioButton
                 android:id="@+id/female_radio_button"
@@ -80,7 +80,7 @@
             android:drawableLeft="@drawable/arrow"
             android:layout_alignBottom="@+id/gender_radio_buttons"
             android:layout_toRightOf="@+id/btn_fb"
-            android:layout_toEndOf="@+id/btn_fb"/>
+            android:layout_toEndOf="@+id/btn_fb" />
 
         <Button
             android:id="@+id/btn_fb"
@@ -96,7 +96,7 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:paddingTop="50dp"
-            android:layout_below="@+id/gender"/>
+            android:layout_below="@+id/gender" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -116,7 +116,7 @@
             android:layout_marginBottom="30dp"
             android:layout_below="@id/textViewFacebook"
             android:layout_centerHorizontal="true"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </RelativeLayout>
 

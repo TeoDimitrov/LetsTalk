@@ -1,14 +1,9 @@
 package com.example.letstalk.firebase;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
-import com.example.letstalk.activity.sessions.SessionsActivity;
-import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -33,12 +28,12 @@ public class FirebaseEmailAuthenticator {
         };
     }
 
-    public void createUser(String email, String password, final FragmentActivity activity, final Intent intent){
+    public void createUser(String email, String password, final FragmentActivity activity, final Intent intent) {
         this.mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             activity.startActivity(intent);
                             activity.finish();
                         }
@@ -49,12 +44,12 @@ public class FirebaseEmailAuthenticator {
                 });
     }
 
-    public void signIn(String email, String password, final FragmentActivity activity, final Intent intent){
+    public void signIn(String email, String password, final FragmentActivity activity, final Intent intent) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             activity.startActivity(intent);
                             activity.finish();
                         }
@@ -65,15 +60,15 @@ public class FirebaseEmailAuthenticator {
                 });
     }
 
-    public void singOut(){
+    public void singOut() {
         this.mAuth.signOut();
     }
 
-    public void addListener(){
+    public void addListener() {
         this.mAuth.addAuthStateListener(this.mListener);
     }
 
-    public void removeListener(){
+    public void removeListener() {
         if (this.mListener != null) {
             this.mAuth.removeAuthStateListener(this.mListener);
         }

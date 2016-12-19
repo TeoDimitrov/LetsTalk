@@ -76,8 +76,7 @@ public class SignFragmentPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public int getItemPosition(Object object)
-    {
+    public int getItemPosition(Object object) {
         if (object instanceof SignUpFragmentOne && this.getFragmentSignUp() instanceof SignUpFragmentTwo) {
             return POSITION_NONE;
         }

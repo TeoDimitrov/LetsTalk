@@ -7,7 +7,7 @@ import com.example.letstalk.configuration.Config;
  */
 public class AdvisorSwitchingCenter {
 
-    public static String getAvailableAdvisor(){
+    public static String getAvailableAdvisor() {
         return "Kai" + Config.USER_SUFIX;
     }
 }

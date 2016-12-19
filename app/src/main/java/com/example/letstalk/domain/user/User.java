@@ -5,13 +5,8 @@ import android.os.Parcelable;
 
 import com.example.letstalk.domain.roles.CustomerRole;
 import com.example.letstalk.domain.roles.Role;
-import com.example.letstalk.domain.timeFrames.TimeFrame;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 @IgnoreExtraProperties
 public class User implements Parcelable {
@@ -42,7 +37,7 @@ public class User implements Parcelable {
     private String notes;
 
     @SuppressWarnings("unused")
-    public User(){
+    public User() {
         super();
         this.setChats(START_CHATS);
         this.setTalks(START_TALKS);

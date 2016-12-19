@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import com.example.letstalk.configuration.Config;
 import com.example.letstalk.R;
 import com.example.letstalk.activity.sessions.SessionsActivity;
+import com.example.letstalk.configuration.Config;
 import com.example.letstalk.domain.user.User;
 import com.example.letstalk.firebase.FirebaseEmailAuthenticator;
 import com.example.letstalk.firebase.FirebaseFacebookAuthenticator;
@@ -26,13 +25,8 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -143,7 +137,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         this.mCallbackManager = CallbackManager.Factory.create();
         this.fbLoginButton = (LoginButton) this.relativeLayout.findViewById(R.id.facebook_button_sign_in);
         this.fbLoginButton.setReadPermissions(Arrays.asList(
-                "public_profile", "email", "user_birthday", "user_friends"));
+                "public_profile", "email", "user_birthday"));
         this.fbLoginButton.setOnClickListener(this);
         this.fbLoginButton.registerCallback(this.mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -165,8 +159,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-    private void setFacebookData(final LoginResult loginResult)
-    {
+    private void setFacebookData(final LoginResult loginResult) {
         GraphRequest request = GraphRequest.newMeRequest(
                 loginResult.getAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -178,7 +171,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                             String gender = response.getJSONObject().getString("gender");
                             String bday = response.getJSONObject().getString("birthday");
                             int birthyear = Integer.parseInt(bday.substring(bday.length() - 4));
-                            userRepository.findByUserName(email,gender, birthyear, sessionsActivityIntent);
+                            userRepository.findByUserName(email, gender, birthyear, sessionsActivityIntent);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -190,12 +183,12 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         request.executeAsync();
     }
 
-    private void fbLogin(){
+    private void fbLogin() {
         this.fbLoginButton.performClick();
         this.hideProgressDialog();
     }
 
-    private void signInClick(){
+    private void signInClick() {
         if (!validateForm()) {
             return;
         }
@@ -227,7 +220,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.button_next_sign_in:
                 this.signInClick();
                 break;

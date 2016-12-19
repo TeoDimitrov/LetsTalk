@@ -31,7 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static android.view.View.*;
+import static android.view.View.OnClickListener;
 
 
 public class SessionChatFragment extends Fragment implements OnClickListener {
@@ -157,15 +157,17 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
 
     private void appendTimeFrame(DataSnapshot dataSnapshot) {
         TimeFrame timeFrame = dataSnapshot.getValue(TimeFrame.class);
-        String role = this.mSessionsActivity.getCurrentUser().getRole().getName();
-        String userName = this.mSessionsActivity.getCurrentUser().getUsername();
-        String timeFrameUserName = timeFrame.getUsername();
-        String timeFrameAdvisorName = timeFrame.getAdvisorName();
-        if (role.equals("CustomerRole") && userName.equals(timeFrameUserName)) {
-            this.mSessionChatAdapter.add(timeFrame);
-        } else if (role.equals("AdvisorRole") ) {
-            if(userName.equals(timeFrameAdvisorName) || userName.equals(timeFrameUserName)) {
+        if (timeFrame.getType() == TimeFrameType.CHAT) {
+            String role = this.mSessionsActivity.getCurrentUser().getRole().getName();
+            String userName = this.mSessionsActivity.getCurrentUser().getUsername();
+            String timeFrameUserName = timeFrame.getUsername();
+            String timeFrameAdvisorName = timeFrame.getAdvisorName();
+            if (role.equals("CustomerRole") && userName.equals(timeFrameUserName)) {
                 this.mSessionChatAdapter.add(timeFrame);
+            } else if (role.equals("AdvisorRole")) {
+                if (userName.equals(timeFrameAdvisorName) || userName.equals(timeFrameUserName)) {
+                    this.mSessionChatAdapter.add(timeFrame);
+                }
             }
         }
 

@@ -22,9 +22,9 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.example.letstalk.R;
 import com.example.letstalk.activity.sessions.note.NotesActivity;
 import com.example.letstalk.configuration.Config;
-import com.example.letstalk.R;
 import com.example.letstalk.domain.message.ChatMessage;
 import com.example.letstalk.domain.user.User;
 import com.example.letstalk.repository.MessageRepository;
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import static android.view.View.*;
+import static android.view.View.OnClickListener;
 
 public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
@@ -210,7 +210,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         switch (requestCode) {
-            case Config.REQ_CODE_SPEECH_INPUT:
+            case Config.REQUEST_CODE_SPEECH_INPUT:
                 if (resultCode == RESULT_OK && null != data) {
                     ArrayList<String> result = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
@@ -252,7 +252,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
                 break;
         }
 
-        if(item.getTitle() != null) {
+        if (item.getTitle() != null) {
             if (item.getTitle().equals("Notes")) {
                 this.goToNotes();
             }

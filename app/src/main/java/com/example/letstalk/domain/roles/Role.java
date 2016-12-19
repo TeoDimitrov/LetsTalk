@@ -11,7 +11,8 @@ public class Role implements Parcelable {
     private String name;
 
     @SuppressWarnings("unused")
-    public Role(){}
+    public Role() {
+    }
 
     protected Role(Parcel in) {
         name = in.readString();

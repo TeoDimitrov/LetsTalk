@@ -31,7 +31,7 @@ public class SessionsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sessions_activity);
+        setContentView(R.layout.activity_session);
         this.mSessionsFragmentPagerAdapter = new SessionsFragmentPagerAdapter(getSupportFragmentManager());
         this.sessionsViewPager = ((ViewPager) findViewById(R.id.viewPagerSessions));
         this.sessionsViewPager.setAdapter(this.mSessionsFragmentPagerAdapter);
@@ -49,7 +49,7 @@ public class SessionsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = this.getMenuInflater();
-        menuInflater.inflate(R.menu.menu_main,menu);
+        menuInflater.inflate(R.menu.menu_main, menu);
         return true;
     }
 

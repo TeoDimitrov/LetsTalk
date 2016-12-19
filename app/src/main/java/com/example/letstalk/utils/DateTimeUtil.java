@@ -13,13 +13,13 @@ public class DateTimeUtil {
 
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
 
-    public static String getUTCDateTime(Date date){
+    public static String getUTCDateTime(Date date) {
         DateTimeUtil.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         String utcDate = DateTimeUtil.dateFormat.format(date);
         return utcDate;
     }
 
-    public static String getLocalDateTime(String date){
+    public static String getLocalDateTime(String date) {
         DateTimeUtil.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date newDate = null;
         try {
@@ -33,7 +33,7 @@ public class DateTimeUtil {
         return dateTime;
     }
 
-    public static String getLocalTime(String date){
+    public static String getLocalTime(String date) {
         DateTimeUtil.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date newDate = null;
         try {

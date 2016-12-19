@@ -6,10 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +17,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
+import com.example.letstalk.R;
 import com.example.letstalk.activity.sessions.SessionsActivity;
 import com.example.letstalk.activity.sign_in.interfaces.TabFragmentListener;
 import com.example.letstalk.configuration.Config;
-import com.example.letstalk.domain.timeFrames.TimeFrame;
-import com.example.letstalk.domain.user.User;
 import com.example.letstalk.firebase.FirebaseFacebookAuthenticator;
 import com.example.letstalk.repository.UserRepository;
-import com.example.letstalk.utils.DateTimeUtil;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -34,19 +30,14 @@ import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-
-import com.example.letstalk.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 
 import static android.view.View.OnClickListener;
 
@@ -157,7 +148,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         this.mCallbackManager = CallbackManager.Factory.create();
         this.fbLoginButton = (LoginButton) this.relativeLayout.findViewById(R.id.facebook_button_sign_up);
         this.fbLoginButton.setReadPermissions(Arrays.asList(
-                "public_profile", "email", "user_birthday", "user_friends"));
+                "public_profile", "email", "user_birthday"));
         this.fbLoginButton.setOnClickListener(this);
         this.fbLoginButton.registerCallback(this.mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override

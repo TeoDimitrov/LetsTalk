@@ -19,7 +19,7 @@ public class TimeFrameRepository {
         this.mDatabaseReference = com.google.firebase.database.FirebaseDatabase.getInstance().getReference().child(url);
     }
 
-    public void save(TimeFrame timeFrame){
+    public void save(TimeFrame timeFrame) {
         StringBuilder keyBuilder = new StringBuilder();
         keyBuilder.append(timeFrame.getAdvisorName());
         keyBuilder.append(timeFrame.getUsername());
@@ -29,7 +29,7 @@ public class TimeFrameRepository {
         this.mDatabaseReference.child(key).setValue(timeFrame);
     }
 
-    public List<TimeFrame> findByUserName(String username){
+    public List<TimeFrame> findByUserName(String username) {
         final List<TimeFrame> timeFrames = new ArrayList<>();
         Query query = this.mDatabaseReference.orderByChild("username").equalTo(username);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -52,7 +52,7 @@ public class TimeFrameRepository {
         return timeFrames;
     }
 
-    public List<TimeFrame> findByAdvisorName(String advisorName){
+    public List<TimeFrame> findByAdvisorName(String advisorName) {
         final List<com.example.letstalk.domain.timeFrames.TimeFrame> timeFrames = new ArrayList<>();
         Query query = this.mDatabaseReference.orderByChild("advisorname").equalTo(advisorName);
         query.addListenerForSingleValueEvent(new ValueEventListener() {

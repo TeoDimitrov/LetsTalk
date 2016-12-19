@@ -3,8 +3,7 @@
     android:id="@+id/chat_holder_id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <ListView
         android:id="@+id/listViewMessageHolder"
@@ -15,8 +14,7 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="2sp"
         android:stackFromBottom="true"
-        android:transcriptMode="alwaysScroll">
-    </ListView>
+        android:transcriptMode="alwaysScroll"></ListView>
 
     <RelativeLayout
         android:id="@+id/chatForm"
@@ -24,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <EditText
             android:layout_width="wrap_content"
@@ -47,7 +45,7 @@
             android:id="@+id/buttonSendMessage"
             android:layout_alignBottom="@+id/messageText"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -66,7 +64,7 @@
             android:drawableBottom="@android:drawable/ic_btn_speak_now"
             android:id="@+id/btn_microphone"
             android:layout_toRightOf="@+id/btn_camera"
-            android:layout_above="@+id/messageText"/>
+            android:layout_above="@+id/messageText" />
 
     </RelativeLayout>
 

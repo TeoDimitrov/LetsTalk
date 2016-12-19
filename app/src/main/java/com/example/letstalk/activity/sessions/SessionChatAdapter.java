@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.example.letstalk.R;
 import com.example.letstalk.domain.timeFrames.TimeFrame;
 import com.example.letstalk.domain.timeFrames.TimeFrameStatus;
-import com.example.letstalk.domain.user.User;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class SessionChatAdapter extends ArrayAdapter<TimeFrame> {
 
     private final Context context;
 
-    private final List<TimeFrame>  timeFrames;
+    private final List<TimeFrame> timeFrames;
 
     private CircleImageView circleImageView;
 
@@ -48,9 +47,9 @@ public class SessionChatAdapter extends ArrayAdapter<TimeFrame> {
         this.scheduleTextView = (TextView) rowView.findViewById(R.id.schedule_text_id);
         String timeRange = this.timeFrames.get(position).getLocalStartDateTime() + " - " + this.timeFrames.get(position).getLocalEndDateTime();
         this.scheduleTextView.setText(timeRange);
-        if(timeFrameStatus == TimeFrameStatus.CONFIRMED.CONFIRMED){
+        if (timeFrameStatus == TimeFrameStatus.CONFIRMED.CONFIRMED) {
             this.circleImageView.setImageDrawable(ResourcesCompat.getDrawable(parent.getResources(), R.drawable.check, null));
-        } else{
+        } else {
             this.circleImageView.setImageDrawable(ResourcesCompat.getDrawable(parent.getResources(), R.drawable.queue, null));
         }
 
@@ -69,6 +68,6 @@ public class SessionChatAdapter extends ArrayAdapter<TimeFrame> {
 
     @Override
     public TimeFrame getItem(int position) {
-       return this.timeFrames.get(position);
+        return this.timeFrames.get(position);
     }
 }

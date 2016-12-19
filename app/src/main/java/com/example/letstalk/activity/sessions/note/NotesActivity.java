@@ -26,7 +26,7 @@ public class NotesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.notes_layout);
+        this.setContentView(R.layout.activity_notes);
 
         if (savedInstanceState == null) {
             Intent intent = getIntent();
@@ -37,7 +37,7 @@ public class NotesActivity extends AppCompatActivity {
         this.mNotesText = (EditText) findViewById(R.id.notes_edit_text_id);
         this.setInitialNotes();
         this.userRepository = new UserRepository(Config.CHILD_USERS);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -45,15 +45,15 @@ public class NotesActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-            menu.add(0, 1, 0, "Save").setIcon(R.drawable.ic_save_white_24dp)
-                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(0, 1, 0, "Save").setIcon(R.drawable.ic_save_white_24dp)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 setResult(Activity.RESULT_OK,
                         new Intent().putExtra(Config.CLIENT_USER_EXTRA, this.mClient));
@@ -61,7 +61,7 @@ public class NotesActivity extends AppCompatActivity {
                 break;
         }
 
-        if(item.getTitle() != null) {
+        if (item.getTitle() != null) {
             if (item.getTitle().equals("Save")) {
                 String notes = this.mNotesText.getText().toString();
                 this.mClient.setNotes(notes);
@@ -72,9 +72,9 @@ public class NotesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setInitialNotes(){
+    private void setInitialNotes() {
         String notes = this.mClient.getNotes();
-        if (notes != null){
+        if (notes != null) {
             this.mNotesText.setText(notes);
         }
     }

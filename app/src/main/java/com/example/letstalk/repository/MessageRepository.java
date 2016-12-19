@@ -11,7 +11,7 @@ public class MessageRepository {
         this.mDatabaseReference = com.google.firebase.database.FirebaseDatabase.getInstance().getReference().child(url).child(chat);
     }
 
-    public void create(ChatMessage message){
+    public void create(ChatMessage message) {
         String key = this.mDatabaseReference.push().getKey();
         this.mDatabaseReference.child(key).setValue(message);
     }

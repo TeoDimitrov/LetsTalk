@@ -44,6 +44,6 @@
 
     <!-- Speech Recognition -->
     <string name="speech_not_supported">The Language is not supported</string>
-    <string name="speech_prompt" >Share now</string>
+    <string name="speech_prompt">Share now</string>
     <string name="return_to_chat">Return to chat</string>
 </resources>

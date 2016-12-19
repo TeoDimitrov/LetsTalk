@@ -40,7 +40,7 @@ public class Camera {
             }
         }
 
-       return this.mPhotoFile;
+        return this.mPhotoFile;
     }
 
 

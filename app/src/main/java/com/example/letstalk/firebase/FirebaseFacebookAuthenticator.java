@@ -3,7 +3,6 @@ package com.example.letstalk.firebase;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
@@ -36,6 +35,7 @@ public class FirebaseFacebookAuthenticator {
     /**
      * The method handles Facebook Authentications.
      * Originally it is described as handleFacebookAccessToken by the Firebase community.
+     *
      * @param token
      * @param activity
      * @param intent
@@ -57,15 +57,15 @@ public class FirebaseFacebookAuthenticator {
                 });
     }
 
-    public void singOut(){
+    public void singOut() {
         LoginManager.getInstance().logOut();
     }
 
-    public void addListener(){
+    public void addListener() {
         this.mAuth.addAuthStateListener(this.mListener);
     }
 
-    public void removeListener(){
+    public void removeListener() {
         if (this.mListener != null) {
             this.mAuth.removeAuthStateListener(this.mListener);
         }

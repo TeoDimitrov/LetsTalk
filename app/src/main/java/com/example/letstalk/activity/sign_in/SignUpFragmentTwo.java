@@ -14,14 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import com.example.letstalk.configuration.Config;
 import com.example.letstalk.R;
 import com.example.letstalk.activity.sessions.SessionsActivity;
+import com.example.letstalk.configuration.Config;
 import com.example.letstalk.domain.user.User;
 import com.example.letstalk.firebase.FirebaseEmailAuthenticator;
 import com.example.letstalk.repository.UserRepository;
 
-public class SignUpFragmentTwo extends Fragment implements OnClickListener{
+public class SignUpFragmentTwo extends Fragment implements OnClickListener {
 
     private RelativeLayout relativeLayout;
 
@@ -56,7 +56,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_sign_up_fragment_two,container, false);
+        this.relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_sign_up_fragment_two, container, false);
         this.etUsername = (EditText) this.relativeLayout.findViewById(R.id.username);
         this.etPassword = (EditText) this.relativeLayout.findViewById(R.id.password);
         this.etConfirmPassword = (EditText) this.relativeLayout.findViewById(R.id.confirm_password);
@@ -78,7 +78,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener{
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.button_next2:
                 clickNextButton();
                 break;
@@ -92,8 +92,8 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener{
         this.currentUser = new User(this.birthYear, this.gender, this.usernameValue, this.passwordValue);
         this.showProgressDialog();
         this.sessionActivityIntent.putExtra(Config.USER_EXTRA, this.currentUser);
-        this.createAccount(this.currentUser );
-        this.userRepository.save(this.currentUser );
+        this.createAccount(this.currentUser);
+        this.userRepository.save(this.currentUser);
         this.hideProgressDialog();
     }
 
@@ -120,12 +120,10 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener{
         if (TextUtils.isEmpty(confirmPassword)) {
             this.etConfirmPassword.setError("Confirm password is required.");
             valid = false;
-        }
-        else if(!confirmPassword.equals(password)){
+        } else if (!confirmPassword.equals(password)) {
             this.etConfirmPassword.setError("Passwords does not match.");
             valid = false;
-        }
-        else {
+        } else {
             this.etConfirmPassword.setError(null);
         }
 
@@ -139,10 +137,10 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener{
 
         String email = user.getUsername();
         String password = user.getPassword();
-        this.firebaseEmailAuthenticator.createUser(email,password,this.getActivity(),this.sessionActivityIntent);
+        this.firebaseEmailAuthenticator.createUser(email, password, this.getActivity(), this.sessionActivityIntent);
     }
 
-    public static SignUpFragmentTwo newInstance(){
+    public static SignUpFragmentTwo newInstance() {
         SignUpFragmentTwo signUpFragmentTwo = new SignUpFragmentTwo();
         return signUpFragmentTwo;
     }
