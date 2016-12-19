@@ -3,7 +3,9 @@ package com.example.letstalk.firebase;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
+import com.example.letstalk.configuration.Config;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -39,6 +41,7 @@ public class FirebaseEmailAuthenticator {
                         }
 
                         if (!task.isSuccessful()) {
+                            Toast.makeText(activity, Config.ERROR_EXISTING_USER, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -55,6 +58,7 @@ public class FirebaseEmailAuthenticator {
                         }
 
                         if (!task.isSuccessful()) {
+                            Toast.makeText(activity, Config.ERROR_NO_SUCH_USER, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

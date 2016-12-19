@@ -37,7 +37,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
 
     private RelativeLayout relativeLayout;
 
-    private EditText etUsername;
+    private EditText etEmail;
 
     private EditText etPassword;
 
@@ -67,7 +67,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_sign_in, container, false);
-        this.etUsername = (EditText) this.relativeLayout.findViewById(R.id.username_sing_in);
+        this.etEmail = (EditText) this.relativeLayout.findViewById(R.id.email_sing_in);
         this.etPassword = (EditText) this.relativeLayout.findViewById(R.id.password_sign_in);
         this.btnNext = (Button) this.relativeLayout.findViewById(R.id.button_next_sign_in);
         this.btnNext.setOnClickListener(this);
@@ -110,26 +110,34 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         this.firebaseEmailAuthenticator.signIn(email, password, this.getActivity(), this.sessionsActivityIntent);
     }
 
-    private boolean validateForm() {
-        boolean valid = true;
-
-        String email = this.etUsername.getText().toString();
+    private boolean validateEmail() {
+        String email = this.etEmail.getText().toString();
+        boolean isEmailValid = true;
         if (TextUtils.isEmpty(email)) {
-            this.etUsername.setError("Username is required.");
-            valid = false;
+            this.etEmail.setError(Config.ERROR_EMAIL_IS_REQUIRED);
+            isEmailValid = false;
         } else {
-            this.etUsername.setError(null);
+            this.etEmail.setError(null);
         }
 
+        return isEmailValid;
+    }
+
+    private boolean validatePassword() {
         String password = this.etPassword.getText().toString();
+        boolean isPasswordValid = true;
         if (TextUtils.isEmpty(password)) {
-            this.etPassword.setError("Password is required.");
-            valid = false;
+            this.etPassword.setError(Config.ERROR_PASSWORD_IS_REQUIRED);
+            isPasswordValid = false;
         } else {
             this.etPassword.setError(null);
         }
 
-        return valid;
+        return isPasswordValid;
+    }
+
+    private boolean validateForm() {
+        return validateEmail() && validatePassword();
     }
 
     private void initializeFbButton() {
@@ -194,7 +202,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         }
 
         this.showProgressDialog();
-        this.usernameValue = this.etUsername.getText().toString();
+        this.usernameValue = this.etEmail.getText().toString();
         this.passwordValue = this.etPassword.getText().toString();
         User user = this.userRepository.findByUserName(this.usernameValue);
         this.sessionsActivityIntent.putExtra(Config.USER_EXTRA, user);

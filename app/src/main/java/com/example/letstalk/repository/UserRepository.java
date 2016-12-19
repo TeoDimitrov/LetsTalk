@@ -22,21 +22,21 @@ public class UserRepository {
     }
 
     public void save(User user) {
-        String username = user.getUsername();
+        String username = user.getEmail();
         String userPath = this.clearUserName(username);
         this.mDatabaseReference.child(userPath).setValue(user);
     }
 
     public User findByUserName(final String username, final String gender, final int birthyear, final Intent intent) {
         final String userPath = this.clearUserName(username);
-        Query query = this.mDatabaseReference.orderByChild(Config.CHILD_USERS_USERNAME).equalTo(username);
+        Query query = this.mDatabaseReference.orderByChild(Config.CHILD_USERS_EMAIL).equalTo(username);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.child(userPath).getValue(User.class);
                 if (user == null) {
                     user = new User();
-                    user.setUsername(username);
+                    user.setEmail(username);
                     user.setGender(gender);
                     user.setBirthDate(birthyear);
                     save(user);
@@ -55,7 +55,7 @@ public class UserRepository {
 
     public User findByUserName(String username) {
         final String userPath = this.clearUserName(username);
-        Query query = this.mDatabaseReference.orderByChild(Config.CHILD_USERS_USERNAME).equalTo(username);
+        Query query = this.mDatabaseReference.orderByChild(Config.CHILD_USERS_EMAIL).equalTo(username);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -72,7 +72,7 @@ public class UserRepository {
 
     public User findByUserName(final String username, final Intent intent, final Activity activity) {
         final String userPath = this.clearUserName(username);
-        Query query = this.mDatabaseReference.orderByChild(Config.CHILD_USERS_USERNAME).equalTo(username);
+        Query query = this.mDatabaseReference.orderByChild(Config.CHILD_USERS_EMAIL).equalTo(username);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -90,7 +90,7 @@ public class UserRepository {
     }
 
     public void updateUser(User user) {
-        final String userPath = this.clearUserName(user.getUsername());
+        final String userPath = this.clearUserName(user.getEmail());
         this.mDatabaseReference.child(userPath).setValue(user);
     }
 

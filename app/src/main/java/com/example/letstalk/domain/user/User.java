@@ -24,7 +24,7 @@ public class User implements Parcelable {
 
     private String gender;
 
-    private String username;
+    private String email;
 
     private String password;
 
@@ -48,14 +48,14 @@ public class User implements Parcelable {
         this();
         this.setBirthDate(birthDate);
         this.setGender(gender);
-        this.setUsername(username);
+        this.setEmail(username);
         this.setPassword(password);
     }
 
     protected User(Parcel in) {
         birthDate = in.readInt();
         gender = in.readString();
-        username = in.readString();
+        email = in.readString();
         password = in.readString();
         chats = in.readInt();
         talks = in.readInt();
@@ -87,12 +87,12 @@ public class User implements Parcelable {
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getChats() {
@@ -136,7 +136,7 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(birthDate);
         dest.writeString(gender);
-        dest.writeString(username);
+        dest.writeString(email);
         dest.writeString(password);
         dest.writeInt(chats);
         dest.writeInt(talks);

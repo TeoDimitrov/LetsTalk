@@ -21,11 +21,16 @@ import com.example.letstalk.domain.user.User;
 import com.example.letstalk.firebase.FirebaseEmailAuthenticator;
 import com.example.letstalk.repository.UserRepository;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static com.example.letstalk.configuration.Config.VALID_EMAIL_ADDRESS_PATTERN;
+
 public class SignUpFragmentTwo extends Fragment implements OnClickListener {
 
     private RelativeLayout relativeLayout;
 
-    private EditText etUsername;
+    private EditText etEmail;
 
     private EditText etPassword;
 
@@ -35,7 +40,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener {
 
     private ProgressDialog pdCreateUser;
 
-    private String usernameValue;
+    private String emailValue;
 
     private String passwordValue;
 
@@ -57,7 +62,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_sign_up_fragment_two, container, false);
-        this.etUsername = (EditText) this.relativeLayout.findViewById(R.id.username);
+        this.etEmail = (EditText) this.relativeLayout.findViewById(R.id.email);
         this.etPassword = (EditText) this.relativeLayout.findViewById(R.id.password);
         this.etConfirmPassword = (EditText) this.relativeLayout.findViewById(R.id.confirm_password);
         this.btnNext = (Button) this.relativeLayout.findViewById(R.id.button_next2);
@@ -86,48 +91,70 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener {
     }
 
     private void clickNextButton() {
-        this.usernameValue = this.etUsername.getText().toString();
+        this.emailValue = this.etEmail.getText().toString();
         this.passwordValue = this.etPassword.getText().toString();
         this.confirmPasswordValue = this.etConfirmPassword.getText().toString();
-        this.currentUser = new User(this.birthYear, this.gender, this.usernameValue, this.passwordValue);
+        this.currentUser = new User(this.birthYear, this.gender, this.emailValue, this.passwordValue);
         this.showProgressDialog();
         this.sessionActivityIntent.putExtra(Config.USER_EXTRA, this.currentUser);
         this.createAccount(this.currentUser);
-        this.userRepository.save(this.currentUser);
         this.hideProgressDialog();
     }
 
-    private boolean validateForm() {
-        boolean valid = true;
+    private boolean validateEmail() {
+        String email = this.etEmail.getText().toString();
+        boolean isEmailValid  = true;
+        Pattern VALID_EMAIL_ADDRESS_REGEX =
+                Pattern.compile(VALID_EMAIL_ADDRESS_PATTERN, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
 
-        String email = this.usernameValue;
         if (TextUtils.isEmpty(email)) {
-            this.etUsername.setError("Username is required.");
-            valid = false;
+            this.etEmail.setError(Config.ERROR_EMAIL_IS_REQUIRED);
+            isEmailValid = false;
+        }else if (email.matches(".*[#$\\[\\]].*")) {
+            this.etEmail.setError(Config.ERROR_EMAIL_SHOULD_NOT_CONTAIN);
+            isEmailValid = false;
+        } else if (!matcher.find()) {
+            this.etEmail.setError(Config.ERROR_EMAIL_NOT_VALID);
+            isEmailValid = false;
         } else {
-            this.etUsername.setError(null);
+            this.etEmail.setError(null);
         }
 
-        String password = this.passwordValue;
+        return isEmailValid;
+    }
+
+    private boolean validatePassword() {
+        String password = this.etPassword.getText().toString();
+        boolean isPasswordValid = true;
         if (TextUtils.isEmpty(password)) {
-            this.etPassword.setError("Password is required.");
-            valid = false;
+            this.etPassword.setError(Config.ERROR_PASSWORD_IS_REQUIRED);
+            isPasswordValid = false;
+        } else if (password.length() < Config.MIN_PASSWORD_LENGTH) {
+            this.etPassword.setError(Config.ERROR_PASSWORD_SHORT);
+            isPasswordValid = false;
         } else {
             this.etPassword.setError(null);
         }
 
-        String confirmPassword = this.confirmPasswordValue;
+        String confirmPassword = this.etConfirmPassword.getText().toString();
         if (TextUtils.isEmpty(confirmPassword)) {
             this.etConfirmPassword.setError("Confirm password is required.");
-            valid = false;
         } else if (!confirmPassword.equals(password)) {
-            this.etConfirmPassword.setError("Passwords does not match.");
-            valid = false;
+            this.etConfirmPassword.setError(Config.ERROR_CONFIRM_PASSWORD_IS_REQUIRED);
+            isPasswordValid = false;
+        } else if (!confirmPassword.equals(password)) {
+            this.etConfirmPassword.setError(Config.ERROR_PASSWORDS_DOESNT_MATCH);
+            isPasswordValid = false;
         } else {
             this.etConfirmPassword.setError(null);
         }
 
-        return valid;
+        return isPasswordValid;
+    }
+
+    private boolean validateForm() {
+        return validateEmail() && validatePassword();
     }
 
     private void createAccount(final User user) {
@@ -135,9 +162,10 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener {
             return;
         }
 
-        String email = user.getUsername();
+        String email = user.getEmail();
         String password = user.getPassword();
         this.firebaseEmailAuthenticator.createUser(email, password, this.getActivity(), this.sessionActivityIntent);
+        this.userRepository.save(this.currentUser);
     }
 
     public static SignUpFragmentTwo newInstance() {
@@ -147,8 +175,8 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener {
 
     private void initializePdLogin() {
         this.pdCreateUser = new ProgressDialog(getActivity());
-        this.pdCreateUser.setTitle("Authentication");
-        this.pdCreateUser.setMessage("Creating User...");
+        this.pdCreateUser.setTitle(Config.MESSAGE_AUTHENTICATION);
+        this.pdCreateUser.setMessage(Config.MESSAGE_CREATING_USER);
         this.pdCreateUser.setProgress(0);
         this.pdCreateUser.setMax(20);
     }

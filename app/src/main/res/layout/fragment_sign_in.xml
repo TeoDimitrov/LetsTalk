@@ -12,10 +12,10 @@
         android:layout_alignParentTop="true">
 
         <EditText
-            android:id="@+id/username_sing_in"
+            android:id="@+id/email_sing_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
+            android:hint="Email"
             android:textColor="@color/text"
             android:textSize="@dimen/sign_in_text_size"
             android:inputType="textVisiblePassword|textNoSuggestions"
@@ -31,9 +31,9 @@
             android:textSize="@dimen/sign_in_text_size"
             android:ellipsize="start"
             android:inputType="textPassword"
-            android:layout_below="@+id/username_sing_in"
-            android:layout_alignLeft="@+id/username_sing_in"
-            android:layout_alignStart="@+id/username_sing_in" />
+            android:layout_below="@+id/email_sing_in"
+            android:layout_alignLeft="@+id/email_sing_in"
+            android:layout_alignStart="@+id/email_sing_in" />
 
         <Button
             android:id="@+id/button_next_sign_in"
