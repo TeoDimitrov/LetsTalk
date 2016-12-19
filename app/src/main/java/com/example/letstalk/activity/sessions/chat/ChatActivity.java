@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -184,12 +185,18 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void sendMessage() {
-        ChatMessage chatMessage = new ChatMessage(mEditMessageText.getText().toString(), mUser.getUsername(), new Date());
+        String message = this.mEditMessageText.getText().toString();
+        if (TextUtils.isEmpty(message)) {
+            return;
+        } else if (message.length() > Config.MESSAGE_MAX_LENGHT) {
+            this.mEditMessageText.setError(Config.ERROR_TEXT_TOO_LONG);
+        }
+        ChatMessage chatMessage = new ChatMessage(message, mUser.getEmail(), new Date());
         this.mMessageRepository.create(chatMessage);
     }
 
     private void sendMessage(Bitmap bitmapImage) {
-        ChatMessage chatMessage = new ChatMessage(bitmapImage, mUser.getUsername(), new Date());
+        ChatMessage chatMessage = new ChatMessage(bitmapImage, mUser.getEmail(), new Date());
         this.mMessageRepository.create(chatMessage);
     }
 
@@ -252,7 +259,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
                 break;
         }
 
-        if(item.getTitle() != null) {
+        if (item.getTitle() != null) {
             if (item.getTitle().equals("Notes")) {
                 this.goToNotes();
             }

@@ -92,7 +92,7 @@ public class User implements Parcelable {
         this.password = password;
     }
 
-    public String getUsername() {
+    public String getEmail() {
         return username;
     }
 

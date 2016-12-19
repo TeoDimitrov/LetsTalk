@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +21,8 @@ import android.widget.RelativeLayout;
 import com.example.letstalk.activity.sessions.SessionsActivity;
 import com.example.letstalk.activity.sign_in.interfaces.TabFragmentListener;
 import com.example.letstalk.configuration.Config;
-import com.example.letstalk.domain.timeFrames.TimeFrame;
-import com.example.letstalk.domain.user.User;
 import com.example.letstalk.firebase.FirebaseFacebookAuthenticator;
 import com.example.letstalk.repository.UserRepository;
-import com.example.letstalk.utils.DateTimeUtil;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -34,7 +30,6 @@ import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -43,10 +38,8 @@ import com.example.letstalk.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 
 import static android.view.View.OnClickListener;
 
@@ -106,6 +99,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         this.btnNext.setOnClickListener(this);
         this.etBirthYear = (EditText) this.relativeLayout.findViewById(R.id.enter_birth_year);
         this.male = (RadioButton) this.relativeLayout.findViewById(R.id.male_radio_button);
+        this.male.setChecked(true);
         this.male.setOnClickListener(this);
         this.female = (RadioButton) this.relativeLayout.findViewById(R.id.female_radio_button);
         this.female.setOnClickListener(this);
@@ -230,32 +224,35 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         }
     }
 
-    private boolean validateForm() {
-        boolean valid = true;
+    private boolean validateBirthYear() {
+        boolean isBirthYearValid = true;
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         int birthYear = 0;
         try {
             birthYear = Integer.parseInt(etBirthYear.getText().toString());
         } catch (Exception ex) {
-            this.etBirthYear.setError("Birth year should be number");
+            this.etBirthYear.setError(Config.ERROR_BIRTHYEAR_NOT_NUMBER);
         }
 
         int age = currentYear - birthYear;
-
         if (TextUtils.isEmpty(this.etBirthYear.getText().toString())) {
-            this.etBirthYear.setError("Birth year is required.");
-            valid = false;
+            this.etBirthYear.setError(Config.ERROR_BIRTHYEAR_IS_REQUIRED);
+            isBirthYearValid = false;
         } else if (age < 15) {
-            this.etBirthYear.setError("You should be older than 15");
-            valid = false;
+            this.etBirthYear.setError(Config.ERROR_YOUNGER_THAN_15);
+            isBirthYearValid = false;
         } else if (age > 100) {
-            this.etBirthYear.setError("You should be younger than 100");
-            valid = false;
+            this.etBirthYear.setError(Config.ERROR_OLDER_THAN_100);
+            isBirthYearValid = false;
         } else {
             this.etBirthYear.setError(null);
         }
 
-        return valid;
+        return isBirthYearValid;
+    }
+
+    private boolean validateForm() {
+        return validateBirthYear();
     }
 
     public static SignUpFragmentOne newInstance(TabFragmentListener tabFragmentListener) {
@@ -272,8 +269,8 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
 
     private void initializePdLogin() {
         this.pdCreateUser = new ProgressDialog(getActivity());
-        this.pdCreateUser.setTitle("Authentication");
-        this.pdCreateUser.setMessage("Authenticating...");
+        this.pdCreateUser.setTitle(Config.MESSAGE_AUTHENTICATION);
+        this.pdCreateUser.setMessage(Config.MESSAGE_AUTHENTICATING);
         this.pdCreateUser.setProgress(0);
         this.pdCreateUser.setMax(20);
     }

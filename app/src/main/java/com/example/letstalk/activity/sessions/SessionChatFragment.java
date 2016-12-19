@@ -80,7 +80,7 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
 
                 if (mSessionsActivity.getCurrentUser().getRole().getName().equals("AdvisorRole")
                         && timeFrame.getStatus() == TimeFrameStatus.UNCONFIRMED
-                        && mSessionsActivity.getCurrentUser().getUsername().equals(timeFrame.getAdvisorName())) {
+                        && mSessionsActivity.getCurrentUser().getEmail().equals(timeFrame.getAdvisorName())) {
                     new AlertDialog.Builder(getContext())
                             .setTitle("Confirm chat")
                             .setMessage("Are you sure you want to confirm this chat?")
@@ -150,7 +150,7 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
     private void addChatTimeFrame() {
         Date startDate = new Date();
         Date endDate = new Date();
-        String userName = this.mSessionsActivity.getCurrentUser().getUsername();
+        String userName = this.mSessionsActivity.getCurrentUser().getEmail();
         TimeFrame timeFrame = new TimeFrame(startDate, endDate, TimeFrameType.CHAT, userName, "teodor.dimitrov.90@gmail.com");
         this.mTimeFrameRepository.save(timeFrame);
     }
@@ -158,7 +158,7 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
     private void appendTimeFrame(DataSnapshot dataSnapshot) {
         TimeFrame timeFrame = dataSnapshot.getValue(TimeFrame.class);
         String role = this.mSessionsActivity.getCurrentUser().getRole().getName();
-        String userName = this.mSessionsActivity.getCurrentUser().getUsername();
+        String userName = this.mSessionsActivity.getCurrentUser().getEmail();
         String timeFrameUserName = timeFrame.getUsername();
         String timeFrameAdvisorName = timeFrame.getAdvisorName();
         if (role.equals("CustomerRole") && userName.equals(timeFrameUserName)) {

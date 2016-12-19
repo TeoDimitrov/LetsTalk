@@ -58,7 +58,7 @@ public class SessionsActivity extends AppCompatActivity {
     }
 
     public String getCurrentUserPath() {
-        String userPath = this.userRepository.clearUserName(this.currentUser.getUsername());
+        String userPath = this.userRepository.clearUserName(this.currentUser.getEmail());
         return userPath;
     }
 }

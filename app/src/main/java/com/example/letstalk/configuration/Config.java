@@ -1,5 +1,7 @@
 package com.example.letstalk.configuration;
 
+import java.util.regex.Pattern;
+
 public final class Config {
 
     public final static String CHILD_CHATS = "chats";
@@ -23,4 +25,44 @@ public final class Config {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public static final int REQUEST_RETURN_CLIENT = 2;
+
+    public static final int MIN_PASSWORD_LENGTH = 6;
+
+    public static final String VALID_EMAIL_ADDRESS_PATTERN = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+    
+    public static final String ERROR_EXISTING_USER = "Email already exists.";
+    
+    public static final String ERROR_NO_SUCH_USER = "Wrong credentials.";
+    
+    public static final String ERROR_EMAIL_IS_REQUIRED = "Email is required.";
+    
+    public static final String ERROR_EMAIL_NOT_VALID = "Email not valid.";
+    
+    public static final String ERROR_PASSWORD_IS_REQUIRED = "Password is required.";
+    
+    public static final String ERROR_PASSWORD_SHORT = "Enter at least 6 symbols.";
+    
+    public static final String ERROR_CONFIRM_PASSWORD_IS_REQUIRED = "Confirm password is required.";
+    
+    public static final String ERROR_PASSWORDS_DOESNT_MATCH = "Passwords does not match.";
+
+    public static final String ERROR_BIRTHYEAR_NOT_NUMBER = "Birth year should be a number.";
+
+    public static final String MESSAGE_AUTHENTICATION = "Authentication";
+    
+    public static final String MESSAGE_CREATING_USER = "Creating User...";
+    
+    public static final String  MESSAGE_AUTHENTICATING = "Authenticating...";
+
+    public static final String ERROR_BIRTHYEAR_IS_REQUIRED = "Birth year is required.";
+
+    public static final String ERROR_YOUNGER_THAN_15 = "You should be older than 15";
+
+    public static final String ERROR_OLDER_THAN_100 = "You should be younger than 100";
+
+    public static final String ERROR_EMAIL_SHOULD_NOT_CONTAIN = "Email should not contain #, $, [ or ]";
+
+    public static final String ERROR_TEXT_TOO_LONG = "Message is too long.";
+
+    public static final int MESSAGE_MAX_LENGHT = 500;
 }

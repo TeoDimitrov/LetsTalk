@@ -22,7 +22,7 @@ public class UserRepository {
     }
 
     public void save(User user) {
-        String username = user.getUsername();
+        String username = user.getEmail();
         String userPath = this.clearUserName(username);
         this.mDatabaseReference.child(userPath).setValue(user);
     }
@@ -90,7 +90,7 @@ public class UserRepository {
     }
 
     public void updateUser(User user) {
-        final String userPath = this.clearUserName(user.getUsername());
+        final String userPath = this.clearUserName(user.getEmail());
         this.mDatabaseReference.child(userPath).setValue(user);
     }
 

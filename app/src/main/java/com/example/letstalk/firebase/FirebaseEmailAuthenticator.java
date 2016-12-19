@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.letstalk.activity.sessions.SessionsActivity;
+import com.example.letstalk.configuration.Config;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -44,6 +45,7 @@ public class FirebaseEmailAuthenticator {
                         }
 
                         if (!task.isSuccessful()) {
+                            Toast.makeText(activity, Config.ERROR_EXISTING_USER, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -60,6 +62,7 @@ public class FirebaseEmailAuthenticator {
                         }
 
                         if (!task.isSuccessful()) {
+                            Toast.makeText(activity, Config.ERROR_NO_SUCH_USER, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

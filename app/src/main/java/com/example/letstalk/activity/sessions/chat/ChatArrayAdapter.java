@@ -69,7 +69,7 @@ public class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
         LinearLayout messageLinearLayout = (LinearLayout) convertView.findViewById(R.id.message_linear_layout_id);
         RelativeLayout messageRelativeLayout = (RelativeLayout) convertView.findViewById(R.id.message_relative_layout_id);
         ImageView picture = (ImageView) convertView.findViewById(R.id.picture_id);
-        if (this.user.getUsername().equals(chatMessage.getAuthor())) {
+        if (this.user.getEmail().equals(chatMessage.getAuthor())) {
             messageLinearLayout.setGravity(Gravity.RIGHT);
             messageRelativeLayout.setBackgroundResource(R.drawable.chat_message_shape_current_user);
         } else {
