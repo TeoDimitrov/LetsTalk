@@ -12,7 +12,13 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class User implements Parcelable {
 
     @Exclude
+    private static final int PAID_CHATS = 3;
+
+    @Exclude
     private static final int START_CHATS = 0;
+
+    @Exclude
+    private static final int PAID_TALKS = 3;
 
     @Exclude
     private static final transient int START_TALKS = 0;
@@ -28,7 +34,11 @@ public class User implements Parcelable {
 
     private String password;
 
+    private int paidChats;
+
     private int chats;
+
+    private int paidTalks;
 
     private int talks;
 
@@ -39,7 +49,9 @@ public class User implements Parcelable {
     @SuppressWarnings("unused")
     public User() {
         super();
+        this.setPaidChats(PAID_CHATS);
         this.setChats(START_CHATS);
+        this.setPaidTalks(PAID_TALKS);
         this.setTalks(START_TALKS);
         this.setRole(DEFAULT_ROLE);
     }
@@ -125,6 +137,22 @@ public class User implements Parcelable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public int getPaidChats() {
+        return this.paidChats;
+    }
+
+    public void setPaidChats(int paidChats) {
+        this.paidChats = paidChats;
+    }
+
+    public int getPaidTalks() {
+        return this.paidTalks;
+    }
+
+    public void setPaidTalks(int paidTalks) {
+        this.paidTalks = paidTalks;
     }
 
     @Override

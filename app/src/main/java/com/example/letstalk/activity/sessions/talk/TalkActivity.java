@@ -78,9 +78,9 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_talk_id:
-                //this.mSinchClient.getCallClient().callUser(mRecipientId);
                 if (this.mCall == null) {
                     this.mCall = this.mSinchClient.getCallClient().callUser(mRecipientId);
+                    this.mCall.addCallListener(new SinchCallListener());
                     this.mInfoText.setText("Hang Up");
                 }
                 break;

@@ -1,6 +1,7 @@
 package com.example.letstalk.repository;
 
 import com.example.letstalk.domain.timeFrames.TimeFrame;
+import com.example.letstalk.utils.DateTimeUtil;
 import com.example.letstalk.utils.HashUtil;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -9,6 +10,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TimeFrameRepository {
@@ -73,6 +75,32 @@ public class TimeFrameRepository {
         });
 
         return timeFrames;
+    }
+
+    public List<String> findByUserDate(final String date) {
+        final List<String> advisorNames = new ArrayList<>();
+        this.mDatabaseReference
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot timeFrameChild : dataSnapshot.getChildren()) {
+                            TimeFrame timeFrame = timeFrameChild.getValue(TimeFrame.class);
+                            Date startDate = DateTimeUtil.getUTCDateTime(timeFrame.getStartDateTime());
+                            Date endDate = DateTimeUtil.getUTCDateTime(timeFrame.getEndDateTime());
+                            Date searchDate = DateTimeUtil.getUTCDateTime(date);
+                            if (searchDate.after(startDate) && searchDate.before(endDate)) {
+                                advisorNames.add(timeFrame.getAdvisorName());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        return advisorNames;
     }
 
     public DatabaseReference getmDatabaseReference() {

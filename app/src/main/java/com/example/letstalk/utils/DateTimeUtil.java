@@ -46,4 +46,16 @@ public class DateTimeUtil {
         String time = DateTimeUtil.timeFormat.format(newDate);
         return time;
     }
+
+    public static Date getUTCDateTime(String date) {
+        DateTimeUtil.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date newDate = null;
+        try {
+            newDate = DateTimeUtil.dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return newDate;
+    }
 }
