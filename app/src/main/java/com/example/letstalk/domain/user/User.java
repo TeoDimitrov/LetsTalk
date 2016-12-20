@@ -69,7 +69,9 @@ public class User implements Parcelable {
         gender = in.readString();
         email = in.readString();
         password = in.readString();
+        paidChats = in.readInt();
         chats = in.readInt();
+        paidTalks = in.readInt();
         talks = in.readInt();
         role = (Role) in.readValue(Role.class.getClassLoader());
         notes = in.readString();
@@ -166,7 +168,9 @@ public class User implements Parcelable {
         dest.writeString(gender);
         dest.writeString(email);
         dest.writeString(password);
+        dest.writeInt(paidChats);
         dest.writeInt(chats);
+        dest.writeInt(paidTalks);
         dest.writeInt(talks);
         dest.writeValue(role);
         dest.writeString(notes);
