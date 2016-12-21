@@ -107,7 +107,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     }
 
     private void signIn(String email, String password) {
-        this.firebaseEmailAuthenticator.signIn(email, password, this.getActivity(), this.sessionsActivityIntent);
+        this.showProgressDialog();
+        this.userRepository.findByUserName(email, password, this.getActivity(), this.sessionsActivityIntent,this.firebaseEmailAuthenticator, this.pdSignUser);
     }
 
     private boolean validateEmail() {
@@ -201,13 +202,11 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
             return;
         }
 
-        this.showProgressDialog();
         this.usernameValue = this.etEmail.getText().toString();
         this.passwordValue = this.etPassword.getText().toString();
         User user = this.userRepository.findByUserName(this.usernameValue);
         this.sessionsActivityIntent.putExtra(Config.USER_EXTRA, user);
         this.signIn(this.usernameValue, passwordValue);
-        this.hideProgressDialog();
     }
 
     public void initializePdSignUser() {
@@ -240,7 +239,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onDestroy() {
-        this.hideProgressDialog();
         super.onDestroy();
+        this.hideProgressDialog();
     }
 }

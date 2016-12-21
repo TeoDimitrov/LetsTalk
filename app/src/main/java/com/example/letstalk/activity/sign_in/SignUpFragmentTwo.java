@@ -95,10 +95,8 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener {
         this.passwordValue = this.etPassword.getText().toString();
         this.confirmPasswordValue = this.etConfirmPassword.getText().toString();
         this.currentUser = new User(this.birthYear, this.gender, this.emailValue, this.passwordValue);
-        this.showProgressDialog();
         this.sessionActivityIntent.putExtra(Config.USER_EXTRA, this.currentUser);
         this.createAccount(this.currentUser);
-        this.hideProgressDialog();
     }
 
     private boolean validateEmail() {
@@ -162,6 +160,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener {
             return;
         }
 
+        this.showProgressDialog();
         String email = user.getEmail();
         String password = user.getPassword();
         this.firebaseEmailAuthenticator.createUser(email, password, this.getActivity(), this.sessionActivityIntent);
@@ -191,7 +190,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener {
 
     @Override
     public void onDestroy() {
-        this.hideProgressDialog();
         super.onDestroy();
+        this.hideProgressDialog();
     }
 }

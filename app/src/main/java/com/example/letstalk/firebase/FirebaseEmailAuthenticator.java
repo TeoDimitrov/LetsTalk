@@ -1,5 +1,6 @@
 package com.example.letstalk.firebase;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -47,7 +48,7 @@ public class FirebaseEmailAuthenticator {
                 });
     }
 
-    public void signIn(String email, String password, final FragmentActivity activity, final Intent intent) {
+    public void signIn(String email, String password, final FragmentActivity activity, final Intent intent, final ProgressDialog progressDialog) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -58,6 +59,7 @@ public class FirebaseEmailAuthenticator {
                         }
 
                         if (!task.isSuccessful()) {
+                            progressDialog.dismiss();
                             Toast.makeText(activity, Config.ERROR_NO_SUCH_USER, Toast.LENGTH_SHORT).show();
                         }
                     }
