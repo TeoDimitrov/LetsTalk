@@ -1,6 +1,7 @@
 package com.example.letstalk.activity.sessions;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import com.example.letstalk.R;
 import com.example.letstalk.configuration.Config;
 import com.example.letstalk.domain.user.User;
+import com.example.letstalk.receiver.NotificationBroadcastReceiver;
 import com.example.letstalk.repository.UserRepository;
 
 public class SessionsActivity extends AppCompatActivity {
@@ -44,6 +46,8 @@ public class SessionsActivity extends AppCompatActivity {
             Bundle extras = intent.getExtras();
             this.currentUser = extras.getParcelable(Config.USER_EXTRA);
         }
+
+        this.registerNotificationBroadcastReceiver();
     }
 
     @Override
@@ -60,5 +64,14 @@ public class SessionsActivity extends AppCompatActivity {
     public String getCurrentUserPath() {
         String userPath = this.userRepository.clearUserName(this.currentUser.getEmail());
         return userPath;
+    }
+
+    private void registerNotificationBroadcastReceiver(){
+        IntentFilter intentFilter = new IntentFilter("NEW_MESSAGE_INTENT");
+        NotificationBroadcastReceiver notificationBroadcastReceiver =new NotificationBroadcastReceiver();
+        if(intentFilter!=null)
+        {
+            registerReceiver(notificationBroadcastReceiver,intentFilter);
+        }
     }
 }

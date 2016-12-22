@@ -8,16 +8,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.widget.Toast;
 
 import com.example.letstalk.R;
 import com.example.letstalk.activity.sessions.chat.ChatActivity;
 import com.example.letstalk.configuration.Config;
-import com.example.letstalk.domain.message.ChatMessage;
 
 public class NotificationBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Toast.makeText(context, "Received", Toast.LENGTH_SHORT).show();
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.letstalk_logo)
