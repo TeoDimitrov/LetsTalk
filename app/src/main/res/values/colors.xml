@@ -7,8 +7,8 @@
     <color name="colorChatOther">#10565656</color>
     <color name="popupItems">#565656</color>
     <color name="colorContrastBlue">#7000bcd4</color>
-    <color name="text">#808080</color>
+    <color name="darkGray">#808080</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="image_back_button">#20545454</color>
+    <color name="lightGray">#20545454</color>
 </resources>

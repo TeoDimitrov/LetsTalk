@@ -2,6 +2,8 @@ package com.example.letstalk.activity.sessions.chat;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,17 +71,19 @@ public class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
         LinearLayout messageLinearLayout = (LinearLayout) convertView.findViewById(R.id.message_linear_layout_id);
         RelativeLayout messageRelativeLayout = (RelativeLayout) convertView.findViewById(R.id.message_relative_layout_id);
         ImageView picture = (ImageView) convertView.findViewById(R.id.picture_id);
-        if (this.user.getEmail().equals(chatMessage.getAuthor())) {
-            messageLinearLayout.setGravity(Gravity.RIGHT);
-            messageRelativeLayout.setBackgroundResource(R.drawable.chat_message_shape_current_user);
-        } else {
-            messageLinearLayout.setGravity(Gravity.LEFT);
-            messageRelativeLayout.setBackgroundResource(R.drawable.chat_message_shape_other_user);
-        }
-
         TextView textViewTime = (TextView) convertView.findViewById(R.id.chatTime);
         textViewTime.setText(chatMessage.getLocalTime());
         TextView textViewChatMessage = (TextView) convertView.findViewById(R.id.chat_message_id);
+        if (this.user.getEmail().equals(chatMessage.getAuthor())) {
+            messageLinearLayout.setGravity(Gravity.RIGHT);
+            messageRelativeLayout.setBackgroundResource(R.drawable.chat_message_shape_current_user);
+            textViewChatMessage.setTextColor(ContextCompat.getColor(activityContext, R.color.lightGray));
+        } else {
+            messageLinearLayout.setGravity(Gravity.LEFT);
+            messageRelativeLayout.setBackgroundResource(R.drawable.chat_message_shape_other_user);
+            textViewChatMessage.setTextColor(ContextCompat.getColor(activityContext, R.color.darkGray));
+        }
+
         if (chatMessage.getEncodedImage() != null) {
             Bitmap bitmapImage = chatMessage.getEncodedBitmapImage();
             picture.setImageBitmap(bitmapImage);

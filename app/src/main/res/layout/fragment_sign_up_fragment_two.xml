@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
-            android:textColor="@color/text"
+            android:textColor="@color/darkGray"
             android:textSize="@dimen/sign_in_text_size"
             android:inputType="textVisiblePassword|textNoSuggestions" />
 
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:textColor="@color/text"
+            android:textColor="@color/darkGray"
             android:textSize="@dimen/sign_in_text_size"
             android:ellipsize="start"
             android:inputType="textPassword"
@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Confirm Password"
-            android:textColor="@color/text"
+            android:textColor="@color/darkGray"
             android:ellipsize="start"
             android:inputType="textPassword"
             android:textSize="@dimen/sign_in_text_size"
