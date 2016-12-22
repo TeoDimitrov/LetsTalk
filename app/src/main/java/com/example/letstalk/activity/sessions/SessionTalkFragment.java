@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static android.view.View.OnClickListener;
 
@@ -108,7 +109,8 @@ public class SessionTalkFragment extends Fragment implements OnClickListener {
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        ((BaseAdapter) mListView.getAdapter()).notifyDataSetChanged();
+                        deleteChangedTimeFrame(dataSnapshot);
+                        appendTimeFrame(dataSnapshot);
                     }
 
                     @Override
@@ -169,5 +171,19 @@ public class SessionTalkFragment extends Fragment implements OnClickListener {
     public static Fragment newInstance() {
         SessionTalkFragment talkFragment = new SessionTalkFragment();
         return talkFragment;
+    }
+
+    private void deleteChangedTimeFrame(DataSnapshot dataSnapshot){
+        TimeFrame timeFrame = dataSnapshot.getValue(TimeFrame.class);
+        List<TimeFrame> timeFrameList = this.mSessionChatAdapter.getTimeFrames();
+        for (TimeFrame frame : timeFrameList) {
+            boolean isAdvisorSame = frame.getAdvisorName().equals(timeFrame.getAdvisorName());
+            boolean isUserSame = frame.getUsername().equals(timeFrame.getUsername());
+            boolean isStartDateSame = frame.getStartDateTime().equals(timeFrame.getStartDateTime());
+            boolean isEndDateSame = frame.getEndDateTime().equals(timeFrame.getEndDateTime());
+            if(isAdvisorSame && isUserSame && isStartDateSame && isEndDateSame){
+                mSessionChatAdapter.remove(frame);
+            }
+        }
     }
 }

@@ -79,7 +79,12 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.button_talk_id:
                 if (this.mCall == null) {
-                    this.mCall = this.mSinchClient.getCallClient().callUser(mRecipientId);
+                    if(this.mCall.getRemoteUserId().equals(mRecipientId)) {
+                        this.mCall = this.mSinchClient.getCallClient().callUser(mRecipientId);
+                    } else {
+                        this.mCall.answer();
+                    }
+                    
                     this.mCall.addCallListener(new SinchCallListener());
                     this.mInfoText.setText("Hang Up");
                 }
@@ -136,7 +141,7 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
         public void onIncomingCall(CallClient callClient, Call incomingCall) {
             //Pick up the mCall!
             mCall = incomingCall;
-            mCall.answer();
+            //mCall.answer();
             mCall.addCallListener(new SinchCallListener());
             mInfoText.setText("Hang Up");
         }
