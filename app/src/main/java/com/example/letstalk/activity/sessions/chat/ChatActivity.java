@@ -4,9 +4,11 @@ package com.example.letstalk.activity.sessions.chat;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -37,6 +39,7 @@ import com.example.letstalk.configuration.Config;
 import com.example.letstalk.domain.message.ChatMessage;
 import com.example.letstalk.domain.message.ChatMessageStatus;
 import com.example.letstalk.domain.user.User;
+import com.example.letstalk.receiver.NotificationBroadcastReceiver;
 import com.example.letstalk.repository.MessageRepository;
 import com.example.letstalk.utils.BitmapUtil;
 import com.example.letstalk.utils.SpeechUtil;
@@ -312,13 +315,14 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             return;
         }
 
+        NotificationBroadcastReceiver notificationBroadcastReceiver = new NotificationBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        registerReceiver(notificationBroadcastReceiver, intentFilter);
         Intent resultIntent = new Intent(this, ChatActivity.class);
         resultIntent.putExtra(Config.CHAT_EXTRA, mChatPath);
         resultIntent.putExtra(Config.USER_EXTRA, mClient);
         resultIntent.putExtra(Config.CLIENT_USER_EXTRA, mUser);
         resultIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-//        resultIntent.setComponent(
-//                new ComponentName("com.pkg.AppB","com.pkg.AppB.MainActivity"));
         resultIntent.setAction("NEW_MESSAGE_INTENT");
         sendBroadcast(resultIntent);
     }
