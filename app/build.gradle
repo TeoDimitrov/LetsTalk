@@ -39,7 +39,6 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile files('libs/sinch-android-rtc-3.9.10.jar')
     compile 'org.jetbrains:annotations-java5:15.0'
-    compile 'com.github.deano2390:MaterialShowcaseView:1.1.0@aar'
 }
 
 apply plugin: 'com.google.gms.google-services'

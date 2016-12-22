@@ -24,8 +24,6 @@ import com.example.letstalk.domain.timeFrames.TimeFrameType;
 import com.example.letstalk.repository.TimeFrameRepository;
 import com.example.letstalk.repository.UserRepository;
 import com.example.letstalk.utils.HashUtil;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -135,13 +133,6 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
 
                     }
                 });
-
-        new ShowcaseView.Builder(getActivity())
-                .setTarget(new ActionViewTarget(getActivity(), ActionViewTarget.Type.OVERFLOW))
-                .setContentTitle("ShowcaseView")
-                .setContentText("This is highlighting the Home button")
-                .hideOnTouchOutside()
-                .build();
 
         return this.mRelativeLayout;
     }

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -23,6 +24,8 @@ import com.sinch.android.rtc.calling.CallClientListener;
 import com.sinch.android.rtc.calling.CallListener;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class TalkActivity extends AppCompatActivity implements View.OnClickListener {
@@ -37,9 +40,13 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView mInfoText;
 
+    private TextView mStatusInfo;
+
     private String mCallerId;
 
     private String mRecipientId;
+
+    private int mCallDuration;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +61,7 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         this.mInfoText = (TextView) findViewById(R.id.info_text_id);
+        this.mStatusInfo = (TextView) findViewById(R.id.talk_status_id);
         this.mTalk = (ImageButton) findViewById(R.id.button_talk_id);
         this.mTalk.setOnClickListener(this);
         this.mDisconnect = (ImageButton) findViewById(R.id.button_hang_up_id);
@@ -79,19 +87,23 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.button_talk_id:
                 if (this.mCall == null) {
+                    mStatusInfo.setText("Calling...");
                     this.mCall = this.mSinchClient.getCallClient().callUser(mRecipientId);
                     this.mCall.addCallListener(new SinchCallListener());
                     this.mInfoText.setText("Hang Up");
                 } else{
                     this.mCall.answer();
+                    this.countDuration();
                 }
 
                 break;
             case R.id.button_hang_up_id:
                 if (this.mCall != null) {
+                    this.mStatusInfo.setText(null);
                     this.mCall.hangup();
                     this.mCall = null;
                     this.mInfoText.setText("Call");
+                    finish();
                 }
                 break;
         }
@@ -104,7 +116,6 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.RECORD_AUDIO},
                     Config.REQUEST_MICROPHONE);
-
         }
     }
 
@@ -115,12 +126,14 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
             mCall = null;
             mInfoText.setText("Call");
             setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
+            finish();
         }
 
         @Override
         public void onCallEstablished(Call establishedCall) {
             //incoming mCall was picked up
             setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
+            countDuration();
         }
 
         @Override
@@ -138,10 +151,31 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onIncomingCall(CallClient callClient, Call incomingCall) {
             //Pick up the mCall!
+            mStatusInfo.setText("Incoming call...");
             mCall = incomingCall;
             //mCall.answer();
             mCall.addCallListener(new SinchCallListener());
             mInfoText.setText("Hang Up");
         }
+    }
+
+    private void countDuration(){
+        mCallDuration = 0;
+        final Handler handler = new Handler();
+        Timer timer = new Timer(false);
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mStatusInfo.setText(String.valueOf(mCallDuration));
+                        mCallDuration++;
+                    }
+                });
+            }
+        };
+
+        timer.schedule(timerTask, 1000);
     }
 }
