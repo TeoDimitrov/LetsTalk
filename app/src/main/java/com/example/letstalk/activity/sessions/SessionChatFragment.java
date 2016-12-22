@@ -2,6 +2,7 @@ package com.example.letstalk.activity.sessions;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -24,11 +25,10 @@ import com.example.letstalk.domain.timeFrames.TimeFrameType;
 import com.example.letstalk.repository.TimeFrameRepository;
 import com.example.letstalk.repository.UserRepository;
 import com.example.letstalk.utils.HashUtil;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.wooplr.spotlight.SpotlightView;
 
 
 import java.util.ArrayList;
@@ -40,6 +40,7 @@ import static android.view.View.OnClickListener;
 
 public class SessionChatFragment extends Fragment implements OnClickListener {
 
+    private static final String SHOWCASE_ID = "chat";
     private RelativeLayout mRelativeLayout;
 
     private ListView mListView;
@@ -136,19 +137,34 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                     }
                 });
 
-        new ShowcaseView.Builder(getActivity())
-                .setTarget(new ActionViewTarget(getActivity(), ActionViewTarget.Type.OVERFLOW))
-                .setContentTitle("ShowcaseView")
-                .setContentText("This is highlighting the Home button")
-                .hideOnTouchOutside()
-                .build();
+        showHint();
 
         return this.mRelativeLayout;
     }
 
-    protected void showHint(){
-
+    protected void showHint() {
+        String usageId = "chat";
+        new SpotlightView.Builder(getActivity())
+                .introAnimationDuration(400)
+                .performClick(true)
+                .fadeinTextDuration(400)
+                .headingTvColor(Color.parseColor("#eb273f"))
+                .headingTvSize(32)
+                .headingTvText("Love")
+                .subHeadingTvColor(Color.parseColor("#ffffff"))
+                .subHeadingTvSize(16)
+                .subHeadingTvText("Like the picture?\nLet others know.")
+                .maskColor(Color.parseColor("#dc000000"))
+                .target(mBtnAddChat)
+                .lineAnimDuration(400)
+                .lineAndArcColor(Color.parseColor("#eb273f"))
+                .dismissOnTouch(true)
+                .dismissOnBackPress(true)
+                .enableDismissAfterShown(true)
+                .usageId(usageId) //UNIQUE ID
+                .show();
     }
+
 
 
     public static Fragment newInstance() {
