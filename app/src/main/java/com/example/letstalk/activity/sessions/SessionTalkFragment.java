@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,11 +44,13 @@ public class SessionTalkFragment extends Fragment implements OnClickListener {
 
     private SessionChatAdapter mSessionChatAdapter;
 
-    private FloatingActionButton mBtnAddChat;
+    private FloatingActionButton mBtnAddTalk;
 
     private SessionsActivity mSessionsActivity;
 
     private TimeFrameRepository mTimeFrameRepository;
+
+    private SpotlightView.Builder mSpotlightBuilder;
 
     @Nullable
     @Override
@@ -100,8 +103,8 @@ public class SessionTalkFragment extends Fragment implements OnClickListener {
                 }
             }
         });
-        this.mBtnAddChat = (FloatingActionButton) this.mRelativeLayout.findViewById(R.id.add_talk_id);
-        this.mBtnAddChat.setOnClickListener(this);
+        this.mBtnAddTalk = (FloatingActionButton) this.mRelativeLayout.findViewById(R.id.add_talk_id);
+        this.mBtnAddTalk.setOnClickListener(this);
         this.mTimeFrameRepository
                 .getmDatabaseReference()
                 .addChildEventListener(new ChildEventListener() {
@@ -131,33 +134,60 @@ public class SessionTalkFragment extends Fragment implements OnClickListener {
 
                     }
                 });
-        showHint();
+
+//       this.mSpotlightBuilder =  new SpotlightView.Builder(getActivity())
+//                .introAnimationDuration(400)
+//                .performClick(true)
+//                .fadeinTextDuration(400)
+//                .headingTvColor(Color.parseColor("#eb273f"))
+//                .headingTvSize(32)
+//                .headingTvText("Add talk")
+//                .subHeadingTvColor(Color.parseColor("#ffffff"))
+//                .subHeadingTvSize(16)
+//                .subHeadingTvText("Click here to start a new chat session. \nThe advisor will confirm it when they are available")
+//                .maskColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryTransparent))
+//                .target(mBtnAddTalk)
+//                .lineAnimDuration(400)
+//                .lineAndArcColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark))
+//                .dismissOnTouch(true)
+//                .dismissOnBackPress(true)
+//                .enableDismissAfterShown(true);
+//       // .usageId(usageId) //UNIQUE ID
 
         return this.mRelativeLayout;
     }
 
-    protected void showHint() {
-        String usageId = "chat";
-        new SpotlightView.Builder(getActivity())
-                .introAnimationDuration(400)
-                .performClick(true)
-                .fadeinTextDuration(400)
-                .headingTvColor(Color.parseColor("#eb273f"))
-                .headingTvSize(32)
-                .headingTvText("Love")
-                .subHeadingTvColor(Color.parseColor("#ffffff"))
-                .subHeadingTvSize(16)
-                .subHeadingTvText("Like the picture?\nLet others know.")
-                .maskColor(Color.parseColor("#dc000000"))
-                .target(mBtnAddChat)
-                .lineAnimDuration(400)
-                .lineAndArcColor(Color.parseColor("#eb273f"))
-                .dismissOnTouch(true)
-                .dismissOnBackPress(true)
-                .enableDismissAfterShown(true)
-                .usageId(usageId) //UNIQUE ID
-                .show();
-    }
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//
+//        if (isVisibleToUser){
+//            this.mSpotlightBuilder.show();
+//        }
+//    }
+
+//    protected void showHint() {
+//        String usageId = "talk";
+//        new SpotlightView.Builder(getActivity())
+//                .introAnimationDuration(400)
+//                .performClick(true)
+//                .fadeinTextDuration(400)
+//                .headingTvColor(Color.parseColor("#eb273f"))
+//                .headingTvSize(32)
+//                .headingTvText("Add talk")
+//                .subHeadingTvColor(Color.parseColor("#ffffff"))
+//                .subHeadingTvSize(16)
+//                .subHeadingTvText("Click here to start a new chat session. \nThe advisor will confirm it when they are available")
+//                .maskColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryTransparent))
+//                .target(mBtnAddTalk)
+//                .lineAnimDuration(400)
+//                .lineAndArcColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark))
+//                .dismissOnTouch(true)
+//                .dismissOnBackPress(true)
+//                .enableDismissAfterShown(true)
+//                //.usageId(usageId) //UNIQUE ID
+//                .show();
+//    }
 
     @Override
     public void onClick(View v) {

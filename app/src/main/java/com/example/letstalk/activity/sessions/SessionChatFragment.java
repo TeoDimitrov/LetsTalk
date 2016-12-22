@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,7 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
     private TimeFrameRepository mTimeFrameRepository;
 
     private UserRepository mUserRepository;
+    private SpotlightView.Builder mSpotlightBuilder;
 
     @Nullable
     @Override
@@ -138,9 +140,10 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                 });
 
         showHint();
-
         return this.mRelativeLayout;
     }
+
+
 
     protected void showHint() {
         String usageId = "chat";
@@ -150,21 +153,20 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                 .fadeinTextDuration(400)
                 .headingTvColor(Color.parseColor("#eb273f"))
                 .headingTvSize(32)
-                .headingTvText("Love")
+                .headingTvText("Add chat")
                 .subHeadingTvColor(Color.parseColor("#ffffff"))
                 .subHeadingTvSize(16)
-                .subHeadingTvText("Like the picture?\nLet others know.")
-                .maskColor(Color.parseColor("#dc000000"))
+                .subHeadingTvText("Click here to start a new chat session. The advisor will confirm it when they are available.")
+                .maskColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryTransparent))
                 .target(mBtnAddChat)
                 .lineAnimDuration(400)
-                .lineAndArcColor(Color.parseColor("#eb273f"))
+                .lineAndArcColor(Color.parseColor("#ed3c52"))
                 .dismissOnTouch(true)
                 .dismissOnBackPress(true)
                 .enableDismissAfterShown(true)
                 .usageId(usageId) //UNIQUE ID
                 .show();
     }
-
 
 
     public static Fragment newInstance() {
@@ -208,7 +210,7 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
         }
     }
 
-    private void deleteChangedTimeFrame(DataSnapshot dataSnapshot){
+    private void deleteChangedTimeFrame(DataSnapshot dataSnapshot) {
         TimeFrame timeFrame = dataSnapshot.getValue(TimeFrame.class);
         List<TimeFrame> timeFrameList = this.mSessionChatAdapter.getTimeFrames();
         for (TimeFrame frame : timeFrameList) {
@@ -216,7 +218,7 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
             boolean isUserSame = frame.getUsername().equals(timeFrame.getUsername());
             boolean isStartDateSame = frame.getStartDateTime().equals(timeFrame.getStartDateTime());
             boolean isEndDateSame = frame.getEndDateTime().equals(timeFrame.getEndDateTime());
-            if(isAdvisorSame && isUserSame && isStartDateSame && isEndDateSame){
+            if (isAdvisorSame && isUserSame && isStartDateSame && isEndDateSame) {
                 mSessionChatAdapter.remove(frame);
             }
         }
