@@ -298,7 +298,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
     private void sendNotification(DataSnapshot dataSnapshot) {
         ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
-        if(chatMessage.getAuthor() != mUser.getEmail()){
+        if(chatMessage.getAuthor() == mUser.getEmail()){
             return;
         }
 
