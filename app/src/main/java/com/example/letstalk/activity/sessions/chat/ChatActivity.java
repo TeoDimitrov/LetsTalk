@@ -4,6 +4,7 @@ package com.example.letstalk.activity.sessions.chat;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -147,6 +148,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
                 appendMessage(dataSnapshot);
                 ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
                 if(chatMessage.getChatMessageStatus() == ChatMessageStatus.NEW){
+                    //TODO Make it work some day
                     sendNotification(chatMessage);
                     chatMessage.setChatMessageStatus(ChatMessageStatus.READ);
                     String key = dataSnapshot.getKey();
@@ -314,6 +316,10 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
         resultIntent.putExtra(Config.CHAT_EXTRA, mChatPath);
         resultIntent.putExtra(Config.USER_EXTRA, mClient);
         resultIntent.putExtra(Config.CLIENT_USER_EXTRA, mUser);
+        resultIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+//        resultIntent.setComponent(
+//                new ComponentName("com.pkg.AppB","com.pkg.AppB.MainActivity"));
+        resultIntent.setAction("NEW_MESSAGE_INTENT");
         sendBroadcast(resultIntent);
     }
 }
