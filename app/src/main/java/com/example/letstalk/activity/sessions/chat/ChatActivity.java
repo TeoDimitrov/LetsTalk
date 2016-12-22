@@ -276,12 +276,17 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void setActionBarTitle(User client) {
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        int age = currentYear - client.getBirthDate();
         StringBuilder title = new StringBuilder();
-        title.append(client.getGender());
-        title.append(", ");
-        title.append(age);
+        if(this.mUser.getRole().getName().equals("AdvisorRole")) {
+            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+            int age = currentYear - client.getBirthDate();
+            title.append(client.getGender());
+            title.append(", ");
+            title.append(age);
+        } else {
+            title.append(Config.ADVISOR_TITLE);
+        }
+
         getSupportActionBar().setTitle(title);
     }
 }

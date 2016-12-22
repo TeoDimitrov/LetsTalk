@@ -77,4 +77,6 @@ public final class Config {
     public static final String ERROR_TEXT_TOO_LONG = "Message is too long.";
 
     public static final int MESSAGE_MAX_LENGHT = 500;
+
+    public static final String ADVISOR_TITLE = "Advisor";
 }

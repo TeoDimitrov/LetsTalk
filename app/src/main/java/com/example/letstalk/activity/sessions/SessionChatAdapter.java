@@ -70,4 +70,9 @@ public class SessionChatAdapter extends ArrayAdapter<TimeFrame> {
     public TimeFrame getItem(int position) {
         return this.timeFrames.get(position);
     }
+
+    @Override
+    public void remove(TimeFrame object) {
+       this.timeFrames.remove(object);
+    }
 }
