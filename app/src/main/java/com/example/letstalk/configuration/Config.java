@@ -81,4 +81,6 @@ public final class Config {
     public static final String ADVISOR_TITLE = "Advisor";
 
     public static final int NOTIFICATION_CHAT = 1;
+
+    public static final String NOTIFICATION_NEW_CHAT_TEXT = "New chat message";
 }

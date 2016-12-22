@@ -16,6 +16,10 @@ public class MessageRepository {
         this.mDatabaseReference.child(key).setValue(message);
     }
 
+    public void update(ChatMessage message, String key) {
+        this.mDatabaseReference.child(key).setValue(message);
+    }
+
     public DatabaseReference getmDatabaseReference() {
         return this.mDatabaseReference;
     }

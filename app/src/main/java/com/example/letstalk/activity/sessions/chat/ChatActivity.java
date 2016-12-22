@@ -7,8 +7,11 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +34,7 @@ import com.example.letstalk.R;
 import com.example.letstalk.activity.sessions.note.NotesActivity;
 import com.example.letstalk.configuration.Config;
 import com.example.letstalk.domain.message.ChatMessage;
+import com.example.letstalk.domain.message.ChatMessageStatus;
 import com.example.letstalk.domain.user.User;
 import com.example.letstalk.repository.MessageRepository;
 import com.example.letstalk.utils.BitmapUtil;
@@ -141,7 +145,13 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 appendMessage(dataSnapshot);
-                sendNotification(dataSnapshot);
+                ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
+                if(chatMessage.getChatMessageStatus() == ChatMessageStatus.NEW){
+                    sendNotification(chatMessage);
+                    chatMessage.setChatMessageStatus(ChatMessageStatus.READ);
+                    String key = dataSnapshot.getKey();
+                    mMessageRepository.update(chatMessage, key);
+                }
             }
 
             @Override
@@ -162,7 +172,6 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-
         });
     }
 
@@ -296,8 +305,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
         getSupportActionBar().setTitle(title);
     }
 
-    private void sendNotification(DataSnapshot dataSnapshot) {
-        ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
+    private void sendNotification(ChatMessage chatMessage) {
         if(chatMessage.getAuthor() == mUser.getEmail()){
             return;
         }
@@ -305,8 +313,8 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.letstalk_logo)
-                        .setContentTitle("My notification")
-                        .setContentText("Hello World!");
+                        .setContentTitle(Config.NOTIFICATION_NEW_CHAT_TEXT)
+                        .setContentText(chatMessage.getMessage());
         Intent resultIntent = new Intent(this, ChatActivity.class);
         resultIntent.putExtra(Config.CHAT_EXTRA, mChatPath);
         resultIntent.putExtra(Config.USER_EXTRA, mClient);
@@ -320,6 +328,8 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
         mBuilder.setContentIntent(resultPendingIntent);
+        mBuilder.setVibrate(new long[] { 1000, 1000});
+        mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
         NotificationManager mNotificationManager =
                 (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(Config.NOTIFICATION_CHAT, mBuilder.build());

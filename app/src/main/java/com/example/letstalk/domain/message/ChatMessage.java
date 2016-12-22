@@ -20,17 +20,21 @@ public class ChatMessage {
 
     private String messageDate;
 
+    private ChatMessageStatus chatMessageStatus;
+
     @SuppressWarnings("unused")
     public ChatMessage() {
     }
 
     public ChatMessage(String message, String author, Date messageDate) {
+        this.chatMessageStatus = ChatMessageStatus.NEW;
         this.setAuthor(author);
         this.setMessage(message);
         this.setUTCDate(messageDate);
     }
 
     public ChatMessage(Bitmap encodedImage, String author, Date messageDate) {
+        this.chatMessageStatus = ChatMessageStatus.NEW;
         this.setAuthor(author);
         this.setEncodedImageFromFile(encodedImage);
         this.setUTCDate(messageDate);
@@ -91,5 +95,13 @@ public class ChatMessage {
     public String getLocalTime() {
         String localTime = DateTimeUtil.getLocalTime(this.messageDate);
         return localTime;
+    }
+
+    public ChatMessageStatus getChatMessageStatus() {
+        return this.chatMessageStatus;
+    }
+
+    public void setChatMessageStatus(ChatMessageStatus chatMessageStatus) {
+        this.chatMessageStatus = chatMessageStatus;
     }
 }
