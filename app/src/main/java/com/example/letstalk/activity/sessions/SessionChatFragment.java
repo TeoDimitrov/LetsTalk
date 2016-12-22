@@ -5,16 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -24,16 +21,17 @@ import com.example.letstalk.configuration.Config;
 import com.example.letstalk.domain.timeFrames.TimeFrame;
 import com.example.letstalk.domain.timeFrames.TimeFrameStatus;
 import com.example.letstalk.domain.timeFrames.TimeFrameType;
-import com.example.letstalk.domain.user.User;
 import com.example.letstalk.repository.TimeFrameRepository;
 import com.example.letstalk.repository.UserRepository;
 import com.example.letstalk.utils.HashUtil;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -107,6 +105,7 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
         });
         this.mBtnAddChat = (FloatingActionButton) this.mRelativeLayout.findViewById(R.id.add_chat_id);
         this.mBtnAddChat.setOnClickListener(this);
+
         this.mTimeFrameRepository
                 .getmDatabaseReference()
                 .addChildEventListener(new ChildEventListener() {
@@ -137,8 +136,20 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                     }
                 });
 
+        new ShowcaseView.Builder(getActivity())
+                .setTarget(new ActionViewTarget(getActivity(), ActionViewTarget.Type.OVERFLOW))
+                .setContentTitle("ShowcaseView")
+                .setContentText("This is highlighting the Home button")
+                .hideOnTouchOutside()
+                .build();
+
         return this.mRelativeLayout;
     }
+
+    protected void showHint(){
+
+    }
+
 
     public static Fragment newInstance() {
         SessionChatFragment chatFragment = new SessionChatFragment();
