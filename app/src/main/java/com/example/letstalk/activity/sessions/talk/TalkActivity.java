@@ -91,7 +91,7 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
                     this.mCall = this.mSinchClient.getCallClient().callUser(mRecipientId);
                     this.mCall.addCallListener(new SinchCallListener());
                     this.mInfoText.setText("Hang Up");
-                } else{
+                } else {
                     this.mCall.answer();
                     this.countDuration();
                 }
@@ -159,7 +159,7 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void countDuration(){
+    private void countDuration() {
         mCallDuration = 0;
         final Handler handler = new Handler();
         Timer timer = new Timer(false);
@@ -169,13 +169,15 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mStatusInfo.setText(String.valueOf(mCallDuration));
+                        int minutes = mCallDuration / 60;
+                        int seconds = mCallDuration - minutes * 60;
+                        mStatusInfo.setText(String.valueOf(String.format("%02d:%02d", minutes, seconds)));
                         mCallDuration++;
                     }
                 });
             }
         };
 
-        timer.schedule(timerTask, 1000);
+        timer.schedule(timerTask, 1000, 1000);
     }
 }
