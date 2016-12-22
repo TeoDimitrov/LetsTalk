@@ -82,7 +82,10 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
                     this.mCall = this.mSinchClient.getCallClient().callUser(mRecipientId);
                     this.mCall.addCallListener(new SinchCallListener());
                     this.mInfoText.setText("Hang Up");
+                } else{
+                    this.mCall.answer();
                 }
+
                 break;
             case R.id.button_hang_up_id:
                 if (this.mCall != null) {
@@ -136,7 +139,7 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
         public void onIncomingCall(CallClient callClient, Call incomingCall) {
             //Pick up the mCall!
             mCall = incomingCall;
-            mCall.answer();
+            //mCall.answer();
             mCall.addCallListener(new SinchCallListener());
             mInfoText.setText("Hang Up");
         }

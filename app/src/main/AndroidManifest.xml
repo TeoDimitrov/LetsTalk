@@ -70,7 +70,9 @@
             android:screenOrientation="portrait"
             android:name=".activity.sessions.note.NotesActivity"
             android:label="Notes"></activity>
-        <activity android:name=".activity.sessions.talk.TalkActivity"></activity>
+        <activity
+            android:name=".activity.sessions.talk.TalkActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
     <!-- VoIP Permissions -->
