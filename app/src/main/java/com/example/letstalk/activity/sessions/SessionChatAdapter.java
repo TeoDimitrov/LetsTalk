@@ -75,4 +75,8 @@ public class SessionChatAdapter extends ArrayAdapter<TimeFrame> {
     public void remove(TimeFrame object) {
        this.timeFrames.remove(object);
     }
+
+    public List<TimeFrame> getTimeFrames() {
+        return this.timeFrames;
+    }
 }

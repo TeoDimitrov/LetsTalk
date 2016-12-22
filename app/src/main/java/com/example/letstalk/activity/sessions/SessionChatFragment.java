@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -34,6 +35,7 @@ import com.google.firebase.database.DatabaseError;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static android.view.View.OnClickListener;
 
@@ -115,7 +117,8 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        ((BaseAdapter) mListView.getAdapter()).notifyDataSetChanged();
+                        deleteChangedTimeFrame(dataSnapshot);
+                        appendTimeFrame(dataSnapshot);
                     }
 
                     @Override
@@ -175,6 +178,20 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
             }
 
             ((BaseAdapter) this.mListView.getAdapter()).notifyDataSetChanged();
+        }
+    }
+
+    private void deleteChangedTimeFrame(DataSnapshot dataSnapshot){
+        TimeFrame timeFrame = dataSnapshot.getValue(TimeFrame.class);
+        List<TimeFrame> timeFrameList = this.mSessionChatAdapter.getTimeFrames();
+        for (TimeFrame frame : timeFrameList) {
+            boolean isAdvisorSame = frame.getAdvisorName().equals(timeFrame.getAdvisorName());
+            boolean isUserSame = frame.getUsername().equals(timeFrame.getUsername());
+            boolean isStartDateSame = frame.getStartDateTime().equals(timeFrame.getStartDateTime());
+            boolean isEndDateSame = frame.getEndDateTime().equals(timeFrame.getEndDateTime());
+            if(isAdvisorSame && isUserSame && isStartDateSame && isEndDateSame){
+                mSessionChatAdapter.remove(frame);
+            }
         }
     }
 }

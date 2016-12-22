@@ -105,7 +105,8 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final ChatMessage chatMessage = (ChatMessage) parent.getItemAtPosition(position);
-                showEnlargedBitmap(chatMessage);
+                //TODO Fix Picture
+                //showEnlargedBitmap(chatMessage);
             }
 
             private void showEnlargedBitmap(ChatMessage chatMessage) {
