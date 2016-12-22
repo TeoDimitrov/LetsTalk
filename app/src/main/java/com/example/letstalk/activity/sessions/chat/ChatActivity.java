@@ -186,10 +186,12 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
     private void sendMessage() {
         String message = this.mEditMessageText.getText().toString();
+        this.mEditMessageText.setError(null);
         if (TextUtils.isEmpty(message)) {
             return;
         } else if (message.length() > Config.MESSAGE_MAX_LENGHT) {
             this.mEditMessageText.setError(Config.ERROR_TEXT_TOO_LONG);
+            return;
         }
         ChatMessage chatMessage = new ChatMessage(message, mUser.getEmail(), new Date());
         this.mMessageRepository.create(chatMessage);

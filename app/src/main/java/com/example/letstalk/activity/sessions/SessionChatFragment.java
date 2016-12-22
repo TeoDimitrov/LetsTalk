@@ -115,7 +115,8 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        ((BaseAdapter) mListView.getAdapter()).notifyDataSetChanged();
+                        appendTimeFrame(dataSnapshot);
+                        //((BaseAdapter) mListView.getAdapter()).notifyDataSetChanged();
                     }
 
                     @Override

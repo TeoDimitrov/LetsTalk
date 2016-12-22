@@ -38,9 +38,9 @@
             android:layout_toRightOf="@id/chat_message_id"
             android:layout_alignBottom="@+id/chat_message_id"
             android:padding="5dp"
-            android:textSize="12dp"
+            android:textSize="10dp"
             android:textStyle="normal"
-            android:textColor="@color/popupItems" />
+            android:textColor="@color/gray" />
     </RelativeLayout>
 
     <LinearLayout

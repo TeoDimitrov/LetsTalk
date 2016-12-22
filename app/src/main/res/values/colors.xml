@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#f06d84</color>
+    <color name="colorPrimaryTransparent">#CCf06d84</color>
     <color name="colorPrimaryDark">#f14266</color>
     <color name="colorAccent">#fef7f9</color>
     <color name="colorInactiveTab">#e8c0cb</color>
@@ -10,5 +11,6 @@
     <color name="darkGray">#808080</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="lightGray">#20545454</color>
+    <color name="gray">#898989</color>
+    <color name="lightGray">#E5E5E5</color>
 </resources>

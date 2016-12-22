@@ -2,7 +2,6 @@ package com.example.letstalk.activity.sessions.chat;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -77,11 +76,13 @@ public class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
         if (this.user.getEmail().equals(chatMessage.getAuthor())) {
             messageLinearLayout.setGravity(Gravity.RIGHT);
             messageRelativeLayout.setBackgroundResource(R.drawable.chat_message_shape_current_user);
-            textViewChatMessage.setTextColor(ContextCompat.getColor(activityContext, R.color.lightGray));
+            textViewChatMessage.setTextColor(ContextCompat.getColor(activityContext, R.color.white));
+            textViewTime.setTextColor(ContextCompat.getColor(activityContext, R.color.white));
         } else {
             messageLinearLayout.setGravity(Gravity.LEFT);
             messageRelativeLayout.setBackgroundResource(R.drawable.chat_message_shape_other_user);
             textViewChatMessage.setTextColor(ContextCompat.getColor(activityContext, R.color.darkGray));
+            textViewTime.setTextColor(ContextCompat.getColor(activityContext, R.color.gray));
         }
 
         if (chatMessage.getEncodedImage() != null) {

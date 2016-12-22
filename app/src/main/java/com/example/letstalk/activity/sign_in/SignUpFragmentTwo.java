@@ -101,7 +101,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener {
 
     private boolean validateEmail() {
         String email = this.etEmail.getText().toString();
-        boolean isEmailValid  = true;
+        boolean isEmailValid = true;
         Pattern VALID_EMAIL_ADDRESS_REGEX =
                 Pattern.compile(VALID_EMAIL_ADDRESS_PATTERN, Pattern.CASE_INSENSITIVE);
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
@@ -109,7 +109,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener {
         if (TextUtils.isEmpty(email)) {
             this.etEmail.setError(Config.ERROR_EMAIL_IS_REQUIRED);
             isEmailValid = false;
-        }else if (email.matches(".*[#$\\[\\]].*")) {
+        } else if (email.matches(".*[#$\\[\\]].*")) {
             this.etEmail.setError(Config.ERROR_EMAIL_SHOULD_NOT_CONTAIN);
             isEmailValid = false;
         } else if (!matcher.find()) {
@@ -137,8 +137,6 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener {
 
         String confirmPassword = this.etConfirmPassword.getText().toString();
         if (TextUtils.isEmpty(confirmPassword)) {
-            this.etConfirmPassword.setError("Confirm password is required.");
-        } else if (!confirmPassword.equals(password)) {
             this.etConfirmPassword.setError(Config.ERROR_CONFIRM_PASSWORD_IS_REQUIRED);
             isPasswordValid = false;
         } else if (!confirmPassword.equals(password)) {
