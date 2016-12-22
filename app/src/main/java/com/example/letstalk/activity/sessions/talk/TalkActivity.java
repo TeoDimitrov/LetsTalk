@@ -79,15 +79,13 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.button_talk_id:
                 if (this.mCall == null) {
-                    if(this.mCall.getRemoteUserId().equals(mRecipientId)) {
-                        this.mCall = this.mSinchClient.getCallClient().callUser(mRecipientId);
-                    } else {
-                        this.mCall.answer();
-                    }
-                    
+                    this.mCall = this.mSinchClient.getCallClient().callUser(mRecipientId);
                     this.mCall.addCallListener(new SinchCallListener());
                     this.mInfoText.setText("Hang Up");
+                } else{
+                    this.mCall.answer();
                 }
+
                 break;
             case R.id.button_hang_up_id:
                 if (this.mCall != null) {
