@@ -18,26 +18,28 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "Received", Toast.LENGTH_SHORT).show();
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.letstalk_logo)
-                        .setContentTitle(Config.NOTIFICATION_NEW_CHAT_TEXT)
-                        .setContentText("Chat message here");
+        if(intent.getAction().equals("NEW_MESSAGE_INTENT")) {
+            Toast.makeText(context, "Received", Toast.LENGTH_SHORT).show();
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(context)
+                            .setSmallIcon(R.drawable.letstalk_logo)
+                            .setContentTitle(Config.NOTIFICATION_NEW_CHAT_TEXT)
+                            .setContentText("Chat message here");
 
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addParentStack(ChatActivity.class);
-        stackBuilder.addNextIntent(intent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-        mBuilder.setVibrate(new long[] { 1000, 1000});
-        mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(Config.NOTIFICATION_CHAT, mBuilder.build());
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addParentStack(ChatActivity.class);
+            stackBuilder.addNextIntent(intent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            mBuilder.setContentIntent(resultPendingIntent);
+            mBuilder.setVibrate(new long[]{1000, 1000});
+            mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+            NotificationManager mNotificationManager =
+                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(Config.NOTIFICATION_CHAT, mBuilder.build());
+        }
     }
 }

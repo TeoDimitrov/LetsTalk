@@ -311,7 +311,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void sendNotification(ChatMessage chatMessage) {
-        if(chatMessage.getAuthor().equals(mUser.getEmail())){
+        if(!chatMessage.getAuthor().equals(mUser.getEmail())){
             return;
         }
 
@@ -324,7 +324,6 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
         resultIntent.putExtra(Config.CLIENT_USER_EXTRA, mUser);
         resultIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         resultIntent.setAction("NEW_MESSAGE_INTENT");
-        resultIntent.setComponent(new ComponentName("com.example.letstalk.activity.sessions","com.example.letstalk.activity.sessions.SessionActivity"));
-        sendBroadcast(resultIntent);
+        this.sendBroadcast(resultIntent);
     }
 }
