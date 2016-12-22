@@ -1,34 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <ImageButton
-        android:id="@+id/button_talk_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|left"
-        android:layout_margin="100dp"
-        android:background="@drawable/phone_connected"
-        android:adjustViewBounds="true"
-        android:scaleType="centerInside"/>
+    <View
+        android:id="@+id/topRectangle"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimaryTransparent"
+        android:visibility="visible" />
 
-    <ImageButton
-        android:id="@+id/button_hang_up_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|right"
-        android:layout_margin="100dp"
-        android:background="@drawable/phone_disconnected"
-        android:adjustViewBounds="true"
-        android:scaleType="centerInside"/>
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="150dp"
+        android:layout_height="250dp"
+        android:layout_above="@+id/tabLayoutSign"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/letstalk_logo" />
 
     <TextView
-        android:id="@+id/info_text_id"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:id="@+id/talk_status_id"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_below="@+id/topRectangle"
+        android:layout_margin="50dp"
+        android:textSize="30dp"/>
 
-</FrameLayout>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_below="@+id/topRectangle">
+
+        <ImageButton
+            android:id="@+id/button_talk_id"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical|left"
+            android:layout_margin="85dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/phone_connected"
+            android:scaleType="centerInside" />
+
+        <ImageButton
+            android:id="@+id/button_hang_up_id"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_margin="85dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/phone_disconnected"
+            android:scaleType="centerInside" />
+
+        <TextView
+            android:id="@+id/info_text_id"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_centerHorizontal="true"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </FrameLayout>
+</RelativeLayout>
