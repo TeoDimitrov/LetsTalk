@@ -73,6 +73,10 @@
         <activity
             android:name=".activity.sessions.talk.TalkActivity"
             android:screenOrientation="portrait"></activity>
+
+        <receiver
+            android:name=".receiver.NotificationBroadcastReceiver"
+            android:enabled="true"/>
     </application>
 
     <!-- VoIP Permissions -->

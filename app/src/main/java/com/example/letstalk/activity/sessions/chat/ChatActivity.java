@@ -306,32 +306,14 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void sendNotification(ChatMessage chatMessage) {
-        if(chatMessage.getAuthor() == mUser.getEmail()){
+        if(chatMessage.getAuthor().equals(mUser.getEmail())){
             return;
         }
 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.letstalk_logo)
-                        .setContentTitle(Config.NOTIFICATION_NEW_CHAT_TEXT)
-                        .setContentText(chatMessage.getMessage());
         Intent resultIntent = new Intent(this, ChatActivity.class);
         resultIntent.putExtra(Config.CHAT_EXTRA, mChatPath);
         resultIntent.putExtra(Config.USER_EXTRA, mClient);
         resultIntent.putExtra(Config.CLIENT_USER_EXTRA, mUser);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(ChatActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-        mBuilder.setVibrate(new long[] { 1000, 1000});
-        mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
-        NotificationManager mNotificationManager =
-                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(Config.NOTIFICATION_CHAT, mBuilder.build());
+        sendBroadcast(resultIntent);
     }
 }
