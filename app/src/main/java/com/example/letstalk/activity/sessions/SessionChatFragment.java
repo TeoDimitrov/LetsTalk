@@ -25,6 +25,7 @@ import com.example.letstalk.domain.timeFrames.TimeFrameStatus;
 import com.example.letstalk.domain.timeFrames.TimeFrameType;
 import com.example.letstalk.repository.TimeFrameRepository;
 import com.example.letstalk.repository.UserRepository;
+import com.example.letstalk.utils.DateTimeUtil;
 import com.example.letstalk.utils.HashUtil;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +34,7 @@ import com.wooplr.spotlight.SpotlightView;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -193,6 +195,10 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
 
     private void appendTimeFrame(DataSnapshot dataSnapshot) {
         TimeFrame timeFrame = dataSnapshot.getValue(TimeFrame.class);
+        if(isOldSession(timeFrame)){
+            return;
+        }
+
         if (timeFrame.getType() == TimeFrameType.CHAT) {
             String role = this.mSessionsActivity.getCurrentUser().getRole().getName();
             String userName = this.mSessionsActivity.getCurrentUser().getEmail();
@@ -222,5 +228,19 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                 mSessionChatAdapter.remove(frame);
             }
         }
+    }
+
+    private boolean isOldSession(TimeFrame timeFrame){
+        boolean isOld = false;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, -7);
+        Date dateBefore7Days = cal.getTime();
+        Date timeFrameDate = DateTimeUtil.getUTCDateTime(timeFrame.getStartDateTime());
+        if(timeFrameDate.before(dateBefore7Days)){
+            isOld = true;
+        }
+
+        return isOld;
     }
 }

@@ -1,8 +1,7 @@
-package com.example.letstalk.activity.sign_in;
+package com.example.letstalk.activity.signIn;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.XmlRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;

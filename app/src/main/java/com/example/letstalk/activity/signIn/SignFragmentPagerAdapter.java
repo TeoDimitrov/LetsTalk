@@ -1,11 +1,11 @@
-package com.example.letstalk.activity.sign_in;
+package com.example.letstalk.activity.signIn;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.letstalk.activity.sign_in.interfaces.TabFragmentListener;
+import com.example.letstalk.activity.signIn.interfaces.TabFragmentListener;
 
 public class SignFragmentPagerAdapter extends FragmentStatePagerAdapter {
 

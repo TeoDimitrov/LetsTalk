@@ -54,7 +54,7 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".activity.sign_in.SignInActivity"
+            android:name=".activity.signIn.SignInActivity"
             android:screenOrientation="portrait">
 
         </activity>

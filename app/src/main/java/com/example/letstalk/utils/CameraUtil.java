@@ -1,4 +1,4 @@
-package com.example.letstalk.Utilities;
+package com.example.letstalk.utils;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,14 +12,14 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Camera {
+public class CameraUtil {
 
     private Intent mTakePictureIntent;
     private File mPhotoFile;
     static final int REQUEST_TAKE_PHOTO = 1;
     private String mCurrentPhotoPath;
 
-    public Camera() {
+    public CameraUtil() {
         this.mTakePictureIntent = new Intent();
         this.mPhotoFile = new File(this.mCurrentPhotoPath);
     }

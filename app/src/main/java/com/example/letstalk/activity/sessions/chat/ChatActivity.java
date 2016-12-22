@@ -1,12 +1,16 @@
 package com.example.letstalk.activity.sessions.chat;
 
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -137,6 +141,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 appendMessage(dataSnapshot);
+                sendNotification(dataSnapshot);
             }
 
             @Override
@@ -278,7 +283,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
     private void setActionBarTitle(User client) {
         StringBuilder title = new StringBuilder();
-        if(this.mUser.getRole().getName().equals("AdvisorRole")) {
+        if (this.mUser.getRole().getName().equals("AdvisorRole")) {
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
             int age = currentYear - client.getBirthDate();
             title.append(client.getGender());
@@ -289,5 +294,34 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
         }
 
         getSupportActionBar().setTitle(title);
+    }
+
+    private void sendNotification(DataSnapshot dataSnapshot) {
+        ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
+        if(chatMessage.getAuthor() != mUser.getEmail()){
+            return;
+        }
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.letstalk_logo)
+                        .setContentTitle("My notification")
+                        .setContentText("Hello World!");
+        Intent resultIntent = new Intent(this, ChatActivity.class);
+        resultIntent.putExtra(Config.CHAT_EXTRA, mChatPath);
+        resultIntent.putExtra(Config.USER_EXTRA, mClient);
+        resultIntent.putExtra(Config.CLIENT_USER_EXTRA, mUser);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(ChatActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(Config.NOTIFICATION_CHAT, mBuilder.build());
     }
 }

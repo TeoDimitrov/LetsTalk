@@ -1,4 +1,4 @@
-package com.example.letstalk.activity.sign_in;
+package com.example.letstalk.activity.signIn;
 
 import android.app.ProgressDialog;
 import android.content.Intent;

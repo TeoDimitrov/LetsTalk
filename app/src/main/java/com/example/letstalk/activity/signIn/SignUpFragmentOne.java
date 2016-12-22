@@ -1,4 +1,4 @@
-package com.example.letstalk.activity.sign_in;
+package com.example.letstalk.activity.signIn;
 
 
 import android.annotation.SuppressLint;
@@ -19,7 +19,7 @@ import android.widget.RelativeLayout;
 
 import com.example.letstalk.R;
 import com.example.letstalk.activity.sessions.SessionsActivity;
-import com.example.letstalk.activity.sign_in.interfaces.TabFragmentListener;
+import com.example.letstalk.activity.signIn.interfaces.TabFragmentListener;
 import com.example.letstalk.configuration.Config;
 import com.example.letstalk.firebase.FirebaseFacebookAuthenticator;
 import com.example.letstalk.repository.UserRepository;

@@ -79,4 +79,6 @@ public final class Config {
     public static final int MESSAGE_MAX_LENGHT = 500;
 
     public static final String ADVISOR_TITLE = "Advisor";
+
+    public static final int NOTIFICATION_CHAT = 1;
 }
