@@ -39,7 +39,6 @@ import com.example.letstalk.configuration.Config;
 import com.example.letstalk.domain.message.ChatMessage;
 import com.example.letstalk.domain.message.ChatMessageStatus;
 import com.example.letstalk.domain.user.User;
-import com.example.letstalk.receiver.NotificationBroadcastReceiver;
 import com.example.letstalk.repository.MessageRepository;
 import com.example.letstalk.utils.BitmapUtil;
 import com.example.letstalk.utils.SpeechUtil;
@@ -315,15 +314,47 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             return;
         }
 
-        NotificationBroadcastReceiver notificationBroadcastReceiver = new NotificationBroadcastReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        registerReceiver(notificationBroadcastReceiver, intentFilter);
-        Intent resultIntent = new Intent(this, ChatActivity.class);
+        Intent resultIntent = new Intent();
         resultIntent.putExtra(Config.CHAT_EXTRA, mChatPath);
         resultIntent.putExtra(Config.USER_EXTRA, mClient);
         resultIntent.putExtra(Config.CLIENT_USER_EXTRA, mUser);
         resultIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-        resultIntent.setAction("NEW_MESSAGE_INTENT");
-        this.sendBroadcast(resultIntent);
+        resultIntent.setAction(Config.NOTIFICATION_BROADCAST);
+        resultIntent.addCategory(Intent.CATEGORY_DEFAULT);
+        sendBroadcast(resultIntent);
     }
 }
+
+//        if(intent.getAction().equals("NEW_MESSAGE_INTENT")) {
+//            Toast.makeText(context, "Received", Toast.LENGTH_SHORT).show();
+//            NotificationCompat.Builder mBuilder =
+//                    new NotificationCompat.Builder(context)
+//                            .setSmallIcon(R.drawable.letstalk_logo)
+//                            .setContentTitle(Config.NOTIFICATION_NEW_CHAT_TEXT)
+//                            .setContentText("Chat message here");
+//
+//            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+//            stackBuilder.addParentStack(ChatActivity.class);
+//            stackBuilder.addNextIntent(intent);
+//            PendingIntent resultPendingIntent =
+//                    stackBuilder.getPendingIntent(
+//                            0,
+//                            PendingIntent.FLAG_UPDATE_CURRENT
+//                    );
+//            mBuilder.setContentIntent(resultPendingIntent);
+//            mBuilder.setVibrate(new long[]{1000, 1000});
+//            mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+//            NotificationManager mNotificationManager =
+//                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+//            mNotificationManager.notify(Config.NOTIFICATION_CHAT, mBuilder.build());
+//        }
+//    }
+//}
+//<receiver
+//android:name=".receiver.NotificationBroadcastReceiver"
+//        android:enabled="true"
+//        android:exported="true">
+//<intent-filter>
+//<action android:name="com.example.letstalk.NOTIFICATION_BROADCAST"></action>
+//</intent-filter>
+//</receiver>

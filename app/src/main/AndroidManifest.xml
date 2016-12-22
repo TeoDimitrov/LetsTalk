@@ -56,32 +56,23 @@
         <activity
             android:name=".activity.signIn.SignInActivity"
             android:screenOrientation="portrait">
-
         </activity>
         <activity
             android:name=".activity.sessions.SessionsActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".activity.sessions.chat.ChatActivity"
             android:label="Chat Activity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.sessions.note.NotesActivity"
             android:label="Notes"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.sessions.talk.TalkActivity"
-            android:screenOrientation="portrait"></activity>
-
-        <receiver
-            android:name=".receiver.NotificationBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="NEW_MESSAGE_INTENT"></action>
-            </intent-filter>
-        </receiver>
+            android:screenOrientation="portrait"/>
     </application>
 
     <!-- VoIP Permissions -->
