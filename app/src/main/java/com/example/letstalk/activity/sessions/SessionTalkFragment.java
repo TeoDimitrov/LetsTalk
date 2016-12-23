@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.letstalk.R;
 import com.example.letstalk.activity.sessions.talk.TalkActivity;
@@ -23,6 +24,7 @@ import com.example.letstalk.configuration.Config;
 import com.example.letstalk.domain.timeFrames.TimeFrame;
 import com.example.letstalk.domain.timeFrames.TimeFrameStatus;
 import com.example.letstalk.domain.timeFrames.TimeFrameType;
+import com.example.letstalk.domain.user.User;
 import com.example.letstalk.repository.TimeFrameRepository;
 import com.example.letstalk.utils.DateTimeUtil;
 import com.google.firebase.database.ChildEventListener;
@@ -150,6 +152,11 @@ public class SessionTalkFragment extends Fragment implements OnClickListener {
     }
 
     private void addVoiceTimeFrame() {
+        if (hasUserPaid(this.mSessionsActivity.getCurrentUser())){
+            Toast.makeText(mSessionsActivity, "You have to pay for more talks", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Date startDate = new Date();
         Date endDate = new Date();
         String userName = this.mSessionsActivity.getCurrentUser().getEmail();
@@ -211,5 +218,14 @@ public class SessionTalkFragment extends Fragment implements OnClickListener {
         }
 
         return isOld;
+    }
+
+    private boolean hasUserPaid(User user){
+        boolean hasPaid = true;
+        if(user.getTalks() >= user.getPaidTalks()){
+            hasPaid = false;
+        }
+
+        return hasPaid;
     }
 }

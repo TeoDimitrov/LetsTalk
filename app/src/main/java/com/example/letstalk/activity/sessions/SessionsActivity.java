@@ -1,26 +1,20 @@
 package com.example.letstalk.activity.sessions;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.example.letstalk.R;
-import com.example.letstalk.activity.sessions.chat.ChatActivity;
 import com.example.letstalk.configuration.Config;
 import com.example.letstalk.domain.user.User;
 import com.example.letstalk.receiver.NotificationReceiver;
@@ -59,9 +53,7 @@ public class SessionsActivity extends AppCompatActivity {
             this.currentUser = extras.getParcelable(Config.USER_EXTRA);
         }
 
-        ComponentName component = new ComponentName(this, NotificationReceiver.class);
-        getPackageManager()
-                .setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_ENABLED , PackageManager.DONT_KILL_APP);
+        this.enableNotificationBroadcastReceiver();
     }
 
     @Override
@@ -91,7 +83,8 @@ public class SessionsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = this.getMenuInflater();
-        menuInflater.inflate(R.menu.menu_main, menu);
+        //TODO
+        //menuInflater.inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -110,5 +103,11 @@ public class SessionsActivity extends AppCompatActivity {
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
         mBroadcastReceiver = new NotificationReceiver();
         registerReceiver(mBroadcastReceiver, intentFilter);
+    }
+
+    private void enableNotificationBroadcastReceiver() {
+        ComponentName component = new ComponentName(this, NotificationReceiver.class);
+        getPackageManager()
+                .setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
     }
 }

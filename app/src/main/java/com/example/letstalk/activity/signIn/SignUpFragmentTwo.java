@@ -74,7 +74,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener {
             this.birthYear = args.getInt("birthYear");
         }
 
-        this.firebaseEmailAuthenticator = new FirebaseEmailAuthenticator();
+        this.firebaseEmailAuthenticator = new FirebaseEmailAuthenticator(this.getActivity());
         this.userRepository = new UserRepository(Config.CHILD_USERS);
         this.initializePdLogin();
 

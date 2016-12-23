@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.letstalk.R;
 import com.example.letstalk.activity.sessions.chat.ChatActivity;
@@ -23,6 +24,7 @@ import com.example.letstalk.configuration.Config;
 import com.example.letstalk.domain.timeFrames.TimeFrame;
 import com.example.letstalk.domain.timeFrames.TimeFrameStatus;
 import com.example.letstalk.domain.timeFrames.TimeFrameType;
+import com.example.letstalk.domain.user.User;
 import com.example.letstalk.repository.TimeFrameRepository;
 import com.example.letstalk.repository.UserRepository;
 import com.example.letstalk.utils.DateTimeUtil;
@@ -186,6 +188,11 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
     }
 
     private void addChatTimeFrame() {
+        if (hasUserPaid(this.mSessionsActivity.getCurrentUser())){
+            Toast.makeText(mSessionsActivity, "You have to pay for more chats", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Date startDate = new Date();
         Date endDate = new Date();
         String userName = this.mSessionsActivity.getCurrentUser().getEmail();
@@ -242,5 +249,14 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
         }
 
         return isOld;
+    }
+
+    private boolean hasUserPaid(User user){
+        boolean hasPaid = true;
+        if(user.getChats() >= user.getPaidChats()){
+            hasPaid = false;
+        }
+
+        return hasPaid;
     }
 }

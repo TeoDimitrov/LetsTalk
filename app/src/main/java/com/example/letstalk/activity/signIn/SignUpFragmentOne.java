@@ -106,7 +106,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         this.btnFb = (Button) this.relativeLayout.findViewById(R.id.btn_fb);
         this.btnFb.setOnClickListener(this);
         this.sessionsActivityIntent = new Intent(getActivity(), SessionsActivity.class);
-        this.firebaseFacebookAuthenticator = new FirebaseFacebookAuthenticator();
+        this.firebaseFacebookAuthenticator = new FirebaseFacebookAuthenticator(this.getActivity());
         this.initializePdLogin();
         this.initializeFbButton();
         this.userRepository = new UserRepository(Config.CHILD_USERS);

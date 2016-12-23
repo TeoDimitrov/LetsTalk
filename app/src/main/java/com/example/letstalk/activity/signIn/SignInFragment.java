@@ -74,10 +74,10 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         this.btnFb = (Button) this.relativeLayout.findViewById(R.id.btn_fb_sign_in);
         this.btnFb.setOnClickListener(this);
         this.sessionsActivityIntent = new Intent(getActivity(), SessionsActivity.class);
-        this.firebaseEmailAuthenticator = new FirebaseEmailAuthenticator();
+        this.firebaseEmailAuthenticator = new FirebaseEmailAuthenticator(this.getActivity());
         this.userRepository = new UserRepository(Config.CHILD_USERS);
         this.initializePdSignUser();
-        this.firebaseFacebookAuthenticator = new FirebaseFacebookAuthenticator();
+        this.firebaseFacebookAuthenticator = new FirebaseFacebookAuthenticator(this.getActivity());
         this.initializeFbButton();
 
         //Only For Debugging

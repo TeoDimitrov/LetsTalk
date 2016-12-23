@@ -1,12 +1,15 @@
 package com.example.letstalk.firebase;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
+import com.example.letstalk.activity.signIn.SignInActivity;
 import com.example.letstalk.configuration.Config;
+import com.example.letstalk.repository.UserRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -21,12 +24,21 @@ public class FirebaseEmailAuthenticator {
 
     private FirebaseUser firebaseUser;
 
-    public FirebaseEmailAuthenticator() {
+    private UserRepository userRepository;
+
+    private Activity mActivity;
+
+    public FirebaseEmailAuthenticator(Activity context) {
+        this.mActivity = context;
         this.mAuth = FirebaseAuth.getInstance();
         this.mListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                userRepository = new UserRepository(Config.CHILD_USERS);
                 firebaseUser = firebaseAuth.getCurrentUser();
+                if (firebaseUser != null) {
+                    //userRepository.findByUserNameAndLogIn(firebaseUser.getEmail(), mActivity);
+                }
             }
         };
     }

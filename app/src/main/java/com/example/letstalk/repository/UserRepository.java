@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 
+import com.example.letstalk.activity.sessions.SessionsActivity;
 import com.example.letstalk.configuration.Config;
 import com.example.letstalk.domain.user.User;
 import com.example.letstalk.firebase.FirebaseEmailAuthenticator;
@@ -100,7 +101,28 @@ public class UserRepository {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.child(userPath).getValue(User.class);
                 intent.putExtra(Config.USER_EXTRA, user);
-                firebaseEmailAuthenticator.signIn(email,password,activity,intent, progressDialog);
+                firebaseEmailAuthenticator.signIn(email, password, activity, intent, progressDialog);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        return this.user;
+    }
+
+    public User findByUserNameAndLogIn(final String username, final Activity activity) {
+        final String userPath = this.clearUserName(username);
+        Query query = this.mDatabaseReference.orderByChild(Config.CHILD_USERS_EMAIL).equalTo(username);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.child(userPath).getValue(User.class);
+                Intent intent = new Intent(activity, SessionsActivity.class);
+                intent.putExtra(Config.USER_EXTRA, user);
+                activity.startActivity(intent);
+                activity.finish();
             }
 
             @Override
