@@ -188,4 +188,20 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
+
+    public void addChat(int chat){
+        this.chats += chat;
+    }
+
+    public void addPaidChat(int chat){
+        this.paidChats += chat;
+    }
+
+    public void addTalk(int talk){
+        this.talks += talk;
+    }
+
+    public void addPaidTalk(int talk){
+        this.paidTalks += talk;
+    }
 }
