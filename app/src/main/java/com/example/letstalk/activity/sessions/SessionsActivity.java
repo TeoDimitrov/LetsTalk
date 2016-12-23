@@ -3,17 +3,18 @@ package com.example.letstalk.activity.sessions;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.example.letstalk.R;
 import com.example.letstalk.activity.sessions.chat.ChatActivity;
 import com.example.letstalk.configuration.Config;
 import com.example.letstalk.domain.user.User;
+import com.example.letstalk.receiver.NotificationReceiver;
 import com.example.letstalk.repository.UserRepository;
 
 public class SessionsActivity extends AppCompatActivity {
@@ -37,6 +39,8 @@ public class SessionsActivity extends AppCompatActivity {
     private UserRepository userRepository;
 
     private User currentUser;
+
+    private BroadcastReceiver mBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,32 @@ public class SessionsActivity extends AppCompatActivity {
             this.currentUser = extras.getParcelable(Config.USER_EXTRA);
         }
 
+        ComponentName component = new ComponentName(this, NotificationReceiver.class);
+        getPackageManager()
+                .setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_ENABLED , PackageManager.DONT_KILL_APP);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.registerNotificationBroadcastReceiver();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.registerNotificationBroadcastReceiver();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mBroadcastReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         this.registerNotificationBroadcastReceiver();
     }
 
@@ -78,33 +108,7 @@ public class SessionsActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Config.NOTIFICATION_BROADCAST);
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
-        BroadcastReceiver br = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.w("Check", "Inside On Receiver");
-                NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.letstalk_logo)
-                        .setContentTitle(Config.NOTIFICATION_NEW_CHAT_TEXT)
-                        .setContentText("Chat message here");
-
-                TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                stackBuilder.addParentStack(ChatActivity.class);
-                stackBuilder.addNextIntent(intent);
-                PendingIntent resultPendingIntent =
-                        stackBuilder.getPendingIntent(
-                                0,
-                                PendingIntent.FLAG_UPDATE_CURRENT
-                        );
-                mBuilder.setContentIntent(resultPendingIntent);
-                mBuilder.setVibrate(new long[]{1000, 1000});
-                mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
-                NotificationManager mNotificationManager =
-                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                mNotificationManager.notify(Config.NOTIFICATION_CHAT, mBuilder.build());
-            }
-        };
-
-        registerReceiver(br, intentFilter);
+        mBroadcastReceiver = new NotificationReceiver();
+        registerReceiver(mBroadcastReceiver, intentFilter);
     }
 }

@@ -150,7 +150,6 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
                 appendMessage(dataSnapshot);
                 ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
                 if(chatMessage.getChatMessageStatus() == ChatMessageStatus.NEW){
-                    //TODO Make it work some day
                     sendNotification(chatMessage);
                     chatMessage.setChatMessageStatus(ChatMessageStatus.READ);
                     String key = dataSnapshot.getKey();
@@ -318,6 +317,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
         resultIntent.putExtra(Config.CHAT_EXTRA, mChatPath);
         resultIntent.putExtra(Config.USER_EXTRA, mClient);
         resultIntent.putExtra(Config.CLIENT_USER_EXTRA, mUser);
+        resultIntent.putExtra(Config.CHAT_MESSAGE, chatMessage.getMessage());
         resultIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         resultIntent.setAction(Config.NOTIFICATION_BROADCAST);
         resultIntent.addCategory(Intent.CATEGORY_DEFAULT);

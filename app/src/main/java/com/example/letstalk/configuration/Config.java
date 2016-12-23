@@ -85,4 +85,6 @@ public final class Config {
     public static final String NOTIFICATION_NEW_CHAT_TEXT = "New chat message";
 
     public static final String NOTIFICATION_BROADCAST = "com.example.letstalk.NOTIFICATION_BROADCAST";
+
+    public static final String CHAT_MESSAGE = "CHAT_MESSAGE";
 }
