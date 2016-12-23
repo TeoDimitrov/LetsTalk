@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
-import com.example.letstalk.activity.signIn.SignInActivity;
 import com.example.letstalk.configuration.Config;
 import com.example.letstalk.repository.UserRepository;
 import com.google.android.gms.tasks.OnCompleteListener;

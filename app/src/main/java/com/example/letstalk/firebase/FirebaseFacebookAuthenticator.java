@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 
-import com.example.letstalk.activity.signIn.SignInActivity;
 import com.example.letstalk.configuration.Config;
 import com.example.letstalk.repository.UserRepository;
 import com.facebook.AccessToken;

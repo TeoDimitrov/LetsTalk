@@ -61,6 +61,7 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
     private TimeFrameRepository mTimeFrameRepository;
 
     private UserRepository mUserRepository;
+
     private SpotlightView.Builder mSpotlightBuilder;
 
     @Nullable
@@ -188,10 +189,14 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
     }
 
     private void addChatTimeFrame() {
-        if (hasUserPaid(this.mSessionsActivity.getCurrentUser())){
+        if (!hasUserPaid(this.mSessionsActivity.getCurrentUser())){
             Toast.makeText(mSessionsActivity, "You have to pay for more chats", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        User user = this.mSessionsActivity.getCurrentUser();
+        user.addChat(1);
+        this.mUserRepository.updateUser(user);
 
         Date startDate = new Date();
         Date endDate = new Date();

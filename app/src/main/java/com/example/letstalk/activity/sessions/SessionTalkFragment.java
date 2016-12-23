@@ -2,12 +2,10 @@ package com.example.letstalk.activity.sessions;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +24,7 @@ import com.example.letstalk.domain.timeFrames.TimeFrameStatus;
 import com.example.letstalk.domain.timeFrames.TimeFrameType;
 import com.example.letstalk.domain.user.User;
 import com.example.letstalk.repository.TimeFrameRepository;
+import com.example.letstalk.repository.UserRepository;
 import com.example.letstalk.utils.DateTimeUtil;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -54,6 +53,8 @@ public class SessionTalkFragment extends Fragment implements OnClickListener {
 
     private TimeFrameRepository mTimeFrameRepository;
 
+    private UserRepository mUserRepository;
+
     private SpotlightView.Builder mSpotlightBuilder;
 
     @Nullable
@@ -61,6 +62,7 @@ public class SessionTalkFragment extends Fragment implements OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.mRelativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_talk, container, false);
         this.mSessionsActivity = (SessionsActivity) this.getActivity();
+        this.mUserRepository = new UserRepository(Config.CHILD_USERS);
         this.mListView = (ListView) this.mRelativeLayout.findViewById(R.id.session_talk_list_view_id);
         this.mTimeFrameRepository = new TimeFrameRepository(Config.CHILD_TIMEFRAMES);
         this.mSessionChatAdapter = new SessionChatAdapter(this.getContext(), R.layout.session_item, new ArrayList<TimeFrame>());
@@ -152,10 +154,14 @@ public class SessionTalkFragment extends Fragment implements OnClickListener {
     }
 
     private void addVoiceTimeFrame() {
-        if (hasUserPaid(this.mSessionsActivity.getCurrentUser())){
+        if (!hasUserPaid(this.mSessionsActivity.getCurrentUser())){
             Toast.makeText(mSessionsActivity, "You have to pay for more talks", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        User user = this.mSessionsActivity.getCurrentUser();
+        user.addTalk(1);
+        this.mUserRepository.updateUser(user);
 
         Date startDate = new Date();
         Date endDate = new Date();
