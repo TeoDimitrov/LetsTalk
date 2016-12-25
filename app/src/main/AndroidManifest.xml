@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.letstalk">
+    package="com.wecode.letstalk">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -23,10 +23,6 @@
         android:name="android.hardware.microphone"
         android:required="true" />
 
-    <receiver
-        android:name=".receiver.IncomingCallReceiver"
-        android:label="Call Receiver" />
-
 
     <application
         android:allowBackup="true"
@@ -39,7 +35,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name="com.example.letstalk.activity.splash_screen.SplashActivity"
+            android:name="com.wecode.letstalk.activity.splash_screen.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,27 +48,27 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name="com.example.letstalk.activity.signIn.SignInActivity"
+            android:name="com.wecode.letstalk.activity.signIn.SignInActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name="com.example.letstalk.activity.sessions.SessionsActivity"
+            android:name="com.wecode.letstalk.activity.sessions.SessionsActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.example.letstalk.activity.sessions.chat.ChatActivity"
+            android:name="com.wecode.letstalk.activity.sessions.chat.ChatActivity"
             android:label="Chat Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.letstalk.activity.sessions.note.NotesActivity"
+            android:name="com.wecode.letstalk.activity.sessions.note.NotesActivity"
             android:label="Notes"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.letstalk.activity.sessions.talk.TalkActivity"
+            android:name="com.wecode.letstalk.activity.sessions.talk.TalkActivity"
             android:screenOrientation="portrait" />
 
         <receiver
-            android:name="com.example.letstalk.receiver.NotificationReceiver"
+            android:name="com.wecode.letstalk.receiver.NotificationReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter android:priority="100">

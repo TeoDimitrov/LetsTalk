@@ -3,7 +3,7 @@
     android:theme="@style/AppTheme"
     tools:context=".activities.SessionsActivity">
     <item
-        android:id="@+id/action_profile"
+        android:id="@+id/action_become_advisor"
         android:orderInCategory="100"
-        android:title="@string/action_sing_out" />
+        android:title="@string/action_become_advisor" />
 </menu>

@@ -47,4 +47,5 @@
     <string name="speech_prompt">Share now</string>
     <string name="return_to_chat">Return to chat</string>
     <string name="action_sing_out">Sing Out</string>
+    <string name="action_become_advisor">Become Advisor</string>
 </resources>
