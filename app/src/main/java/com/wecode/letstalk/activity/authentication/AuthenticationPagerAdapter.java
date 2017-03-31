@@ -1,23 +1,26 @@
-package com.wecode.letstalk.activity.signIn;
+package com.wecode.letstalk.activity.authentication;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.wecode.letstalk.activity.signIn.interfaces.TabFragmentListener;
+import com.wecode.letstalk.activity.authentication.signIn.SignInFragment;
+import com.wecode.letstalk.activity.authentication.interfaces.TabFragmentListener;
+import com.wecode.letstalk.activity.authentication.signUp.SignUpFragmentOne;
+import com.wecode.letstalk.activity.authentication.signUp.SignUpFragmentTwo;
 
-public class SignFragmentPagerAdapter extends FragmentStatePagerAdapter {
+public class AuthenticationPagerAdapter extends FragmentStatePagerAdapter {
 
     private static final int PAGE_COUNT = 2;
 
-    private static final String[] TABS = new String[]{"Sign Up", "Sign In"};
+    private static final String[] TABS = new String[]{"Sign In", "Sign Up"};
 
     private Fragment fragmentSignUp;
 
     private FragmentManager fragmentManager;
 
-    public SignFragmentPagerAdapter(FragmentManager fragmentManager) {
+    public AuthenticationPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
         this.setFragmentManager(fragmentManager);
     }
@@ -38,17 +41,19 @@ public class SignFragmentPagerAdapter extends FragmentStatePagerAdapter {
         this.fragmentManager = fragmentManager;
     }
 
-
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
+                return new SignInFragment().newInstance();
+
+            case 1:
                 if (fragmentSignUp == null) {
                     fragmentSignUp = SignUpFragmentOne.newInstance(new TabFragmentListener() {
                         public void onSwitchToNextFragment() {
                             Bundle args = new Bundle();
-                            args.putInt("birthYear", ((SignUpFragmentOne) fragmentSignUp).year);
-                            args.putString("gender", ((SignUpFragmentOne) fragmentSignUp).gender);
+                            args.putInt("birthYear", ((SignUpFragmentOne) fragmentSignUp).mYear);
+                            args.putString("mGender", ((SignUpFragmentOne) fragmentSignUp).mGender);
                             getFragmentManager().beginTransaction().remove(fragmentSignUp).commit();
                             fragmentSignUp = SignUpFragmentTwo.newInstance();
                             fragmentSignUp.setArguments(args);
@@ -58,8 +63,6 @@ public class SignFragmentPagerAdapter extends FragmentStatePagerAdapter {
                 }
 
                 return getFragmentSignUp();
-            case 1:
-                return new SignInFragment().newInstance();
             default:
                 return null;
         }

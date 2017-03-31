@@ -1,17 +1,17 @@
-package com.wecode.letstalk.activity.splash_screen;
+package com.wecode.letstalk.activity.splashScreen;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.wecode.letstalk.activity.signIn.SignInActivity;
+import com.wecode.letstalk.activity.authentication.AuthenticationActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent singInIntent = new Intent(this, SignInActivity.class);
+        Intent singInIntent = new Intent(this, AuthenticationActivity.class);
         startActivity(singInIntent);
         finish();
     }

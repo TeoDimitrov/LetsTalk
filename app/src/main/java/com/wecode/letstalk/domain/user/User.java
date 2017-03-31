@@ -56,6 +56,13 @@ public class User implements Parcelable {
         this.setRole(DEFAULT_ROLE);
     }
 
+    public User(int birthDate, String gender, String username) {
+        this();
+        this.setBirthDate(birthDate);
+        this.setGender(gender);
+        this.setEmail(username);
+    }
+
     public User(int birthDate, String gender, String username, String password) {
         this();
         this.setBirthDate(birthDate);
