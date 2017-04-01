@@ -10,12 +10,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.wecode.letstalk.R;
 
-public class AuthenticationActivity extends AppCompatActivity implements View.OnTouchListener {
+import static android.view.View.*;
+
+public class AuthenticationActivity extends AppCompatActivity implements OnTouchListener {
 
     private RelativeLayout mRelativeLayout;
 
@@ -30,13 +31,25 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_authentication);
+        this.prepareLayout();
+        this.prepareViews();
+        this.prepareListeners();
+    }
+
+    private void prepareLayout(){
         this.mRelativeLayout = (RelativeLayout) findViewById(R.id.activity_authnetication);
-        this.mRelativeLayout.setOnTouchListener(this);
+    }
+
+    private void prepareViews(){
         this.mSignFragmentPagerAdapter = new AuthenticationPagerAdapter(getSupportFragmentManager());
         this.mSignViewPager = (ViewPager) findViewById(R.id.viewPagerSign);
         this.mSignViewPager.setAdapter(this.mSignFragmentPagerAdapter);
         this.mSignTabLayout = (TabLayout) findViewById(R.id.tabLayoutSign);
         this.mSignTabLayout.setupWithViewPager(this.mSignViewPager);
+    }
+
+    private void prepareListeners(){
+        this.mRelativeLayout.setOnTouchListener(this);
     }
 
     @Override

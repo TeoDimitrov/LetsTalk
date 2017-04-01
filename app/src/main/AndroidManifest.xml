@@ -53,7 +53,8 @@
         <activity
             android:name="com.wecode.letstalk.activity.sessions.SessionsActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name="com.wecode.letstalk.activity.sessions.chat.ChatActivity"

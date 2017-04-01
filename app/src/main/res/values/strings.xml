@@ -28,9 +28,6 @@
         completions."
     </string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <!-- Firebase Database Secret -->
     <string name="my_firebase_key">AIzaSyD4yKLH4sNvt8X793ymSZtLIcHEH7HnkZ8</string>
     <string name="my_firebase_secret">9XwR9KcdZoqfWnfUF1N19jpiiIgvrl7JvrrIp7Td</string>
@@ -48,4 +45,8 @@
     <string name="return_to_chat">Return to chat</string>
     <string name="action_sing_out">Sing Out</string>
     <string name="action_become_advisor">Become Advisor</string>
+
+    <!-- Navigation Drawer Text -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

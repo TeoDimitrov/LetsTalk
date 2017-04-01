@@ -1,5 +1,6 @@
 package com.wecode.letstalk.activity.authentication.signUp;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,9 +9,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -37,9 +40,10 @@ import com.wecode.letstalk.utils.FirebaseUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.view.View.*;
 import static com.wecode.letstalk.configuration.Config.VALID_EMAIL_ADDRESS_PATTERN;
 
-public class SignUpFragmentTwo extends Fragment implements OnClickListener {
+public class SignUpFragmentTwo extends Fragment implements OnClickListener, OnTouchListener {
 
     private RelativeLayout mRelativeLayout;
 
@@ -104,6 +108,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener {
 
     private void prepareListeners() {
         this.mButtonNext.setOnClickListener(this);
+        this.mRelativeLayout.setOnTouchListener(this);
     }
 
     private void prepareIntents() {
@@ -268,6 +273,25 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener {
 
     private void showProgressDialog() {
         this.mCreateUserProgressDialog.show();
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch (view.getId()) {
+            case R.id.fragment_sign_up_fragment_two:
+                this.hideSoftKeyboard(getActivity());
+                break;
+        }
+
+        return false;
+    }
+
+    private static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus()
+                        .getWindowToken(), 0);
     }
 
     @Override

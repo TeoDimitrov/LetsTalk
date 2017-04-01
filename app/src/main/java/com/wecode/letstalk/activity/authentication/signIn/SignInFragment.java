@@ -33,6 +33,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,8 +44,6 @@ import com.wecode.letstalk.R;
 import com.wecode.letstalk.activity.sessions.SessionsActivity;
 import com.wecode.letstalk.configuration.Config;
 import com.wecode.letstalk.domain.user.User;
-import com.wecode.letstalk.firebase.FirebaseEmailAuthenticator;
-import com.wecode.letstalk.repository.UserRepository;
 import com.wecode.letstalk.utils.FirebaseUtils;
 
 import org.json.JSONException;
@@ -52,7 +51,9 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class SignInFragment extends Fragment implements View.OnClickListener, View.OnTouchListener {
+import static android.view.View.*;
+
+public class SignInFragment extends Fragment implements OnClickListener, OnTouchListener {
 
     private RelativeLayout mRelativeLayout;
 
@@ -134,7 +135,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Vi
         this.mListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                //The implementation currently is nor required
+
             }
         };
     }
@@ -209,6 +210,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Vi
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                hideProgressDialog();
             }
         });
     }
@@ -358,7 +360,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener, Vi
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (view.getId()) {
-            case R.id.fragment_sing_in:
+            case R.id.fragment_sign_up_fragment_two:
                 this.hideSoftKeyboard(getActivity());
                 break;
         }

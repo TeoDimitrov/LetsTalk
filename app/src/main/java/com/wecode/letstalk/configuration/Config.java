@@ -66,7 +66,7 @@ public final class Config {
     
     public static final String  MESSAGE_AUTHENTICATING = "Authenticating...";
 
-    public static final String ERROR_BIRTHYEAR_IS_REQUIRED = "Birth mYear is required.";
+    public static final String ERROR_BIRTHYEAR_IS_REQUIRED = "Birth year is required.";
 
     public static final String ERROR_YOUNGER_THAN_15 = "You should be older than 15";
 

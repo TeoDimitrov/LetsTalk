@@ -53,7 +53,7 @@ public class AuthenticationPagerAdapter extends FragmentStatePagerAdapter {
                         public void onSwitchToNextFragment() {
                             Bundle args = new Bundle();
                             args.putInt("birthYear", ((SignUpFragmentOne) fragmentSignUp).mYear);
-                            args.putString("mGender", ((SignUpFragmentOne) fragmentSignUp).mGender);
+                            args.putString("gender", ((SignUpFragmentOne) fragmentSignUp).mGender);
                             getFragmentManager().beginTransaction().remove(fragmentSignUp).commit();
                             fragmentSignUp = SignUpFragmentTwo.newInstance();
                             fragmentSignUp.setArguments(args);

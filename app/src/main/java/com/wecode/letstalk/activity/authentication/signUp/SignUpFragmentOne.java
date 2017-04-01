@@ -2,14 +2,17 @@ package com.wecode.letstalk.activity.authentication.signUp;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -26,7 +29,7 @@ import java.util.Calendar;
 
 import static android.view.View.OnClickListener;
 
-public class SignUpFragmentOne extends Fragment implements OnClickListener {
+public class SignUpFragmentOne extends Fragment implements OnClickListener, View.OnTouchListener {
 
     public Integer mYear;
 
@@ -82,6 +85,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
         this.mButtonNextPage.setOnClickListener(this);
         this.mMaleOption.setOnClickListener(this);
         this.mFemaleOption.setOnClickListener(this);
+        this.mRelativeLayout.setOnTouchListener(this);
     }
 
     @Override
@@ -123,7 +127,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
     private void replaceFragment() {
         Bundle args = new Bundle();
         args.putInt("birthYear", this.mYear);
-        args.putString("mGender", this.mGender);
+        args.putString("gender", this.mGender);
         mSignUpFragmentTwo.setArguments(args);
 
         if (this.mTabListener != null) {
@@ -170,6 +174,25 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener {
     public static SignUpFragmentOne newInstance(TabFragmentListener tabFragmentListener) {
         SignUpFragmentOne signUpFragmentOne = new SignUpFragmentOne(tabFragmentListener);
         return signUpFragmentOne;
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch (view.getId()) {
+            case R.id.fragment_sign_up_one:
+                this.hideSoftKeyboard(getActivity());
+                break;
+        }
+
+        return false;
+    }
+
+    private static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus()
+                        .getWindowToken(), 0);
     }
 
     @Override

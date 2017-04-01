@@ -6,16 +6,25 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wecode.letstalk.R;
+import com.wecode.letstalk.activity.authentication.AuthenticationActivity;
 import com.wecode.letstalk.configuration.Config;
 import com.wecode.letstalk.domain.roles.AdvisorRole;
 import com.wecode.letstalk.domain.user.User;
@@ -23,7 +32,9 @@ import com.wecode.letstalk.receiver.NotificationReceiver;
 import com.wecode.letstalk.repository.AdvisorRepository;
 import com.wecode.letstalk.repository.UserRepository;
 
-public class SessionsActivity extends AppCompatActivity {
+import org.w3c.dom.Text;
+
+public class SessionsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ViewGroup mChatContainer;
 
@@ -42,22 +53,56 @@ public class SessionsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_session);
+        setContentView(R.layout.activity_session_drawer);
+        this.receiveAuthenticatedUser(savedInstanceState);
+        this.prepareViews();
+        this.prepareDrawer();
+        this.mUserRepository = new UserRepository(Config.CHILD_USERS);
+
+
+        //this.enableNotificationBroadcastReceiver();
+    }
+
+    private void prepareViews(){
         this.mSessionsFragmentPagerAdapter = new SessionsFragmentPagerAdapter(getSupportFragmentManager());
         this.mSessionsViewPager = ((ViewPager) findViewById(R.id.viewPagerSessions));
         this.mSessionsViewPager.setAdapter(this.mSessionsFragmentPagerAdapter);
         this.mSessionTabLayout = ((TabLayout) findViewById(R.id.tabLayoutSessions));
         this.mSessionTabLayout.setupWithViewPager(this.mSessionsViewPager);
         this.mChatContainer = ((ViewGroup) findViewById(R.id.fragmentContainer));
-        this.mUserRepository = new UserRepository(Config.CHILD_USERS);
+    }
+
+    private void prepareDrawer(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_session_drawer);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_sessions);
+        TextView drawerEmailTextView = (TextView) headerView.findViewById(R.id.drawer_email);
+        String email = this.mCurrentUser.getEmail();
+        drawerEmailTextView.setText(email);
+    }
+
+    private void receiveAuthenticatedUser(Bundle savedInstanceState){
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
             this.mCurrentUser = extras.getParcelable(Config.USER_EXTRA);
         }
 
-        //this.enableNotificationBroadcastReceiver();
+        //If the user is not received go back to the authentication window
+        if(this.mCurrentUser == null){
+            Intent authenticationIntent = new Intent(this, AuthenticationActivity.class);
+            startActivity(authenticationIntent);
+            finish();
+        }
     }
+
 
     @Override
     protected void onStart() {
@@ -131,5 +176,29 @@ public class SessionsActivity extends AppCompatActivity {
         ComponentName component = new ComponentName(this, NotificationReceiver.class);
         getPackageManager()
                 .setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_sessions) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_signout) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_session_drawer);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
