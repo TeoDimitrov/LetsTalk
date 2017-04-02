@@ -1,46 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Temporary">
-        <menu>
-            <item
-                android:id="@+id/nav_becom"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Become an Advisor" />
-        </menu>
-    </item>
 
-    <item android:title="Advisor">
-        <menu>
-            <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_share"
-                    android:icon="@drawable/ic_menu_share"
-                    android:title="Set Schedule" />
-            </group>
-        </menu>
-    </item>
-
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="none">
         <item
-            android:id="@+id/nav_sessions"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Start Session" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Scheduled Chats" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Scheduled Talks" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Payments" />
+            android:id="@+id/nav_become_advisor"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Become an Advisor" />
         <item
             android:id="@+id/nav_signout"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_menu_share"
             android:title="Sign Out" />
     </group>
+
+    <!--<item android:title="Temporary">-->
+        <!--</item>-->
+    <!--<item android:title="Advisor">-->
+        <!--<menu>-->
+            <!--<group android:checkableBehavior="single">-->
+                <!--<item-->
+                    <!--android:id="@+id/nav_share"-->
+                    <!--android:icon="@drawable/ic_menu_share"-->
+                    <!--android:title="Set Schedule" />-->
+            <!--</group>-->
+        <!--</menu>-->
+    <!--</item>-->
+
+    <!--To Be Released-->
+    <!--<group android:checkableBehavior="single">-->
+        <!--<item-->
+            <!--android:id="@+id/nav_sessions"-->
+            <!--android:icon="@drawable/ic_menu_gallery"-->
+            <!--android:title="Start Session" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_gallery"-->
+            <!--android:icon="@drawable/ic_menu_gallery"-->
+            <!--android:title="Scheduled Chats" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_slideshow"-->
+            <!--android:icon="@drawable/ic_menu_slideshow"-->
+            <!--android:title="Scheduled Talks" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_manage"-->
+            <!--android:icon="@drawable/ic_menu_manage"-->
+            <!--android:title="Payments" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_signout"-->
+            <!--android:icon="@drawable/ic_menu_manage"-->
+            <!--android:title="Sign Out" />-->
+    <!--</group>-->
 
 </menu>

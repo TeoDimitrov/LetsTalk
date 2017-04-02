@@ -23,6 +23,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.wecode.letstalk.R;
 import com.wecode.letstalk.activity.authentication.AuthenticationActivity;
 import com.wecode.letstalk.configuration.Config;
@@ -31,8 +33,6 @@ import com.wecode.letstalk.domain.user.User;
 import com.wecode.letstalk.receiver.NotificationReceiver;
 import com.wecode.letstalk.repository.AdvisorRepository;
 import com.wecode.letstalk.repository.UserRepository;
-
-import org.w3c.dom.Text;
 
 public class SessionsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -50,6 +50,10 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
 
     private BroadcastReceiver mBroadcastReceiver;
 
+    private FirebaseAuth mAuth;
+
+    private FirebaseAuth.AuthStateListener mListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +61,7 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
         this.receiveAuthenticatedUser(savedInstanceState);
         this.prepareViews();
         this.prepareDrawer();
+        this.prepareFirebase();
         this.mUserRepository = new UserRepository(Config.CHILD_USERS);
 
 
@@ -103,11 +108,29 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
         }
     }
 
+    private void prepareFirebase(){
+        this.mAuth = FirebaseAuth.getInstance();
+        this.mListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+            }
+        };
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
+        this.mAuth.addAuthStateListener(this.mListener);
         //this.registerNotificationBroadcastReceiver();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (this.mAuth != null) {
+            this.mAuth.removeAuthStateListener(this.mListener);
+        }
     }
 
     @Override
@@ -126,25 +149,6 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
     protected void onDestroy() {
         super.onDestroy();
         //this.registerNotificationBroadcastReceiver();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = this.getMenuInflater();
-        menuInflater.inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_become_advisor:
-                becomeAdvisor();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
     }
 
     private void becomeAdvisor() {
@@ -178,23 +182,24 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
                 .setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
     }
 
+    private void signOut(){
+        this.mAuth.signOut();
+        LoginManager.getInstance().logOut();
+        Intent authenticationActivityIntent = new Intent(this, AuthenticationActivity.class);
+        startActivity(authenticationActivityIntent);
+        finish();
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_sessions) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_signout) {
-
+        switch(id){
+            case R.id.nav_become_advisor :
+                this.becomeAdvisor();
+                break;
+            case R.id.nav_signout :
+                this.signOut();
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_session_drawer);
