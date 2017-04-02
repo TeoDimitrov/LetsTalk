@@ -67,15 +67,6 @@
         <activity
             android:name="com.wecode.letstalk.activity.sessions.talk.TalkActivity"
             android:screenOrientation="portrait" />
-
-        <receiver
-            android:name="com.wecode.letstalk.receiver.NotificationReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter android:priority="100">
-                <action android:name="com.wecode.letstalk.NOTIFICATION_BROADCAST" />
-            </intent-filter>
-        </receiver>
     </application>
 
     <!-- VoIP Permissions -->

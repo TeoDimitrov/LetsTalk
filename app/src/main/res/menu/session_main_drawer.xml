@@ -4,11 +4,11 @@
     <group android:checkableBehavior="none">
         <item
             android:id="@+id/nav_become_advisor"
-            android:icon="@drawable/ic_menu_share"
+            android:icon="@drawable/ic_assignment_ind_black_24dp"
             android:title="Become an Advisor" />
         <item
             android:id="@+id/nav_signout"
-            android:icon="@drawable/ic_menu_share"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
             android:title="Sign Out" />
     </group>
 

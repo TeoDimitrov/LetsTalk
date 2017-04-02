@@ -1,10 +1,6 @@
 package com.wecode.letstalk.activity.sessions;
 
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,14 +11,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.wecode.letstalk.R;
@@ -30,7 +25,6 @@ import com.wecode.letstalk.activity.authentication.AuthenticationActivity;
 import com.wecode.letstalk.configuration.Config;
 import com.wecode.letstalk.domain.roles.AdvisorRole;
 import com.wecode.letstalk.domain.user.User;
-import com.wecode.letstalk.receiver.NotificationReceiver;
 import com.wecode.letstalk.repository.AdvisorRepository;
 import com.wecode.letstalk.repository.UserRepository;
 
@@ -48,8 +42,6 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
 
     private User mCurrentUser;
 
-    private BroadcastReceiver mBroadcastReceiver;
-
     private FirebaseAuth mAuth;
 
     private FirebaseAuth.AuthStateListener mListener;
@@ -57,18 +49,16 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_session_drawer);
         this.receiveAuthenticatedUser(savedInstanceState);
         this.prepareViews();
         this.prepareDrawer();
         this.prepareFirebase();
         this.mUserRepository = new UserRepository(Config.CHILD_USERS);
-
-
-        //this.enableNotificationBroadcastReceiver();
     }
 
-    private void prepareViews(){
+    private void prepareViews() {
         this.mSessionsFragmentPagerAdapter = new SessionsFragmentPagerAdapter(getSupportFragmentManager());
         this.mSessionsViewPager = ((ViewPager) findViewById(R.id.viewPagerSessions));
         this.mSessionsViewPager.setAdapter(this.mSessionsFragmentPagerAdapter);
@@ -77,7 +67,7 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
         this.mChatContainer = ((ViewGroup) findViewById(R.id.fragmentContainer));
     }
 
-    private void prepareDrawer(){
+    private void prepareDrawer() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_session_drawer);
@@ -93,7 +83,7 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
         drawerEmailTextView.setText(email);
     }
 
-    private void receiveAuthenticatedUser(Bundle savedInstanceState){
+    private void receiveAuthenticatedUser(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
@@ -101,14 +91,14 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
         }
 
         //If the user is not received go back to the authentication window
-        if(this.mCurrentUser == null){
+        if (this.mCurrentUser == null) {
             Intent authenticationIntent = new Intent(this, AuthenticationActivity.class);
             startActivity(authenticationIntent);
             finish();
         }
     }
 
-    private void prepareFirebase(){
+    private void prepareFirebase() {
         this.mAuth = FirebaseAuth.getInstance();
         this.mListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -122,7 +112,6 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
     protected void onStart() {
         super.onStart();
         this.mAuth.addAuthStateListener(this.mListener);
-        //this.registerNotificationBroadcastReceiver();
     }
 
     @Override
@@ -134,21 +123,8 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        //this.registerNotificationBroadcastReceiver();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //unregisterReceiver(mBroadcastReceiver);
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
-        //this.registerNotificationBroadcastReceiver();
     }
 
     private void becomeAdvisor() {
@@ -168,21 +144,7 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
         return userPath;
     }
 
-    private void registerNotificationBroadcastReceiver() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Config.NOTIFICATION_BROADCAST);
-        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
-        mBroadcastReceiver = new NotificationReceiver();
-        registerReceiver(mBroadcastReceiver, intentFilter);
-    }
-
-    private void enableNotificationBroadcastReceiver() {
-        ComponentName component = new ComponentName(this, NotificationReceiver.class);
-        getPackageManager()
-                .setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-    }
-
-    private void signOut(){
+    private void signOut() {
         this.mAuth.signOut();
         LoginManager.getInstance().logOut();
         Intent authenticationActivityIntent = new Intent(this, AuthenticationActivity.class);
@@ -193,11 +155,11 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        switch(id){
-            case R.id.nav_become_advisor :
+        switch (id) {
+            case R.id.nav_become_advisor:
                 this.becomeAdvisor();
                 break;
-            case R.id.nav_signout :
+            case R.id.nav_signout:
                 this.signOut();
                 break;
         }
