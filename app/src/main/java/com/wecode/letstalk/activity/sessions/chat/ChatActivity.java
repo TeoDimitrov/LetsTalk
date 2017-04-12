@@ -25,12 +25,14 @@ import android.widget.RelativeLayout;
 
 import com.wecode.letstalk.R;
 import com.wecode.letstalk.activity.sessions.note.NotesActivity;
+import com.wecode.letstalk.asyncTask.SendNewMessageNotification;
 import com.wecode.letstalk.configuration.Config;
 import com.wecode.letstalk.domain.message.ChatMessage;
 import com.wecode.letstalk.domain.message.ChatMessageStatus;
 import com.wecode.letstalk.domain.user.User;
 import com.wecode.letstalk.repository.MessageRepository;
 import com.wecode.letstalk.utils.BitmapUtil;
+import com.wecode.letstalk.utils.FCMUtil;
 import com.wecode.letstalk.utils.SpeechUtil;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -64,9 +66,9 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
     private String mChatPath;
 
-    private User mUser;
+    private User mAuthor;
 
-    private User mClient;
+    private User mRecipient;
 
     private Intent mNotesIntent;
 
@@ -77,9 +79,9 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
         if (savedInstanceState == null) {
             Intent i = this.getIntent();
             Bundle extras = i.getExtras();
-            this.mChatPath = extras.getString(Config.CHAT_EXTRA);
-            this.mUser = extras.getParcelable(Config.USER_EXTRA);
-            this.mClient = extras.getParcelable(Config.CLIENT_USER_EXTRA);
+            this.mChatPath = extras.getString(Config.CHAT_PATH_EXTRA);
+            this.mAuthor = extras.getParcelable(Config.USER_AUTHOR_EXTRA);
+            this.mRecipient = extras.getParcelable(Config.USER_RECIPIENT_EXTRA);
 
         }
 
@@ -88,7 +90,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        this.setActionBarTitle(this.mClient);
+        this.setActionBarTitle(this.mRecipient);
         this.mChatHolderRelativeLayout = (RelativeLayout) findViewById(R.id.chat_holder_id);
         this.mNotesIntent = new Intent(this, NotesActivity.class);
         this.mEditMessageText = (EditText) findViewById(R.id.messageText);
@@ -99,7 +101,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
         this.mSendMessageButton.setOnClickListener(this);
         this.mCameraButton.setOnClickListener(this);
         this.mMicrophoneButton.setOnClickListener(this);
-        this.mChatArrayAdapter = new ChatArrayAdapter(this, R.layout.chat_message, this.mUser);
+        this.mChatArrayAdapter = new ChatArrayAdapter(this, R.layout.chat_message, this.mAuthor);
         this.mListView = (ListView) findViewById(R.id.listViewMessageHolder);
         this.mListView.setAdapter(this.mChatArrayAdapter);
         this.mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -141,7 +143,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
                 ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
                 if(chatMessage.getChatMessageStatus() == ChatMessageStatus.NEW){
                     //TODO
-                    //sendNotification(chatMessage);
+                    sendNotification(chatMessage, mChatPath, mAuthor, mRecipient);
                     chatMessage.setChatMessageStatus(ChatMessageStatus.READ);
                     String key = dataSnapshot.getKey();
                     mMessageRepository.update(chatMessage, key);
@@ -167,6 +169,12 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FCMUtil.unsubscribe(this.mAuthor);
     }
 
     @Override
@@ -202,12 +210,12 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             this.mEditMessageText.setError(Config.ERROR_TEXT_TOO_LONG);
             return;
         }
-        ChatMessage chatMessage = new ChatMessage(message, mUser.getEmail(), mClient.getEmail(), new Date());
+        ChatMessage chatMessage = new ChatMessage(message, mAuthor.getEmail(), mRecipient.getEmail(), new Date());
         this.mMessageRepository.create(chatMessage);
     }
 
     private void sendMessage(Bitmap bitmapImage) {
-        ChatMessage chatMessage = new ChatMessage(bitmapImage, mUser.getEmail(), mClient.getEmail(), new Date());
+        ChatMessage chatMessage = new ChatMessage(bitmapImage, mAuthor.getEmail(), mRecipient.getEmail(), new Date());
         this.mMessageRepository.create(chatMessage);
     }
 
@@ -246,7 +254,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             case Config.REQUEST_RETURN_CLIENT:
                 if (resultCode == RESULT_OK) {
                     Bundle extras = data.getExtras();
-                    this.mClient = extras.getParcelable(Config.CLIENT_USER_EXTRA);
+                    this.mRecipient = extras.getParcelable(Config.USER_RECIPIENT_EXTRA);
                 }
                 break;
         }
@@ -254,7 +262,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (this.mUser.getRole().getName().equals("AdvisorRole")) {
+        if (this.mAuthor.getRole().getName().equals("AdvisorRole")) {
             menu.add(0, 1, 0, "Notes").setIcon(R.drawable.ic_note_add_white_24dp)
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
@@ -280,13 +288,13 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void goToNotes() {
-        this.mNotesIntent.putExtra(Config.CLIENT_USER_EXTRA, this.mClient);
+        this.mNotesIntent.putExtra(Config.USER_RECIPIENT_EXTRA, this.mRecipient);
         this.startActivityForResult(this.mNotesIntent, Config.REQUEST_RETURN_CLIENT);
     }
 
     private void setActionBarTitle(User client) {
         StringBuilder title = new StringBuilder();
-        if (this.mUser.getRole().getName().equals("AdvisorRole")) {
+        if (this.mAuthor.getRole().getName().equals("AdvisorRole")) {
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
             int age = currentYear - client.getBirthDate();
             title.append(client.getGender());
@@ -299,19 +307,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
         getSupportActionBar().setTitle(title);
     }
 
-    private void sendNotification(ChatMessage chatMessage) {
-        if(chatMessage.getAuthor().equals(mUser.getEmail())){
-            return;
-        }
-
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra(Config.CHAT_EXTRA, mChatPath);
-        resultIntent.putExtra(Config.USER_EXTRA, mClient);
-        resultIntent.putExtra(Config.CLIENT_USER_EXTRA, mUser);
-        resultIntent.putExtra(Config.CHAT_MESSAGE, chatMessage.getMessage());
-        resultIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-        resultIntent.setAction(Config.NOTIFICATION_BROADCAST);
-        resultIntent.addCategory(Intent.CATEGORY_DEFAULT);
-        sendBroadcast(resultIntent);
+    private void sendNotification(ChatMessage chatMessage, String chatPath,  User author, User recipient) {
+        new SendNewMessageNotification(chatMessage, chatPath, author, recipient).execute();
     }
 }

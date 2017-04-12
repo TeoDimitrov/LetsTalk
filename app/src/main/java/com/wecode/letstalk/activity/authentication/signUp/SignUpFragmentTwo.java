@@ -148,7 +148,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener, OnTo
         this.mPasswordValue = this.mPasswordEditText.getText().toString();
         this.mConfirmPasswordValue = this.mConfirmPasswordEditText.getText().toString();
         this.mCurrentUser = new User(this.mBirthYear, this.mGender, this.mEmailValue, this.mPasswordValue);
-        this.mSessionActivityIntent.putExtra(Config.USER_EXTRA, this.mCurrentUser);
+        this.mSessionActivityIntent.putExtra(Config.USER_AUTHOR_EXTRA, this.mCurrentUser);
         this.createUser(this.mCurrentUser);
     }
 
@@ -228,7 +228,7 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener, OnTo
                     mDatabaseReference.child(userPath).setValue(user);
                 }
 
-                mSessionActivityIntent.putExtra(Config.USER_EXTRA, user);
+                mSessionActivityIntent.putExtra(Config.USER_AUTHOR_EXTRA, user);
             }
 
             @Override

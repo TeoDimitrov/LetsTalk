@@ -85,11 +85,17 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                     StringBuilder participants = new StringBuilder();
                     participants.append(timeFrame.getAdvisorName());
                     participants.append(timeFrame.getUsername());
-                    String chat = HashUtil.getHashMD5(participants.toString());
-                    mChatIntent.putExtra(Config.CHAT_EXTRA, chat);
-                    mChatIntent.putExtra(Config.USER_EXTRA, mSessionsActivity.getmCurrentUser());
-                    String clientUserName = timeFrame.getUsername();
-                    mUserRepository.findByUserName(clientUserName, mChatIntent, getActivity());
+                    String chatPath = HashUtil.getHashMD5(participants.toString());
+                    mChatIntent.putExtra(Config.CHAT_PATH_EXTRA, chatPath);
+                    mChatIntent.putExtra(Config.USER_AUTHOR_EXTRA, mSessionsActivity.getmCurrentUser());
+                    String recipientUserName = null;
+                    if(mSessionsActivity.getmCurrentUser().getRole().getName().equals("AdvisorRole")) {
+                        recipientUserName = timeFrame.getUsername();
+                    } else {
+                        recipientUserName = timeFrame.getAdvisorName();
+                    }
+
+                    mUserRepository.findByUserName(recipientUserName, mChatIntent, getActivity());
                 }
 
                 if (mSessionsActivity.getmCurrentUser().getRole().getName().equals("AdvisorRole")

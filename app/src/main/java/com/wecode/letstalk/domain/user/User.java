@@ -2,6 +2,7 @@ package com.wecode.letstalk.domain.user;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.XmlRes;
 
 import com.wecode.letstalk.domain.roles.CustomerRole;
 import com.wecode.letstalk.domain.roles.Role;

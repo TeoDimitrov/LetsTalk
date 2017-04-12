@@ -12,17 +12,17 @@ public final class Config {
 
     public final static String USER_SUFIX = "@letstalk";
 
-    public final static String USER_EXTRA = "user";
+    public final static String USER_AUTHOR_EXTRA = "author";
 
-    public static final String CLIENT_USER_EXTRA = "client";
+    public static final String USER_RECIPIENT_EXTRA = "recipient";
 
-    public static final String CHAT_EXTRA = "chat";
+    public static final String CHAT_PATH_EXTRA = "chat_path";
 
     public static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public static final int REQUEST_RETURN_CLIENT = 2;
 
-    public static final int REQUEST_USE_SIP = 3;
+    public static final int REQUEST_CHAT_NOTIFICATION = 3;
 
     public static final int REQUEST_CODE_SPEECH_INPUT = 4;
 
@@ -41,6 +41,8 @@ public final class Config {
     public static final int MIN_PASSWORD_LENGTH = 6;
 
     public static final String VALID_EMAIL_ADDRESS_PATTERN = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+
+    public static final String VALID_TOPIC_REGEX = "^([a-zA-Z0-9-_.~%]{1,900})$";
     
     public static final String ERROR_EXISTING_USER = "Email already exists.";
     
@@ -63,8 +65,6 @@ public final class Config {
     public static final String MESSAGE_AUTHENTICATION = "Authentication";
     
     public static final String MESSAGE_CREATING_USER = "Creating User...";
-    
-    public static final String  MESSAGE_AUTHENTICATING = "Authenticating...";
 
     public static final String ERROR_BIRTHYEAR_IS_REQUIRED = "Birth year is required.";
 
@@ -80,11 +80,19 @@ public final class Config {
 
     public static final String ADVISOR_TITLE = "Advisor";
 
-    public static final int NOTIFICATION_CHAT = 1;
-
-    public static final String NOTIFICATION_NEW_CHAT_TEXT = "New chat message";
-
     public static final String NOTIFICATION_BROADCAST = "com.example.letstalk.NOTIFICATION_BROADCAST";
 
     public static final String CHAT_MESSAGE = "CHAT_MESSAGE";
+
+    public static final String FCM_REMOTE_MESSAGE_TO = "to";
+
+    public static final String FCM_REMOTE_MESSAGE_DATA = "data";
+
+    public static final String FCM_TOPIC_SUBSCRIBE = "/topics/";
+
+    public static final String FCM_URL = "https://fcm.googleapis.com/fcm/send";
+
+    public static final String FCM_CONTENT_TYPE = "application/json";
+
+    public static final String FCM_AUTHORIZATION = "key=AAAAMKBdr_8:APA91bHltbHYyMBrPGwK7yoFgTgyvDK91RctRHSyxntTjozGzIgv4oNw5hT3yniUsJzhtiKgTrhZS6tRdR0AXqBxzc5YEK9IL-8NYtwl66jEHXQBDj94tH6x4vYg9LWMmxXicEtegvX0";
 }

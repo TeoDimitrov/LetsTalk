@@ -62,7 +62,7 @@ public class SplashActivity extends AppCompatActivity {
                 final User user = dataSnapshot.child(userPath).getValue(User.class);
                 if (user != null) {
                     Intent sessionsActivityIntent = new Intent(getApplicationContext(), SessionsActivity.class);
-                    sessionsActivityIntent.putExtra(Config.USER_EXTRA, user);
+                    sessionsActivityIntent.putExtra(Config.USER_AUTHOR_EXTRA, user);
                     startActivity(sessionsActivityIntent);
                     finish();
                 }

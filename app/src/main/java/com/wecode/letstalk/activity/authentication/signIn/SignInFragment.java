@@ -33,7 +33,6 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -228,7 +227,7 @@ public class SignInFragment extends Fragment implements OnClickListener, OnTouch
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Intent intent = new Intent(getActivity(), SessionsActivity.class);
-                    intent.putExtra(Config.USER_EXTRA, user);
+                    intent.putExtra(Config.USER_AUTHOR_EXTRA, user);
                     getActivity().startActivity(intent);
                     getActivity().finish();
                 }
@@ -272,7 +271,7 @@ public class SignInFragment extends Fragment implements OnClickListener, OnTouch
             public void onDataChange(DataSnapshot dataSnapshot) {
                 showProgressDialog();
                 final User user = dataSnapshot.child(userPath).getValue(User.class);
-                sessionsActivityIntent.putExtra(Config.USER_EXTRA, user);
+                sessionsActivityIntent.putExtra(Config.USER_AUTHOR_EXTRA, user);
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                             @Override

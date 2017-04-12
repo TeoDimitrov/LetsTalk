@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.wecode.letstalk.R;
 import com.wecode.letstalk.activity.authentication.AuthenticationActivity;
 import com.wecode.letstalk.configuration.Config;
@@ -27,6 +28,7 @@ import com.wecode.letstalk.domain.roles.AdvisorRole;
 import com.wecode.letstalk.domain.user.User;
 import com.wecode.letstalk.repository.AdvisorRepository;
 import com.wecode.letstalk.repository.UserRepository;
+import com.wecode.letstalk.utils.FCMUtil;
 
 public class SessionsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -79,15 +81,17 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_sessions);
         TextView drawerEmailTextView = (TextView) headerView.findViewById(R.id.drawer_email);
-        String email = this.mCurrentUser.getEmail();
-        drawerEmailTextView.setText(email);
+        if(this.mCurrentUser != null) {
+            String email = this.mCurrentUser.getEmail();
+            drawerEmailTextView.setText(email);
+        }
     }
 
     private void receiveAuthenticatedUser(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
-            this.mCurrentUser = extras.getParcelable(Config.USER_EXTRA);
+            this.mCurrentUser = extras.getParcelable(Config.USER_AUTHOR_EXTRA);
         }
 
         //If the user is not received go back to the authentication window
@@ -112,6 +116,7 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
     protected void onStart() {
         super.onStart();
         this.mAuth.addAuthStateListener(this.mListener);
+        FCMUtil.subscribe(this.mCurrentUser);
     }
 
     @Override
@@ -160,6 +165,7 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
                 this.becomeAdvisor();
                 break;
             case R.id.nav_signout:
+                FCMUtil.unsubscribe(this.mCurrentUser);
                 this.signOut();
                 break;
         }

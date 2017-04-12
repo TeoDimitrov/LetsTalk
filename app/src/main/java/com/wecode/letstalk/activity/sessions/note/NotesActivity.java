@@ -31,7 +31,7 @@ public class NotesActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
-            this.mClient = extras.getParcelable(Config.CLIENT_USER_EXTRA);
+            this.mClient = extras.getParcelable(Config.USER_RECIPIENT_EXTRA);
         }
 
         this.mNotesText = (EditText) findViewById(R.id.notes_edit_text_id);
@@ -56,7 +56,7 @@ public class NotesActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 setResult(Activity.RESULT_OK,
-                        new Intent().putExtra(Config.CLIENT_USER_EXTRA, this.mClient));
+                        new Intent().putExtra(Config.USER_RECIPIENT_EXTRA, this.mClient));
                 finish();
                 break;
         }

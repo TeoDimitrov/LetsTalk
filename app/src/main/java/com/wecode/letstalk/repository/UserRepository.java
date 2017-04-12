@@ -46,7 +46,7 @@ public class UserRepository {
                     save(user);
                 }
 
-                intent.putExtra(Config.USER_EXTRA, user);
+                intent.putExtra(Config.USER_AUTHOR_EXTRA, user);
             }
 
             @Override
@@ -81,7 +81,7 @@ public class UserRepository {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.child(userPath).getValue(User.class);
-                intent.putExtra(Config.CLIENT_USER_EXTRA, user);
+                intent.putExtra(Config.USER_RECIPIENT_EXTRA, user);
                 activity.startActivity(intent);
             }
 
@@ -100,7 +100,7 @@ public class UserRepository {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.child(userPath).getValue(User.class);
-                intent.putExtra(Config.USER_EXTRA, user);
+                intent.putExtra(Config.USER_AUTHOR_EXTRA, user);
                 firebaseEmailAuthenticator.signIn(email, password, activity, intent, progressDialog);
             }
 
@@ -120,7 +120,7 @@ public class UserRepository {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.child(userPath).getValue(User.class);
                 Intent intent = new Intent(activity, SessionsActivity.class);
-                intent.putExtra(Config.USER_EXTRA, user);
+                intent.putExtra(Config.USER_AUTHOR_EXTRA, user);
                 activity.startActivity(intent);
                 activity.finish();
             }
