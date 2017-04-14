@@ -1,4 +1,4 @@
-package com.wecode.letstalk.callCenter;
+package com.wecode.letstalk.advisor;
 
 import com.wecode.letstalk.configuration.Config;
 import com.wecode.letstalk.repository.TimeFrameRepository;

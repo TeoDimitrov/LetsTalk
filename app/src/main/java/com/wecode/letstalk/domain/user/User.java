@@ -8,6 +8,7 @@ import com.wecode.letstalk.domain.roles.CustomerRole;
 import com.wecode.letstalk.domain.roles.Role;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.wecode.letstalk.domain.schedule.Schedule;
 
 @IgnoreExtraProperties
 public class User implements Parcelable {
@@ -47,6 +48,8 @@ public class User implements Parcelable {
 
     private String notes;
 
+    private Schedule schedule;
+
     @SuppressWarnings("unused")
     public User() {
         super();
@@ -83,6 +86,7 @@ public class User implements Parcelable {
         talks = in.readInt();
         role = (Role) in.readValue(Role.class.getClassLoader());
         notes = in.readString();
+        schedule = (Schedule) in.readValue(Schedule.class.getClassLoader());
     }
 
     public int getBirthDate() {
@@ -165,6 +169,14 @@ public class User implements Parcelable {
         this.paidTalks = paidTalks;
     }
 
+    public Schedule getSchedule() {
+        return this.schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -182,6 +194,7 @@ public class User implements Parcelable {
         dest.writeInt(talks);
         dest.writeValue(role);
         dest.writeString(notes);
+        dest.writeValue(schedule);
     }
 
     @SuppressWarnings("unused")

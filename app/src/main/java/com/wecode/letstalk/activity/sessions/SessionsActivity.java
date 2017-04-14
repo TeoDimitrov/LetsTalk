@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +21,19 @@ import android.widget.Toast;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.wecode.letstalk.R;
 import com.wecode.letstalk.activity.authentication.AuthenticationActivity;
+import com.wecode.letstalk.activity.sessions.schedule.ScheduleActivity;
 import com.wecode.letstalk.configuration.Config;
 import com.wecode.letstalk.domain.roles.AdvisorRole;
+import com.wecode.letstalk.domain.schedule.Schedule;
 import com.wecode.letstalk.domain.user.User;
 import com.wecode.letstalk.repository.AdvisorRepository;
 import com.wecode.letstalk.repository.UserRepository;
 import com.wecode.letstalk.utils.FCMUtil;
+import com.wecode.letstalk.utils.FirebaseUtils;
 
 public class SessionsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,9 +45,9 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
 
     private ViewPager mSessionsViewPager;
 
-    private UserRepository mUserRepository;
-
     private User mCurrentUser;
+
+    private DatabaseReference mDatabaseReference;
 
     private FirebaseAuth mAuth;
 
@@ -57,7 +62,6 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
         this.prepareViews();
         this.prepareDrawer();
         this.prepareFirebase();
-        this.mUserRepository = new UserRepository(Config.CHILD_USERS);
     }
 
     private void prepareViews() {
@@ -81,9 +85,15 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_sessions);
         TextView drawerEmailTextView = (TextView) headerView.findViewById(R.id.drawer_email);
-        if(this.mCurrentUser != null) {
-            String email = this.mCurrentUser.getEmail();
-            drawerEmailTextView.setText(email);
+        //Display email
+        String email = this.mCurrentUser.getEmail();
+        drawerEmailTextView.setText(email);
+
+        Menu menu = navigationView.getMenu();
+        if (this.mCurrentUser.getRole().getName().equals("AdvisorRole")) {
+            menu.findItem(R.id.nav_become_advisor).setVisible(false);
+        } else {
+            menu.findItem(R.id.nav_schedule).setVisible(false);
         }
     }
 
@@ -103,6 +113,7 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
     }
 
     private void prepareFirebase() {
+        this.mDatabaseReference = FirebaseDatabase.getInstance().getReference().child(Config.CHILD_USERS);
         this.mAuth = FirebaseAuth.getInstance();
         this.mListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -134,7 +145,10 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
 
     private void becomeAdvisor() {
         this.mCurrentUser.setRole(new AdvisorRole());
-        this.mUserRepository.updateUser(this.mCurrentUser);
+        this.mCurrentUser.setSchedule(new Schedule());
+        String userPath = FirebaseUtils.clearUserName(this.mCurrentUser.getEmail());
+        this.mDatabaseReference.child(userPath).setValue(this.mCurrentUser);
+        //FIX
         AdvisorRepository advisorRepository = new AdvisorRepository();
         advisorRepository.saveAdvisorName(this.mCurrentUser.getEmail());
         Toast.makeText(this, "Reopen the app to become advisor", Toast.LENGTH_LONG).show();
@@ -142,11 +156,6 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
 
     public User getmCurrentUser() {
         return this.mCurrentUser;
-    }
-
-    public String getCurrentUserPath() {
-        String userPath = this.mUserRepository.clearUserName(this.mCurrentUser.getEmail());
-        return userPath;
     }
 
     private void signOut() {
@@ -164,6 +173,9 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
             case R.id.nav_become_advisor:
                 this.becomeAdvisor();
                 break;
+            case R.id.nav_schedule:
+                this.goToSchedule();
+                break;
             case R.id.nav_signout:
                 FCMUtil.unsubscribe(this.mCurrentUser);
                 this.signOut();
@@ -173,5 +185,24 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_session_drawer);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void goToSchedule() {
+        Intent scheduleIntent = new Intent(this, ScheduleActivity.class);
+        scheduleIntent.putExtra(Config.USER_AUTHOR_EXTRA, this.mCurrentUser);
+        startActivityForResult(scheduleIntent,Config.REQUEST_RETURN_SCHEDULE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case Config.REQUEST_RETURN_SCHEDULE:
+                if (resultCode == RESULT_OK) {
+                    Bundle extras = data.getExtras();
+                    this.mCurrentUser = extras.getParcelable(Config.USER_AUTHOR_EXTRA);
+                }
+
+                break;
+        }
     }
 }

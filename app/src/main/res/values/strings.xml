@@ -49,4 +49,7 @@
     <!-- Navigation Drawer Text -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Schedule -->
+    <string name="schedule_fail">Set proper hours: e.g. 19:30</string>
 </resources>

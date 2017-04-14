@@ -64,8 +64,6 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
 
     private UserRepository mUserRepository;
 
-    private SpotlightView.Builder mSpotlightBuilder;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

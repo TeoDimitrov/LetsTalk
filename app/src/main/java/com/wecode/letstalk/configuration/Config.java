@@ -16,13 +16,15 @@ public final class Config {
 
     public static final String USER_RECIPIENT_EXTRA = "recipient";
 
+    public static final String USER_SCHEDULE = "schedule";
+
     public static final String CHAT_PATH_EXTRA = "chat_path";
 
     public static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public static final int REQUEST_RETURN_CLIENT = 2;
 
-    public static final int REQUEST_CHAT_NOTIFICATION = 3;
+    public static final int REQUEST_RETURN_SCHEDULE = 3;
 
     public static final int REQUEST_CODE_SPEECH_INPUT = 4;
 
