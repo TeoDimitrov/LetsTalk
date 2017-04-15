@@ -126,8 +126,8 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener, View
 
     private void replaceFragment() {
         Bundle args = new Bundle();
-        args.putInt("birthYear", this.mYear);
-        args.putString("gender", this.mGender);
+        args.putInt(Config.USER_BIRTHYEAR, this.mYear);
+        args.putString(Config.USER_GENDER, this.mGender);
         mSignUpFragmentTwo.setArguments(args);
 
         if (this.mTabListener != null) {

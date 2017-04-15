@@ -10,6 +10,10 @@ public final class Config {
 
     public final static String CHILD_TIMEFRAMES = "timeframes";
 
+    public final static String CHILD_USERS_ROLE = "role";
+
+    public final static String CHILD_USERS_ROLE_NAME = "name";
+
     public final static String USER_SUFIX = "@letstalk";
 
     public final static String USER_AUTHOR_EXTRA = "author";
@@ -82,6 +86,10 @@ public final class Config {
 
     public static final String ADVISOR_TITLE = "Advisor";
 
+    public static final String ADVISOR_ROLE = "AdvisorRole";
+
+    public static final String ADVISOR_NAME = "advisorName";
+
     public static final String NOTIFICATION_BROADCAST = "com.example.letstalk.NOTIFICATION_BROADCAST";
 
     public static final String CHAT_MESSAGE = "CHAT_MESSAGE";
@@ -97,4 +105,12 @@ public final class Config {
     public static final String FCM_CONTENT_TYPE = "application/json";
 
     public static final String FCM_AUTHORIZATION = "key=AAAAMKBdr_8:APA91bHltbHYyMBrPGwK7yoFgTgyvDK91RctRHSyxntTjozGzIgv4oNw5hT3yniUsJzhtiKgTrhZS6tRdR0AXqBxzc5YEK9IL-8NYtwl66jEHXQBDj94tH6x4vYg9LWMmxXicEtegvX0";
+
+    public static final String NO_AVAILABLE_ADVISOR = "No available advisors. Try different time slot";
+
+    public static final String ADVISOR_ACTIVATION = "Reopen the app to become an advisor";
+
+    public static final String USER_BIRTHYEAR = "birthyear";
+
+    public static final String USER_GENDER = "gender";
 }

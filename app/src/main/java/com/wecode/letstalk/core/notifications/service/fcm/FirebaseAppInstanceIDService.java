@@ -1,4 +1,4 @@
-package com.wecode.letstalk.service.fcm;
+package com.wecode.letstalk.core.notifications.service.fcm;
 
 import com.google.firebase.iid.FirebaseInstanceIdService;
 

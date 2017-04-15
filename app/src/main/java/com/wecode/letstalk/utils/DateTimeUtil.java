@@ -20,6 +20,19 @@ public class DateTimeUtil {
         return utcDate;
     }
 
+    public static Date getUTCDateTimeFromDate(Date date) {
+        DateTimeUtil.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String utcStringDate = DateTimeUtil.dateFormat.format(date);
+        Date utcDate = null;
+        try {
+            utcDate = dateFormat.parse(utcStringDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return utcDate;
+    }
+
     public static String getLocalDateTime(String date) {
         DateTimeUtil.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date newDate = null;

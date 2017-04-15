@@ -72,13 +72,13 @@
             android:label="Schedule"
             android:screenOrientation="portrait" />
 
-        <service android:name=".service.fcm.FirebaseChatMessagingService">
+        <service android:name=".core.notifications.service.fcm.FirebaseChatMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <service android:name=".service.fcm.FirebaseAppInstanceIDService">
+        <service android:name=".core.notifications.service.fcm.FirebaseAppInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>

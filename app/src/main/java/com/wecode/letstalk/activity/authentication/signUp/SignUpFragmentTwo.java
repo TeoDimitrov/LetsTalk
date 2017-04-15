@@ -129,8 +129,8 @@ public class SignUpFragmentTwo extends Fragment implements OnClickListener, OnTo
     private void receiveBundles() {
         Bundle args = getArguments();
         if (args != null) {
-            this.mGender = args.getString("mGender");
-            this.mBirthYear = args.getInt("mBirthYear");
+            this.mGender = args.getString(Config.USER_GENDER);
+            this.mBirthYear = args.getInt(Config.USER_BIRTHYEAR);
         }
     }
 

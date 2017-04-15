@@ -148,10 +148,7 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
         this.mCurrentUser.setSchedule(new Schedule());
         String userPath = FirebaseUtils.clearUserName(this.mCurrentUser.getEmail());
         this.mDatabaseReference.child(userPath).setValue(this.mCurrentUser);
-        //FIX
-        AdvisorRepository advisorRepository = new AdvisorRepository();
-        advisorRepository.saveAdvisorName(this.mCurrentUser.getEmail());
-        Toast.makeText(this, "Reopen the app to become advisor", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, Config.ADVISOR_ACTIVATION, Toast.LENGTH_LONG).show();
     }
 
     public User getmCurrentUser() {

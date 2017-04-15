@@ -1,4 +1,4 @@
-package com.wecode.letstalk.service.fcm;
+package com.wecode.letstalk.core.notifications.service.fcm;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -15,7 +14,6 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wecode.letstalk.R;
-import com.wecode.letstalk.activity.sessions.SessionsActivity;
 import com.wecode.letstalk.activity.sessions.chat.ChatActivity;
 import com.wecode.letstalk.configuration.Config;
 import com.wecode.letstalk.domain.message.ChatMessage;

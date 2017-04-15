@@ -9,6 +9,7 @@ import com.wecode.letstalk.activity.authentication.signIn.SignInFragment;
 import com.wecode.letstalk.activity.authentication.interfaces.TabFragmentListener;
 import com.wecode.letstalk.activity.authentication.signUp.SignUpFragmentOne;
 import com.wecode.letstalk.activity.authentication.signUp.SignUpFragmentTwo;
+import com.wecode.letstalk.configuration.Config;
 
 public class AuthenticationPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -52,8 +53,8 @@ public class AuthenticationPagerAdapter extends FragmentStatePagerAdapter {
                     fragmentSignUp = SignUpFragmentOne.newInstance(new TabFragmentListener() {
                         public void onSwitchToNextFragment() {
                             Bundle args = new Bundle();
-                            args.putInt("birthYear", ((SignUpFragmentOne) fragmentSignUp).mYear);
-                            args.putString("gender", ((SignUpFragmentOne) fragmentSignUp).mGender);
+                            args.putInt(Config.USER_BIRTHYEAR, ((SignUpFragmentOne) fragmentSignUp).mYear);
+                            args.putString(Config.USER_GENDER, ((SignUpFragmentOne) fragmentSignUp).mGender);
                             getFragmentManager().beginTransaction().remove(fragmentSignUp).commit();
                             fragmentSignUp = SignUpFragmentTwo.newInstance();
                             fragmentSignUp.setArguments(args);

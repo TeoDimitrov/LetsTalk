@@ -21,15 +21,17 @@ import android.widget.Toast;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wecode.letstalk.R;
 import com.wecode.letstalk.activity.sessions.chat.ChatActivity;
+import com.wecode.letstalk.core.advisor.AdvisorSwitchingCenter;
 import com.wecode.letstalk.configuration.Config;
 import com.wecode.letstalk.domain.timeFrames.TimeFrame;
 import com.wecode.letstalk.domain.timeFrames.TimeFrameStatus;
 import com.wecode.letstalk.domain.timeFrames.TimeFrameType;
 import com.wecode.letstalk.domain.user.User;
-import com.wecode.letstalk.repository.AdvisorRepository;
 import com.wecode.letstalk.repository.TimeFrameRepository;
 import com.wecode.letstalk.repository.UserRepository;
 import com.wecode.letstalk.utils.DateTimeUtil;
@@ -40,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -59,6 +62,10 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
     private SessionsActivity mSessionsActivity;
 
     private Intent mChatIntent;
+
+    private DatabaseReference mUserDatabaseReference;
+
+    private DatabaseReference mTimeFrameReference;
 
     private TimeFrameRepository mTimeFrameRepository;
 
@@ -87,7 +94,7 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                     mChatIntent.putExtra(Config.CHAT_PATH_EXTRA, chatPath);
                     mChatIntent.putExtra(Config.USER_AUTHOR_EXTRA, mSessionsActivity.getmCurrentUser());
                     String recipientUserName = null;
-                    if(mSessionsActivity.getmCurrentUser().getRole().getName().equals("AdvisorRole")) {
+                    if (mSessionsActivity.getmCurrentUser().getRole().getName().equals("AdvisorRole")) {
                         recipientUserName = timeFrame.getUsername();
                     } else {
                         recipientUserName = timeFrame.getAdvisorName();
@@ -150,8 +157,14 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                     }
                 });
 
-        showHint();
+        this.prepareFirebase();
+        this.showHint();
         return this.mRelativeLayout;
+    }
+
+    private void prepareFirebase() {
+        this.mUserDatabaseReference = FirebaseDatabase.getInstance().getReference().child(Config.CHILD_USERS);
+        this.mTimeFrameReference = FirebaseDatabase.getInstance().getReference().child(Config.CHILD_TIMEFRAMES);
     }
 
     protected void showHint() {
@@ -198,19 +211,58 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
             return;
         }
 
-        this.addChat(this.mSessionsActivity.getmCurrentUser());
-        final Date startDate = new Date();
-        final Date endDate = new Date();
+        final Date startBookingDate = new Date();
+        final Date endBookingDate = new Date(startBookingDate.getTime() + 15 * 60000);
         final String userName = this.mSessionsActivity.getmCurrentUser().getEmail();
 
-        //TempSolution
-        AdvisorRepository advisorRepository = new AdvisorRepository();
-        advisorRepository.getmDatabaseReference().addListenerForSingleValueEvent(new ValueEventListener() {
+        this.mUserDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String advisorName = dataSnapshot.getValue(String.class);
-                TimeFrame timeFrame = new TimeFrame(startDate, endDate, TimeFrameType.CHAT, userName, advisorName);
-                mTimeFrameRepository.save(timeFrame);
+                AdvisorSwitchingCenter advisorSwitchingCenter = new AdvisorSwitchingCenter();
+                final Set<User> workingAdvisors = advisorSwitchingCenter.getWorkingAdvisors(dataSnapshot, startBookingDate);
+                mTimeFrameReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User availableAdvisor = null;
+                        for (User workingAdvisor : workingAdvisors) {
+                            if (availableAdvisor != null) {
+                                break;
+                            }
+
+                            availableAdvisor = workingAdvisor;
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                TimeFrame advisorTimeFrame = snapshot.getValue(TimeFrame.class);
+                                Date advisorTimeFrameStartDate = DateTimeUtil.getUTCDateTime(advisorTimeFrame.getStartDateTime());
+                                Date advisorTimeFrameEndDate = DateTimeUtil.getUTCDateTime(advisorTimeFrame.getEndDateTime());
+
+                                if (!workingAdvisor.getEmail().equals(advisorTimeFrame.getAdvisorName())) {
+                                    continue;
+                                }
+
+                                if (startBookingDate.after(advisorTimeFrameStartDate) && startBookingDate.before(advisorTimeFrameEndDate)) {
+                                    availableAdvisor = null;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if(availableAdvisor == null){
+                            Toast.makeText(getContext(), Config.NO_AVAILABLE_ADVISOR, Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        String advisorName = availableAdvisor.getEmail();
+                        TimeFrame timeFrame = new TimeFrame(startBookingDate, endBookingDate, TimeFrameType.CHAT, userName, advisorName);
+                        mTimeFrameRepository.save(timeFrame);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
 
             @Override
@@ -218,6 +270,8 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
 
             }
         });
+
+        this.addChat(this.mSessionsActivity.getmCurrentUser());
 
         enableButton();
     }

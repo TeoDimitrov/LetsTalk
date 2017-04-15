@@ -1,4 +1,4 @@
-package com.wecode.letstalk.asyncTask;
+package com.wecode.letstalk.core.notifications.asyncTask;
 
 import android.os.AsyncTask;
 

@@ -25,7 +25,7 @@ import android.widget.RelativeLayout;
 
 import com.wecode.letstalk.R;
 import com.wecode.letstalk.activity.sessions.note.NotesActivity;
-import com.wecode.letstalk.asyncTask.SendNewMessageNotification;
+import com.wecode.letstalk.core.notifications.asyncTask.SendNewMessageNotification;
 import com.wecode.letstalk.configuration.Config;
 import com.wecode.letstalk.domain.message.ChatMessage;
 import com.wecode.letstalk.domain.message.ChatMessageStatus;
