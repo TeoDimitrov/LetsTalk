@@ -40,7 +40,7 @@ import com.wecode.letstalk.utils.FirebaseUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static android.view.View.*;
+import static android.view.View.OnTouchListener;
 import static com.wecode.letstalk.configuration.Config.VALID_EMAIL_ADDRESS_PATTERN;
 
 public class SignUpFragmentTwo extends Fragment implements OnClickListener, OnTouchListener {

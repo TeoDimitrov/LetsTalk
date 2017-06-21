@@ -2,10 +2,10 @@ package com.wecode.letstalk.domain.message;
 
 import android.graphics.Bitmap;
 
-import com.wecode.letstalk.utils.BitmapUtil;
-import com.wecode.letstalk.utils.DateTimeUtil;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.wecode.letstalk.utils.BitmapUtil;
+import com.wecode.letstalk.utils.DateTimeUtil;
 
 import java.util.Date;
 

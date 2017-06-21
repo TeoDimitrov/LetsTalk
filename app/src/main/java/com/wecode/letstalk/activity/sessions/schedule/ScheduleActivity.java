@@ -107,7 +107,7 @@ public class ScheduleActivity extends AppCompatActivity {
         }
     }
 
-    private void prepareTimeFormat(){
+    private void prepareTimeFormat() {
         mTimeFormat = new SimpleDateFormat("HH:mm");
     }
 
@@ -147,7 +147,7 @@ public class ScheduleActivity extends AppCompatActivity {
         this.mStartDateEditViewSUN = (EditText) findViewById(R.id.startDateSUN);
         this.mEndDateEditViewSUN = (EditText) findViewById(R.id.endDateSUN);
         this.mDayCheckBoxSUN = (CheckBox) findViewById(R.id.isEnabledSUN);
-        
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -262,7 +262,7 @@ public class ScheduleActivity extends AppCompatActivity {
         workDaySUN.setEnabled(this.mDayCheckBoxSUN.isChecked());
     }
 
-    private void saveWorkDays(){
+    private void saveWorkDays() {
         try {
             getWorkDaysValues();
         } catch (ParseException e) {
@@ -274,7 +274,7 @@ public class ScheduleActivity extends AppCompatActivity {
         this.mDatabaseReference.child(userPath).setValue(mCurrentUser);
     }
 
-    private void returnToSessionActivity(){
+    private void returnToSessionActivity() {
         setResult(Activity.RESULT_OK,
                 new Intent().putExtra(Config.USER_AUTHOR_EXTRA, this.mCurrentUser));
         finish();

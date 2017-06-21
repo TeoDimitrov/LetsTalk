@@ -1,7 +1,7 @@
 package com.wecode.letstalk.repository;
 
-import com.wecode.letstalk.domain.message.ChatMessage;
 import com.google.firebase.database.DatabaseReference;
+import com.wecode.letstalk.domain.message.ChatMessage;
 
 public class MessageRepository {
 

@@ -71,6 +71,10 @@
             android:name=".activity.sessions.schedule.ScheduleActivity"
             android:label="Schedule"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.sessions.account.AccountActivity"
+            android:label="Account"
+            android:screenOrientation="portrait" />
 
         <service android:name=".core.notifications.service.fcm.FirebaseChatMessagingService">
             <intent-filter>

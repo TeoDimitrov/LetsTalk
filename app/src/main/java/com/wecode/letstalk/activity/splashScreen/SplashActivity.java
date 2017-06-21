@@ -33,7 +33,7 @@ public class SplashActivity extends AppCompatActivity {
         this.prepareFirebase();
     }
 
-    private void prepareFirebase(){
+    private void prepareFirebase() {
         this.mDatabaseReference = FirebaseDatabase.getInstance().getReference().child(Config.CHILD_USERS);
         this.mAuth = FirebaseAuth.getInstance();
         this.mListener = new FirebaseAuth.AuthStateListener() {
@@ -74,7 +74,7 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
-    private void goToAuthenticationPage(){
+    private void goToAuthenticationPage() {
         Intent authenticationIntent = new Intent(this, AuthenticationActivity.class);
         startActivity(authenticationIntent);
         finish();

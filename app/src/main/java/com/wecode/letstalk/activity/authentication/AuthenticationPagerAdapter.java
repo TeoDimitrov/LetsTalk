@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.wecode.letstalk.activity.authentication.signIn.SignInFragment;
 import com.wecode.letstalk.activity.authentication.interfaces.TabFragmentListener;
+import com.wecode.letstalk.activity.authentication.signIn.SignInFragment;
 import com.wecode.letstalk.activity.authentication.signUp.SignUpFragmentOne;
 import com.wecode.letstalk.activity.authentication.signUp.SignUpFragmentTwo;
 import com.wecode.letstalk.configuration.Config;

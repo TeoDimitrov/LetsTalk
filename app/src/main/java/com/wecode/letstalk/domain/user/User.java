@@ -2,12 +2,11 @@ package com.wecode.letstalk.domain.user;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.XmlRes;
 
-import com.wecode.letstalk.domain.roles.CustomerRole;
-import com.wecode.letstalk.domain.roles.Role;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.wecode.letstalk.domain.roles.CustomerRole;
+import com.wecode.letstalk.domain.roles.Role;
 import com.wecode.letstalk.domain.schedule.Schedule;
 
 @IgnoreExtraProperties
@@ -210,19 +209,27 @@ public class User implements Parcelable {
         }
     };
 
-    public void addChat(int chat){
+    public void addChat(int chat) {
         this.chats += chat;
     }
 
-    public void addPaidChat(int chat){
+    public void addPaidChat(int chat) {
         this.paidChats += chat;
     }
 
-    public void addTalk(int talk){
+    public void addTalk(int talk) {
         this.talks += talk;
     }
 
-    public void addPaidTalk(int talk){
+    public void addPaidTalk(int talk) {
         this.paidTalks += talk;
+    }
+
+    public boolean hasToPayForChat() {
+        return this.chats >= this.paidChats;
+    }
+
+    public boolean hasToPayTalk() {
+        return this.talks >= this.paidTalks;
     }
 }

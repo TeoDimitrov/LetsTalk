@@ -23,10 +23,13 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.wecode.letstalk.R;
 import com.wecode.letstalk.activity.sessions.note.NotesActivity;
-import com.wecode.letstalk.core.notifications.asyncTask.SendNewMessageNotification;
 import com.wecode.letstalk.configuration.Config;
+import com.wecode.letstalk.core.notifications.asyncTask.SendNewMessageNotification;
 import com.wecode.letstalk.domain.message.ChatMessage;
 import com.wecode.letstalk.domain.message.ChatMessageStatus;
 import com.wecode.letstalk.domain.user.User;
@@ -34,9 +37,6 @@ import com.wecode.letstalk.repository.MessageRepository;
 import com.wecode.letstalk.utils.BitmapUtil;
 import com.wecode.letstalk.utils.FCMUtil;
 import com.wecode.letstalk.utils.SpeechUtil;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -141,7 +141,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 appendMessage(dataSnapshot);
                 ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
-                if(chatMessage.getChatMessageStatus() == ChatMessageStatus.NEW){
+                if (chatMessage.getChatMessageStatus() == ChatMessageStatus.NEW) {
                     //TODO
                     sendNotification(chatMessage, mChatPath, mAuthor, mRecipient);
                     chatMessage.setChatMessageStatus(ChatMessageStatus.READ);
@@ -307,7 +307,7 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
         getSupportActionBar().setTitle(title);
     }
 
-    private void sendNotification(ChatMessage chatMessage, String chatPath,  User author, User recipient) {
+    private void sendNotification(ChatMessage chatMessage, String chatPath, User author, User recipient) {
         new SendNewMessageNotification(chatMessage, chatPath, author, recipient).execute();
     }
 }

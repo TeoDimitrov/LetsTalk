@@ -79,8 +79,7 @@
             android:background="@android:color/transparent"
             android:drawableLeft="@drawable/arrow"
             android:layout_alignBaseline="@+id/gender"
-            android:layout_alignParentRight="true"
-            />
+            android:layout_alignParentRight="true" />
 
     </RelativeLayout>
 

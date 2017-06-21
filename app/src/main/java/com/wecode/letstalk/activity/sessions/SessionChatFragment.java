@@ -26,8 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wecode.letstalk.R;
 import com.wecode.letstalk.activity.sessions.chat.ChatActivity;
-import com.wecode.letstalk.core.advisor.AdvisorSwitchingCenter;
 import com.wecode.letstalk.configuration.Config;
+import com.wecode.letstalk.core.advisor.AdvisorSwitchingCenter;
 import com.wecode.letstalk.domain.timeFrames.TimeFrame;
 import com.wecode.letstalk.domain.timeFrames.TimeFrameStatus;
 import com.wecode.letstalk.domain.timeFrames.TimeFrameType;
@@ -205,9 +205,8 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
     }
 
     private void addChatTimeFrame() {
-        if (!hasUserPaid(this.mSessionsActivity.getmCurrentUser())) {
-            Toast.makeText(mSessionsActivity, "You have to pay for more chats", Toast.LENGTH_SHORT).show();
-            this.payChat(this.mSessionsActivity.getmCurrentUser());
+        if (this.mSessionsActivity.getmCurrentUser().hasToPayForChat()) {
+            this.mSessionsActivity.goToAccount();
             return;
         }
 
@@ -246,7 +245,7 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                             }
                         }
 
-                        if(availableAdvisor == null){
+                        if (availableAdvisor == null) {
                             Toast.makeText(getContext(), Config.NO_AVAILABLE_ADVISOR, Toast.LENGTH_LONG).show();
                             return;
                         }
@@ -370,14 +369,5 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
         }
 
         return isOld;
-    }
-
-    private boolean hasUserPaid(User user) {
-        boolean hasPaid = true;
-        if (user.getChats() >= user.getPaidChats()) {
-            hasPaid = false;
-        }
-
-        return hasPaid;
     }
 }

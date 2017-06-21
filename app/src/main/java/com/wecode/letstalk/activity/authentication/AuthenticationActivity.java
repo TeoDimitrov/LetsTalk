@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import com.facebook.FacebookSdk;
 import com.wecode.letstalk.R;
 
-import static android.view.View.*;
+import static android.view.View.OnTouchListener;
 
 public class AuthenticationActivity extends AppCompatActivity implements OnTouchListener {
 
@@ -36,11 +36,11 @@ public class AuthenticationActivity extends AppCompatActivity implements OnTouch
         this.prepareListeners();
     }
 
-    private void prepareLayout(){
+    private void prepareLayout() {
         this.mRelativeLayout = (RelativeLayout) findViewById(R.id.activity_authnetication);
     }
 
-    private void prepareViews(){
+    private void prepareViews() {
         this.mSignFragmentPagerAdapter = new AuthenticationPagerAdapter(getSupportFragmentManager());
         this.mSignViewPager = (ViewPager) findViewById(R.id.viewPagerSign);
         this.mSignViewPager.setAdapter(this.mSignFragmentPagerAdapter);
@@ -48,7 +48,7 @@ public class AuthenticationActivity extends AppCompatActivity implements OnTouch
         this.mSignTabLayout.setupWithViewPager(this.mSignViewPager);
     }
 
-    private void prepareListeners(){
+    private void prepareListeners() {
         this.mRelativeLayout.setOnTouchListener(this);
     }
 
@@ -61,7 +61,7 @@ public class AuthenticationActivity extends AppCompatActivity implements OnTouch
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (view.getId()) {
-            case R.id.activity_authnetication :
+            case R.id.activity_authnetication:
                 this.hideSoftKeyboard(this);
                 break;
         }

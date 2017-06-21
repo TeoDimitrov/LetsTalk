@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.wecode.letstalk.R;
-import com.wecode.letstalk.configuration.Config;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.Sinch;
 import com.sinch.android.rtc.SinchClient;
@@ -22,6 +20,8 @@ import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallClient;
 import com.sinch.android.rtc.calling.CallClientListener;
 import com.sinch.android.rtc.calling.CallListener;
+import com.wecode.letstalk.R;
+import com.wecode.letstalk.configuration.Config;
 
 import java.util.List;
 import java.util.Timer;

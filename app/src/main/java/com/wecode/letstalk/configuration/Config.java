@@ -34,6 +34,8 @@ public final class Config {
 
     public static final int REQUEST_MICROPHONE = 5;
 
+    public static final int REQUEST_RETURN_ACCOUNT = 6;
+
     public static final String SINCH_HOSTNAME = "sandbox.sinch.com";
 
     public static final String SINCH_KEY = "8fbfec34-622d-4eb1-898a-a25a0c2338f1";
@@ -49,27 +51,27 @@ public final class Config {
     public static final String VALID_EMAIL_ADDRESS_PATTERN = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
 
     public static final String VALID_TOPIC_REGEX = "^([a-zA-Z0-9-_.~%]{1,900})$";
-    
+
     public static final String ERROR_EXISTING_USER = "Email already exists.";
-    
+
     public static final String ERROR_NO_SUCH_USER = "Wrong credentials.";
-    
+
     public static final String ERROR_EMAIL_IS_REQUIRED = "Email is required.";
-    
+
     public static final String ERROR_EMAIL_NOT_VALID = "Email not valid.";
-    
+
     public static final String ERROR_PASSWORD_IS_REQUIRED = "Password is required.";
-    
+
     public static final String ERROR_PASSWORD_SHORT = "Enter at least 6 symbols.";
-    
+
     public static final String ERROR_CONFIRM_PASSWORD_IS_REQUIRED = "Confirm password is required.";
-    
+
     public static final String ERROR_PASSWORDS_DOESNT_MATCH = "Passwords does not match.";
 
     public static final String ERROR_BIRTHYEAR_NOT_NUMBER = "Birth mYear should be a number.";
 
     public static final String MESSAGE_AUTHENTICATION = "Authentication";
-    
+
     public static final String MESSAGE_CREATING_USER = "Creating User...";
 
     public static final String ERROR_BIRTHYEAR_IS_REQUIRED = "Birth year is required.";

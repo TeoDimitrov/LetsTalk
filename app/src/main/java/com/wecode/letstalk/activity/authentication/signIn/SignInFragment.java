@@ -50,7 +50,8 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-import static android.view.View.*;
+import static android.view.View.OnClickListener;
+import static android.view.View.OnTouchListener;
 
 public class SignInFragment extends Fragment implements OnClickListener, OnTouchListener {
 

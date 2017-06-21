@@ -30,7 +30,6 @@ import com.wecode.letstalk.domain.timeFrames.TimeFrame;
 import com.wecode.letstalk.domain.timeFrames.TimeFrameStatus;
 import com.wecode.letstalk.domain.timeFrames.TimeFrameType;
 import com.wecode.letstalk.domain.user.User;
-import com.wecode.letstalk.repository.AdvisorRepository;
 import com.wecode.letstalk.repository.TimeFrameRepository;
 import com.wecode.letstalk.repository.UserRepository;
 import com.wecode.letstalk.utils.DateTimeUtil;
@@ -213,7 +212,7 @@ public class SessionTalkFragment extends Fragment implements OnClickListener {
                             }
                         }
 
-                        if(availableAdvisor == null){
+                        if (availableAdvisor == null) {
                             Toast.makeText(getContext(), Config.NO_AVAILABLE_ADVISOR, Toast.LENGTH_LONG).show();
                             return;
                         }

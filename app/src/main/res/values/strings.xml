@@ -52,4 +52,24 @@
 
     <!-- Schedule -->
     <string name="schedule_fail">Set proper hours: e.g. 19:30</string>
+
+    <!-- Account -->
+    <string name="account_prices">Prices: </string>
+    <string name="account_chats">Your Chats: </string>
+    <string name="account_paid_chats">Paid Chats: </string>
+    <string name="account_buy_chat">Buy Chat </string>
+    <string name="account_buy_talk">Buy Talk </string>
+    <string name="account_talks">Your Talks: </string>
+    <string name="account_paid_talks">Paid Talks: </string>
+    <string name="account_item">Item</string>
+    <string name="account_baht">THB</string>
+    <string name="account_euro">EUR</string>
+    <string name="account_item_chat">1 Chat</string>
+    <string name="account_item_talk">1 Talk</string>
+    <string name="account_price_chat_baht">1</string>
+    <string name="account_price_chat_euro">0.03</string>
+    <string name="account_price_talk_baht">15</string>
+    <string name="account_price_talk_euro">0.40</string>
+    <string name="account_duration_title">Duration</string>
+    <string name="account_duration">15 MIN</string>
 </resources>

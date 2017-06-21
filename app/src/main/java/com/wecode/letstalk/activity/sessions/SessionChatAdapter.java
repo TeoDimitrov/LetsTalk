@@ -73,7 +73,7 @@ public class SessionChatAdapter extends ArrayAdapter<TimeFrame> {
 
     @Override
     public void remove(TimeFrame object) {
-       this.timeFrames.remove(object);
+        this.timeFrames.remove(object);
     }
 
     public List<TimeFrame> getTimeFrames() {

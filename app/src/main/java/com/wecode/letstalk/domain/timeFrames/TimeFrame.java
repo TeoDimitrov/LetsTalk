@@ -4,9 +4,9 @@ package com.wecode.letstalk.domain.timeFrames;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.wecode.letstalk.utils.DateTimeUtil;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.wecode.letstalk.utils.DateTimeUtil;
 
 import java.util.Date;
 

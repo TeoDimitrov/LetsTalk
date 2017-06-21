@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 
-public class SessionsFragmentPagerAdapter extends FragmentStatePagerAdapter {
+public class SessionsFragmentPageAdapter extends FragmentStatePagerAdapter {
 
     private static final int PAGE_COUNT = 2;
 
@@ -13,7 +13,7 @@ public class SessionsFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private FragmentManager fragmentManager;
 
-    public SessionsFragmentPagerAdapter(FragmentManager fragmentManager) {
+    public SessionsFragmentPageAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
         this.setFragmentManager(fragmentManager);
     }

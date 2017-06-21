@@ -10,30 +10,30 @@ import java.util.regex.Pattern;
 
 public class FCMUtil {
 
-    public static String createTopicName(String username){
-        String topicName = username.replace("@","~").replace("+","~");
+    public static String createTopicName(String username) {
+        String topicName = username.replace("@", "~").replace("+", "~");
 
         Pattern topicPattern = Pattern.compile(Config.VALID_TOPIC_REGEX);
         Matcher matcher = topicPattern.matcher(topicName);
-        if(!matcher.find()){
+        if (!matcher.find()) {
             topicName = null;
         }
 
         return topicName;
     }
 
-    public static void subscribe(User user){
+    public static void subscribe(User user) {
         String username = user.getEmail();
         String topicName = FCMUtil.createTopicName(username);
-        if(topicName != null) {
+        if (topicName != null) {
             FirebaseMessaging.getInstance().subscribeToTopic(topicName);
         }
     }
 
-    public static void unsubscribe(User user){
+    public static void unsubscribe(User user) {
         String username = user.getEmail();
         String topicName = FCMUtil.createTopicName(username);
-        if(topicName != null) {
+        if (topicName != null) {
             FirebaseMessaging.getInstance().unsubscribeFromTopic(topicName);
         }
     }

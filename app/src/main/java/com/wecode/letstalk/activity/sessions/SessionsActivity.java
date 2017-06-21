@@ -25,13 +25,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wecode.letstalk.R;
 import com.wecode.letstalk.activity.authentication.AuthenticationActivity;
+import com.wecode.letstalk.activity.sessions.account.AccountActivity;
 import com.wecode.letstalk.activity.sessions.schedule.ScheduleActivity;
 import com.wecode.letstalk.configuration.Config;
 import com.wecode.letstalk.domain.roles.AdvisorRole;
 import com.wecode.letstalk.domain.schedule.Schedule;
 import com.wecode.letstalk.domain.user.User;
-import com.wecode.letstalk.repository.AdvisorRepository;
-import com.wecode.letstalk.repository.UserRepository;
 import com.wecode.letstalk.utils.FCMUtil;
 import com.wecode.letstalk.utils.FirebaseUtils;
 
@@ -39,7 +38,7 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
 
     private ViewGroup mChatContainer;
 
-    private SessionsFragmentPagerAdapter mSessionsFragmentPagerAdapter;
+    private SessionsFragmentPageAdapter mSessionsFragmentPagerAdapter;
 
     private TabLayout mSessionTabLayout;
 
@@ -65,7 +64,7 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
     }
 
     private void prepareViews() {
-        this.mSessionsFragmentPagerAdapter = new SessionsFragmentPagerAdapter(getSupportFragmentManager());
+        this.mSessionsFragmentPagerAdapter = new SessionsFragmentPageAdapter(getSupportFragmentManager());
         this.mSessionsViewPager = ((ViewPager) findViewById(R.id.viewPagerSessions));
         this.mSessionsViewPager.setAdapter(this.mSessionsFragmentPagerAdapter);
         this.mSessionTabLayout = ((TabLayout) findViewById(R.id.tabLayoutSessions));
@@ -173,6 +172,9 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
             case R.id.nav_schedule:
                 this.goToSchedule();
                 break;
+            case R.id.nav_account:
+                this.goToAccount();
+                break;
             case R.id.nav_signout:
                 FCMUtil.unsubscribe(this.mCurrentUser);
                 this.signOut();
@@ -187,13 +189,27 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
     private void goToSchedule() {
         Intent scheduleIntent = new Intent(this, ScheduleActivity.class);
         scheduleIntent.putExtra(Config.USER_AUTHOR_EXTRA, this.mCurrentUser);
-        startActivityForResult(scheduleIntent,Config.REQUEST_RETURN_SCHEDULE);
+        startActivityForResult(scheduleIntent, Config.REQUEST_RETURN_SCHEDULE);
+    }
+
+    public void goToAccount() {
+        Intent scheduleIntent = new Intent(this, AccountActivity.class);
+        scheduleIntent.putExtra(Config.USER_AUTHOR_EXTRA, this.mCurrentUser);
+        startActivityForResult(scheduleIntent, Config.REQUEST_RETURN_ACCOUNT);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case Config.REQUEST_RETURN_SCHEDULE:
+                if (resultCode == RESULT_OK) {
+                    Bundle extras = data.getExtras();
+                    this.mCurrentUser = extras.getParcelable(Config.USER_AUTHOR_EXTRA);
+                }
+
+                break;
+
+            case Config.REQUEST_RETURN_ACCOUNT:
                 if (resultCode == RESULT_OK) {
                     Bundle extras = data.getExtras();
                     this.mCurrentUser = extras.getParcelable(Config.USER_AUTHOR_EXTRA);

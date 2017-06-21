@@ -3,7 +3,6 @@ package com.wecode.letstalk.activity.authentication.signUp;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,11 +18,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.wecode.letstalk.R;
 import com.wecode.letstalk.activity.authentication.interfaces.TabFragmentListener;
 import com.wecode.letstalk.configuration.Config;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 
 import java.util.Calendar;
 
@@ -67,11 +66,11 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener, View
         return this.mRelativeLayout;
     }
 
-    private void prepareLayout(LayoutInflater inflater, ViewGroup container){
+    private void prepareLayout(LayoutInflater inflater, ViewGroup container) {
         this.mRelativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_sign_up_fragment_one, container, false);
     }
 
-    private void prepareViews(){
+    private void prepareViews() {
         this.mButtonNextPage = (Button) this.mRelativeLayout.findViewById(R.id.button_next_page);
         this.mBirthYearEditText = (EditText) this.mRelativeLayout.findViewById(R.id.enter_birth_year);
         this.mGenderRadioButtons = (RadioGroup) this.mRelativeLayout.findViewById(R.id.gender_radio_buttons);
@@ -81,7 +80,7 @@ public class SignUpFragmentOne extends Fragment implements OnClickListener, View
         this.mSignUpFragmentTwo = new SignUpFragmentTwo();
     }
 
-    private void prepareListeners(){
+    private void prepareListeners() {
         this.mButtonNextPage.setOnClickListener(this);
         this.mMaleOption.setOnClickListener(this);
         this.mFemaleOption.setOnClickListener(this);

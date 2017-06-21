@@ -8,7 +8,6 @@ import com.wecode.letstalk.utils.DateTimeUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,12 +37,12 @@ public class AdvisorSwitchingCenter {
 
     private boolean isAdvisorWorking(User advisor, Date startBookingDate) {
         boolean isAvailable = false;
-        if(isAdvisor(advisor)){
+        if (isAdvisor(advisor)) {
             Date utcStartBookingDate = DateTimeUtil.getUTCDateTimeFromDate(startBookingDate);
             long utcStartBookingDay = Long.parseLong(new SimpleDateFormat("u").format(utcStartBookingDate));
             for (WorkDay workDay : advisor.getSchedule().getWorkDays()) {
-                if(workDay.getId() == utcStartBookingDay && workDay.isEnabled()){
-                    if(this.isTimeSlotAvailable(workDay, startBookingDate)){
+                if (workDay.getId() == utcStartBookingDay && workDay.isEnabled()) {
+                    if (this.isTimeSlotAvailable(workDay, startBookingDate)) {
                         isAvailable = true;
                     }
                 }
@@ -62,7 +61,7 @@ public class AdvisorSwitchingCenter {
         return isAdvisor;
     }
 
-    private boolean isTimeSlotAvailable(WorkDay workDay, Date startBookingDate){
+    private boolean isTimeSlotAvailable(WorkDay workDay, Date startBookingDate) {
         boolean isTimeSlotAvailable = false;
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         String workDayStartTime = timeFormat.format(workDay.getStartTime());
@@ -79,7 +78,7 @@ public class AdvisorSwitchingCenter {
             e.printStackTrace();
         }
 
-        if(convertedWorkDayStartTime.before(convertedStartBookingTime) && convertedWorkDayEndTime.after(convertedStartBookingTime)){
+        if (convertedWorkDayStartTime.before(convertedStartBookingTime) && convertedWorkDayEndTime.after(convertedStartBookingTime)) {
             isTimeSlotAvailable = true;
         }
 
