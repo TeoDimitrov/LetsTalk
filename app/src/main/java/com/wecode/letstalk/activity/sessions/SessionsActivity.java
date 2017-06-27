@@ -1,7 +1,11 @@
 package com.wecode.letstalk.activity.sessions;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -18,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.vending.billing.IInAppBillingService;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -135,11 +140,6 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
         if (this.mAuth != null) {
             this.mAuth.removeAuthStateListener(this.mListener);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     private void becomeAdvisor() {

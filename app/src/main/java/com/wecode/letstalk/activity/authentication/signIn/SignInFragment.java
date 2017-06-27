@@ -49,6 +49,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.logging.Logger;
 
 import static android.view.View.OnClickListener;
 import static android.view.View.OnTouchListener;
@@ -170,30 +172,37 @@ public class SignInFragment extends Fragment implements OnClickListener, OnTouch
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
+                        AccessToken facebookAccessToken = loginResult.getAccessToken();
                         try {
-                            AccessToken facebookAccessToken = loginResult.getAccessToken();
                             String email = response.getJSONObject().getString("email");
                             String gender = response.getJSONObject().getString("gender");
-                            String birthDateStringValue = response.getJSONObject().getString("birthday");
-                            int birthDate = 0;
-                            if (birthDateStringValue != null) {
-                                birthDate = Integer.parseInt(birthDateStringValue.substring(birthDateStringValue.length() - 4));
+                            String ageRange = response.getJSONObject().getString("age_range");
+                            JSONObject ageRangeJson = new JSONObject(ageRange);
+                            int minAge = Integer.parseInt(ageRangeJson.getString("min"));
+                            int maxAge = minAge;
+                            if(ageRange.contains("max")) {
+                                maxAge = Integer.parseInt(ageRangeJson.getString("max"));
                             }
 
-                            loginAndRegisterFacebookUser(email, gender, birthDate, facebookAccessToken);
+                            int avgAge = (maxAge + minAge) / 2;
+                            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+                            int birthYear = currentYear - avgAge;
+
+                            loginAndRegisterFacebookUser(email, gender, birthYear, facebookAccessToken);
                         } catch (JSONException e) {
+                            hideProgressDialog();
                             Toast.makeText(getActivity(), "Cannot Process Facebook Data", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
 
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id, email, gender, birthday");
+        parameters.putString("fields", "id, email, gender, age_range");
         request.setParameters(parameters);
         request.executeAsync();
     }
 
-    private void loginAndRegisterFacebookUser(final String username, final String gender, final int birthDate, final AccessToken facebookAccessToken) {
+    private void loginAndRegisterFacebookUser(final String username, final String gender, final int birthYear, final AccessToken facebookAccessToken) {
         final String userPath = FirebaseUtils.clearUserName(username);
         Query query = this.mDatabaseReference.orderByChild(Config.CHILD_USERS_EMAIL).equalTo(username);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -201,7 +210,7 @@ public class SignInFragment extends Fragment implements OnClickListener, OnTouch
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.child(userPath).getValue(User.class);
                 if (user == null) {
-                    user = new User(birthDate, gender, username);
+                    user = new User(birthYear, gender, username);
                     registerFirebaseUser(user);
                 }
 

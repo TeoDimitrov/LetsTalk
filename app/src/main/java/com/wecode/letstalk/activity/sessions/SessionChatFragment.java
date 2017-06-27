@@ -1,5 +1,6 @@
 package com.wecode.letstalk.activity.sessions;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,6 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -199,18 +204,92 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_chat_id:
-                this.addChatTimeFrame();
+                askForBooking();
                 break;
         }
     }
 
-    private void addChatTimeFrame() {
+    private void askForBooking() {
         if (this.mSessionsActivity.getmCurrentUser().hasToPayForChat()) {
             this.mSessionsActivity.goToAccount();
             return;
         }
 
-        final Date startBookingDate = new Date();
+        int currentDate = Calendar.getInstance().get(Calendar.DATE);
+        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, final int year, final int month, final int date) {
+                LayoutInflater factory = getLayoutInflater(null);
+                RelativeLayout relativeLayout = (RelativeLayout) factory.inflate(R.layout.booking_popup, null);
+                LinearLayout linearLayout = (LinearLayout) relativeLayout.findViewById(R.id.datetime_holder);
+                final EditText hourText = (EditText) linearLayout.findViewById(R.id.booking_hour);
+
+                int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+                hourText.setText(String.valueOf(currentHour));
+                final EditText minutesText = (EditText) linearLayout.findViewById(R.id.booking_minutes);
+                int currentMinutes = Calendar.getInstance().get(Calendar.MINUTE);
+                minutesText.setText(String.valueOf(currentMinutes));
+
+                final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                alert
+                        .setTitle(R.string.app_name)
+                        .setMessage("Choose Time:")
+                        .setPositiveButton("Ok", null)
+                        .setNegativeButton("Cancel", null)
+                        .setView(relativeLayout);
+
+                final AlertDialog alertDialog = alert.create();
+                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+                        Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        positiveButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                System.out.println("positive");
+                                boolean isTimeCorrectFormat = true;
+                                int hour = Integer.parseInt(hourText.getText().toString());
+                                if (hour < 0 || hour > 23) {
+                                    hourText.setError("Invalid hour");
+                                    isTimeCorrectFormat = false;
+                                }
+
+                                int minutes = Integer.parseInt(minutesText.getText().toString());
+                                if (minutes < 0 || minutes > 59) {
+                                    minutesText.setError("Invalid minutes");
+                                    isTimeCorrectFormat = false;
+                                }
+
+                                if(isTimeCorrectFormat) {
+                                    final Calendar bookingStartDate = Calendar.getInstance();
+                                    bookingStartDate.set(year, month + 1, date, hour, minutes);
+                                    addChatTimeFrame(bookingStartDate.getTime());
+                                    alertDialog.dismiss();
+                                }
+                            }
+                        });
+
+                        Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                        negativeButton.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                alertDialog.dismiss();
+                            }
+                        });
+                    }
+                });
+
+                alertDialog.show();
+            }
+        }, currentYear, currentMonth, currentDate);
+
+        datePickerDialog.show();
+    }
+
+    private void addChatTimeFrame(final Date startBookingDate) {
         final Date endBookingDate = new Date(startBookingDate.getTime() + 15 * 60000);
         final String userName = this.mSessionsActivity.getmCurrentUser().getEmail();
 

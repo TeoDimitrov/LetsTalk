@@ -229,7 +229,7 @@ public class User implements Parcelable {
         return this.chats >= this.paidChats;
     }
 
-    public boolean hasToPayTalk() {
+    public boolean hasToPayForTalk() {
         return this.talks >= this.paidTalks;
     }
 }

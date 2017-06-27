@@ -4,226 +4,145 @@
     android:layout_height="match_parent"
     android:background="@color/colorAccent">
 
-    <TextView
-        android:id="@+id/prices"
+    <RelativeLayout
+        android:id="@+id/layout_purchases"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
+        <RelativeLayout
+            android:id="@+id/layout_chats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp">
+
+            <TextView
+                android:id="@+id/chats_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/account_chats"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/chats_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/chats_text"
+                android:text="0"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/paid_chats_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/chats_text"
+                android:layout_marginTop="5dp"
+                android:text="@string/account_paid_chats"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/paid_chats_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/chats_number"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/paid_chats_text"
+                android:text="3"
+                android:textSize="26dp" />
+
+            <Button
+                android:id="@+id/buy_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/paid_chats_text"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="26dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:text="@string/account_buy_chat"
+                android:padding="5dp"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_talks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="26dp"
+            android:layout_marginTop="26dp"
+            android:layout_toRightOf="@+id/layout_chats">
+
+            <TextView
+                android:id="@+id/talks_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/account_chats"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/talks_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/talks_text"
+                android:text="0"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/paid_talks_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/talks_text"
+                android:layout_marginTop="5dp"
+                android:text="@string/account_paid_chats"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/paid_talks_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/talks_number"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/paid_talks_text"
+                android:text="3"
+                android:textSize="26dp" />
+
+            <Button
+                android:id="@+id/buy_talk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/paid_talks_text"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="26dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:text="@string/account_buy_talk"
+                android:padding="5dp"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:text="@string/account_prices"
-        android:layout_marginTop="26dp"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:padding="5dip" />
-
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/price_table"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/prices"
-        android:stretchColumns="1">
-
-        <TableRow
-            android:layout_height="1px"
-            android:background="@color/colorChatOther">
-
-            <TextView
-                android:text="@string/account_item"
-                android:textSize="26sp"
-                android:textStyle="bold"
-                android:padding="5dip" />
-
-            <TextView
-                android:text="@string/account_duration_title"
-                android:gravity="right"
-                android:textSize="26sp"
-                android:textStyle="bold"
-                android:padding="5dip" />
-
-            <TextView
-                android:text="@string/account_baht"
-                android:gravity="right"
-                android:textSize="26sp"
-                android:textStyle="bold"
-                android:padding="5dip" />
-
-            <TextView
-                android:text="@string/account_euro"
-                android:gravity="right"
-                android:textSize="26sp"
-                android:textStyle="bold"
-                android:padding="5dip" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:text="@string/account_item_chat"
-                android:textSize="20sp"
-                android:padding="5dip" />
-
-            <TextView
-                android:text="@string/account_duration"
-                android:gravity="right"
-                android:textSize="20sp"
-                android:padding="5dip" />
-
-            <TextView
-                android:text="@string/account_price_chat_baht"
-                android:gravity="right"
-                android:textSize="20sp"
-                android:padding="5dip" />
-
-            <TextView
-                android:text="@string/account_price_chat_euro"
-                android:gravity="right"
-                android:textSize="20sp"
-                android:padding="5dip" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:text="@string/account_item_talk"
-                android:textSize="20sp"
-                android:padding="5dip" />
-
-            <TextView
-                android:text="@string/account_duration"
-                android:gravity="right"
-                android:textSize="20sp"
-                android:padding="5dip" />
-
-            <TextView
-                android:text="@string/account_price_talk_baht"
-                android:gravity="right"
-                android:textSize="20sp"
-                android:padding="5dip" />
-
-            <TextView
-                android:text="@string/account_price_talk_euro"
-                android:gravity="right"
-                android:textSize="20sp"
-                android:padding="5dip" />
-        </TableRow>
-
-    </TableLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_chats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
-        android:layout_below="@id/price_table"
-        android:layout_centerHorizontal="true">
-
-        <TextView
-            android:id="@+id/chats_text"
+        android:layout_below="@+id/layout_purchases">
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textSize="26sp"
-            android:text="@string/account_chats" />
-
-        <TextView
-            android:id="@+id/chats_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@+id/chats_text"
-            android:layout_marginLeft="5dp"
-            android:textSize="26sp"
-            android:text="0" />
-
-        <TextView
-            android:id="@+id/paid_chats_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/chats_text"
-            android:layout_marginTop="5dp"
-            android:textSize="26sp"
-            android:text="@string/account_paid_chats" />
-
-        <TextView
-            android:id="@+id/paid_chats_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/paid_chats_text"
-            android:layout_below="@id/chats_number"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:textSize="26dp"
-            android:text="3" />
-
-        <Button
-            android:text="@string/account_buy_chat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:id="@+id/buy_chat"
-            android:layout_below="@+id/paid_chats_text"
-            android:layout_centerHorizontal="true"
-            android:textSize="16sp"
-            android:background="@color/colorContrastBlue" />
-
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/letstalk_logo"/>
     </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
-        android:layout_below="@id/layout_chats"
-        android:layout_centerHorizontal="true">
-
-        <TextView
-            android:id="@+id/talks_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textSize="26sp"
-            android:text="@string/account_chats" />
-
-        <TextView
-            android:id="@+id/talks_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@+id/talks_text"
-            android:layout_marginLeft="5dp"
-            android:textSize="26sp"
-            android:text="0" />
-
-        <TextView
-            android:id="@+id/paid_talks_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/talks_text"
-            android:layout_marginTop="5dp"
-            android:textSize="26sp"
-            android:text="@string/account_paid_chats" />
-
-        <TextView
-            android:id="@+id/paid_talks_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/paid_talks_text"
-            android:layout_below="@id/talks_number"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:textSize="26dp"
-            android:text="3" />
-
-        <Button
-            android:text="@string/account_buy_talk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:id="@+id/buy_talks"
-            android:layout_below="@+id/paid_talks_text"
-            android:layout_centerHorizontal="true"
-            android:textSize="16sp"
-            android:background="@color/colorContrastBlue" />
-
-    </RelativeLayout>
-
 
 </RelativeLayout>

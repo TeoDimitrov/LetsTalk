@@ -72,4 +72,7 @@
     <string name="account_price_talk_euro">0.40</string>
     <string name="account_duration_title">Duration</string>
     <string name="account_duration">15 MIN</string>
+
+    <string name="purchase_successful">Purchase Successful!</string>
+    <string name="purchase_unsuccessful">Purchase Not Successful!</string>
 </resources>
