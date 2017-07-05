@@ -28,7 +28,6 @@ public class UserRepository {
         this.mDatabaseReference.child(userPath).setValue(user);
     }
 
-
     public User findByUserName(final String username, final Intent intent, final Activity activity) {
         final String userPath = FirebaseUtils.clearUserName(username);
         Query query = this.mDatabaseReference.orderByChild(Config.CHILD_USERS_EMAIL).equalTo(username);
@@ -51,5 +50,15 @@ public class UserRepository {
     public void updateUser(User user) {
         final String userPath = FirebaseUtils.clearUserName(user.getEmail());
         this.mDatabaseReference.child(userPath).setValue(user);
+    }
+
+    public void increaseChats(String username, int newChats){
+        final String userPath = FirebaseUtils.clearUserName(username);
+        this.mDatabaseReference.child(userPath).child(Config.CHILD_PAID_CHATS).setValue(newChats);
+    }
+
+    public void increaseTalks(String username, int newTalks){
+        final String userPath = FirebaseUtils.clearUserName(username);
+        this.mDatabaseReference.child(userPath).child(Config.CHILD_PAID_TALKS).setValue(newTalks);
     }
 }

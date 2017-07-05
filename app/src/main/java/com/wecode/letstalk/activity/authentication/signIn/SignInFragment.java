@@ -50,7 +50,6 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.logging.Logger;
 
 import static android.view.View.OnClickListener;
 import static android.view.View.OnTouchListener;
@@ -145,7 +144,7 @@ public class SignInFragment extends Fragment implements OnClickListener, OnTouch
     private void prepareFacebookAuthentication() {
         this.mCallbackManager = CallbackManager.Factory.create();
         this.mFacebookHiddenLoginButton.setReadPermissions(Arrays.asList(
-                "public_profile", "email", "user_birthday"));
+                "public_profile"));
         this.mFacebookHiddenLoginButton.setFragment(this);
         this.mFacebookHiddenLoginButton.registerCallback(this.mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -176,17 +175,20 @@ public class SignInFragment extends Fragment implements OnClickListener, OnTouch
                         try {
                             String email = response.getJSONObject().getString("email");
                             String gender = response.getJSONObject().getString("gender");
+
+                            System.out.println("nope");
                             String ageRange = response.getJSONObject().getString("age_range");
                             JSONObject ageRangeJson = new JSONObject(ageRange);
                             int minAge = Integer.parseInt(ageRangeJson.getString("min"));
                             int maxAge = minAge;
-                            if(ageRange.contains("max")) {
+                            if (ageRange.contains("max")) {
                                 maxAge = Integer.parseInt(ageRangeJson.getString("max"));
                             }
 
                             int avgAge = (maxAge + minAge) / 2;
                             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
                             int birthYear = currentYear - avgAge;
+
 
                             loginAndRegisterFacebookUser(email, gender, birthYear, facebookAccessToken);
                         } catch (JSONException e) {
@@ -197,7 +199,7 @@ public class SignInFragment extends Fragment implements OnClickListener, OnTouch
                 });
 
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id, email, gender, age_range");
+        parameters.putString("fields", "email, gender, age_range");
         request.setParameters(parameters);
         request.executeAsync();
     }

@@ -38,6 +38,7 @@ import com.wecode.letstalk.domain.user.User;
 import com.wecode.letstalk.repository.TimeFrameRepository;
 import com.wecode.letstalk.repository.UserRepository;
 import com.wecode.letstalk.utils.DateTimeUtil;
+import com.wecode.letstalk.utils.HashUtil;
 import com.wooplr.spotlight.SpotlightView;
 
 import java.util.ArrayList;
@@ -88,19 +89,20 @@ public class SessionTalkFragment extends Fragment implements OnClickListener {
                 final TimeFrame timeFrame = (TimeFrame) parent.getItemAtPosition(position);
                 if (timeFrame.getStatus() == TimeFrameStatus.CONFIRMED) {
                     Intent talkActivityIntent = new Intent(getContext(), TalkActivity.class);
-                    String callerId = null;
-                    String recipientId = null;
+                    StringBuilder participants = new StringBuilder();
+                    participants.append(timeFrame.getAdvisorName());
+                    participants.append(timeFrame.getUsername());
+                    String chatPath = HashUtil.getHashMD5(participants.toString());
+                    talkActivityIntent.putExtra(Config.TALK_PATH_EXTRA, chatPath);
+                    talkActivityIntent.putExtra(Config.USER_AUTHOR_EXTRA, mSessionsActivity.getmCurrentUser());
+                    String recipientUserName = null;
                     if (mSessionsActivity.getmCurrentUser().getRole().getName().equals("AdvisorRole")) {
-                        callerId = timeFrame.getAdvisorName();
-                        recipientId = timeFrame.getUsername();
+                        recipientUserName = timeFrame.getUsername();
                     } else {
-                        callerId = timeFrame.getUsername();
-                        recipientId = timeFrame.getAdvisorName();
+                        recipientUserName = timeFrame.getAdvisorName();
                     }
 
-                    talkActivityIntent.putExtra(Config.SINCH_CALLER_ID, callerId);
-                    talkActivityIntent.putExtra(Config.SINCH_RECIPIENT_ID, recipientId);
-                    getActivity().startActivity(talkActivityIntent);
+                    mUserRepository.findByUserName(recipientUserName, talkActivityIntent, getActivity());
                 }
 
                 if (mSessionsActivity.getmCurrentUser().getRole().getName().equals("AdvisorRole")
@@ -341,24 +343,6 @@ public class SessionTalkFragment extends Fragment implements OnClickListener {
         this.mUserRepository.updateUser(user);
     }
 
-    private void payTalk(final User user) {
-        new AlertDialog.Builder(getContext())
-                .setTitle("Buy Talk")
-                .setMessage("Would you like to buy a talk?")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        user.addPaidTalk(1);
-                        mUserRepository.updateUser(user);
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-    }
-
     private void appendTimeFrame(DataSnapshot dataSnapshot) {
         TimeFrame timeFrame = dataSnapshot.getValue(TimeFrame.class);
         if (isOldSession(timeFrame)) {
@@ -418,14 +402,5 @@ public class SessionTalkFragment extends Fragment implements OnClickListener {
         }
 
         return isOld;
-    }
-
-    private boolean hasUserPaid(User user) {
-        boolean hasPaid = true;
-        if (user.getTalks() >= user.getPaidTalks()) {
-            hasPaid = false;
-        }
-
-        return hasPaid;
     }
 }

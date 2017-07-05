@@ -71,8 +71,8 @@ public class BillingManager implements Billing {
             public void run() {
                 try {
                     mService.consumePurchase(3, packageName, token);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
+                } catch (RemoteException ignored) {
+
                 }
             }
         };

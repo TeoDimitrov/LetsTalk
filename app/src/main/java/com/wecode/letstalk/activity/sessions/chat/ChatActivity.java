@@ -29,7 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.wecode.letstalk.R;
 import com.wecode.letstalk.activity.sessions.note.NotesActivity;
 import com.wecode.letstalk.configuration.Config;
-import com.wecode.letstalk.core.notifications.asyncTask.SendNewMessageNotification;
+import com.wecode.letstalk.core.notifications.asyncTask.SendNewChatMessageNotification;
 import com.wecode.letstalk.domain.message.ChatMessage;
 import com.wecode.letstalk.domain.message.ChatMessageStatus;
 import com.wecode.letstalk.domain.user.User;
@@ -82,7 +82,6 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
             this.mChatPath = extras.getString(Config.CHAT_PATH_EXTRA);
             this.mAuthor = extras.getParcelable(Config.USER_AUTHOR_EXTRA);
             this.mRecipient = extras.getParcelable(Config.USER_RECIPIENT_EXTRA);
-
         }
 
         if (getSupportActionBar() != null) {
@@ -308,6 +307,6 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void sendNotification(ChatMessage chatMessage, String chatPath, User author, User recipient) {
-        new SendNewMessageNotification(chatMessage, chatPath, author, recipient).execute();
+        new SendNewChatMessageNotification(chatMessage, chatPath, author, recipient).execute();
     }
 }

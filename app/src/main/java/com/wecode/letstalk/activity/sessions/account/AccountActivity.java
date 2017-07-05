@@ -25,6 +25,7 @@ import com.wecode.letstalk.core.billing.Billing;
 import com.wecode.letstalk.core.billing.BillingManager;
 import com.wecode.letstalk.domain.product.Payable;
 import com.wecode.letstalk.domain.user.User;
+import com.wecode.letstalk.repository.UserRepository;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,11 +38,21 @@ import static com.wecode.letstalk.core.billing.Billing.TALK;
 
 public class AccountActivity extends AppCompatActivity implements OnClickListener {
 
+    TextView mChatsTextView;
+
+    TextView mPaidChatsTextView;
+
+    TextView mTalksTextView;
+
+    TextView mPaidTalksTextView;
+
     private Button mBtnBuyChat;
 
     private Button mBtnBuyTalk;
 
     private User mCurrentUser;
+
+    private UserRepository mUserRepository;
 
     private IInAppBillingService mService;
 
@@ -69,7 +80,9 @@ public class AccountActivity extends AppCompatActivity implements OnClickListene
         setContentView(R.layout.activity_account);
         this.receiveAuthenticatedUser(savedInstanceState);
         this.prepareViews();
+        this.updateUserStats();
         this.prepareBilling();
+        this.prepareRepositories();
     }
 
     private void getProducts() {
@@ -91,6 +104,10 @@ public class AccountActivity extends AppCompatActivity implements OnClickListene
         }
     }
 
+    private void prepareRepositories(){
+        mUserRepository = new UserRepository(Config.CHILD_USERS);
+    }
+
     private void prepareBilling() {
         //Bind Intents
         Intent serviceIntent =
@@ -100,15 +117,11 @@ public class AccountActivity extends AppCompatActivity implements OnClickListene
     }
 
     private void prepareViews() {
-        TextView chatsTextView = (TextView) findViewById(R.id.chats_number);
-        chatsTextView.setText(Integer.toString(mCurrentUser.getChats()));
-        TextView paidChatsTextView = (TextView) findViewById(R.id.paid_chats_number);
-        paidChatsTextView.setText(Integer.toString(mCurrentUser.getPaidChats()));
+        mChatsTextView = (TextView) findViewById(R.id.chats_number);
+        mPaidChatsTextView = (TextView) findViewById(R.id.paid_chats_number);
 
-        TextView talksTextView = (TextView) findViewById(R.id.talks_number);
-        talksTextView.setText(Integer.toString(mCurrentUser.getTalks()));
-        TextView paidTalksTextView = (TextView) findViewById(R.id.paid_talks_number);
-        paidTalksTextView.setText(Integer.toString(mCurrentUser.getPaidTalks()));
+        mTalksTextView = (TextView) findViewById(R.id.talks_number);
+        mPaidTalksTextView = (TextView) findViewById(R.id.paid_talks_number);
 
         mBtnBuyChat = (Button) findViewById(R.id.buy_chat);
         mBtnBuyChat.setOnClickListener(this);
@@ -119,6 +132,13 @@ public class AccountActivity extends AppCompatActivity implements OnClickListene
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+    }
+
+    private void updateUserStats(){
+        mChatsTextView.setText(Integer.toString(mCurrentUser.getChats()));
+        mPaidChatsTextView.setText(Integer.toString(mCurrentUser.getPaidChats()));
+        mTalksTextView.setText(Integer.toString(mCurrentUser.getTalks()));
+        mPaidTalksTextView.setText(Integer.toString(mCurrentUser.getPaidTalks()));
     }
 
     private void receiveAuthenticatedUser(Bundle savedInstanceState) {
@@ -188,8 +208,21 @@ public class AccountActivity extends AppCompatActivity implements OnClickListene
             if (resultCode == RESULT_OK) {
                 try {
                     JSONObject jo = new JSONObject(purchaseData);
+                    String sku = jo.getString("productId");
                     String purchaseToken = jo.getString("purchaseToken");
                     mBilling.consumePrepaid(purchaseToken);
+                    switch (sku){
+                        case Billing.CHAT:
+                            mCurrentUser.addPaidChat(Billing.CHAT_NUMBER);
+                            mUserRepository.increaseChats(mCurrentUser.getEmail(), mCurrentUser.getPaidChats());
+                            break;
+                        case Billing.TALK:
+                            mCurrentUser.addPaidTalk(Billing.TALK_NUMBER);
+                            mUserRepository.increaseTalks(mCurrentUser.getEmail(), mCurrentUser.getPaidTalks());
+                            break;
+                    }
+
+                    this.updateUserStats();
                 }
                 catch (JSONException e) {
                     Toast.makeText(this, R.string.purchase_unsuccessful, Toast.LENGTH_SHORT).show();

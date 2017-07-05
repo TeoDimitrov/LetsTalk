@@ -52,7 +52,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/paid_chats_text"
                 android:text="3"
-                android:textSize="26dp" />
+                android:textSize="26sp" />
 
             <Button
                 android:id="@+id/buy_chat"
@@ -113,7 +113,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/paid_talks_text"
                 android:text="3"
-                android:textSize="26dp" />
+                android:textSize="26sp" />
 
             <Button
                 android:id="@+id/buy_talk"

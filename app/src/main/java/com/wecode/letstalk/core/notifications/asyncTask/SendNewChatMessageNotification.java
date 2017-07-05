@@ -17,7 +17,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class SendNewMessageNotification extends AsyncTask<String, Void, JSONObject> {
+public class SendNewChatMessageNotification extends AsyncTask<String, Void, JSONObject> {
 
     private ChatMessage mChatMessage;
 
@@ -29,7 +29,7 @@ public class SendNewMessageNotification extends AsyncTask<String, Void, JSONObje
 
     private Gson mGson;
 
-    public SendNewMessageNotification(ChatMessage mChatMessage, String mChatPath, User mAuthor, User mRecipient) {
+    public SendNewChatMessageNotification(ChatMessage mChatMessage, String mChatPath, User mAuthor, User mRecipient) {
         this.mChatMessage = mChatMessage;
         this.mChatPath = mChatPath;
         this.mAuthor = mAuthor;
@@ -73,6 +73,8 @@ public class SendNewMessageNotification extends AsyncTask<String, Void, JSONObje
         jsonRemoteMessage.put(Config.FCM_REMOTE_MESSAGE_TO, Config.FCM_TOPIC_SUBSCRIBE + topicName);
         //New JSON Object to hold the message itself
         JSONObject jsonData = new JSONObject();
+        //Type
+        jsonData.put(Config.FCM_MESSAGE_TYPE, Config.FCM_MESSAGE_TYPE_CHAT);
         //Message
         String jsonChatMessage = this.mGson.toJson(this.mChatMessage);
         jsonData.put(Config.CHAT_MESSAGE, jsonChatMessage);

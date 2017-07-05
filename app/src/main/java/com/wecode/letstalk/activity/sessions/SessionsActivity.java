@@ -90,14 +90,17 @@ public class SessionsActivity extends AppCompatActivity implements NavigationVie
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_sessions);
         TextView drawerEmailTextView = (TextView) headerView.findViewById(R.id.drawer_email);
         //Display email
-        String email = this.mCurrentUser.getEmail();
-        drawerEmailTextView.setText(email);
+        if(this.mCurrentUser != null) {
+            String email = this.mCurrentUser.getEmail();
+            drawerEmailTextView.setText(email);
 
-        Menu menu = navigationView.getMenu();
-        if (this.mCurrentUser.getRole().getName().equals("AdvisorRole")) {
-            menu.findItem(R.id.nav_become_advisor).setVisible(false);
-        } else {
-            menu.findItem(R.id.nav_schedule).setVisible(false);
+
+            Menu menu = navigationView.getMenu();
+            if (this.mCurrentUser.getRole().getName().equals("AdvisorRole")) {
+                menu.findItem(R.id.nav_become_advisor).setVisible(false);
+            } else {
+                menu.findItem(R.id.nav_schedule).setVisible(false);
+            }
         }
     }
 

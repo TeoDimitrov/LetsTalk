@@ -13,7 +13,11 @@ public interface Billing {
 
     String CHAT = "k41ch47_1thb.buy";
 
+    int CHAT_NUMBER = 10;
+
     String TALK = "k41t4lk_1thb.buy";
+
+    int TALK_NUMBER = 1;
 
     List<Payable> getAvailableForPurchaseItems() throws RemoteException, JSONException;
 

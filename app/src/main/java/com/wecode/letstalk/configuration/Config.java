@@ -4,6 +4,12 @@ public final class Config {
 
     public final static String CHILD_CHATS = "chats";
 
+    public final static String CHILD_TALKS = "talks";
+
+    public final static String CHILD_PAID_CHATS = "paidChats";
+
+    public final static String CHILD_PAID_TALKS = "paidTalks";
+
     public final static String CHILD_USERS = "users";
 
     public final static String CHILD_USERS_EMAIL = "email";
@@ -14,7 +20,7 @@ public final class Config {
 
     public final static String CHILD_USERS_ROLE_NAME = "name";
 
-    public final static String USER_SUFIX = "@letstalk";
+    public final static String USER_SUFFIX = "@letstalk";
 
     public final static String USER_AUTHOR_EXTRA = "author";
 
@@ -23,6 +29,8 @@ public final class Config {
     public static final String USER_SCHEDULE = "schedule";
 
     public static final String CHAT_PATH_EXTRA = "chat_path";
+
+    public static final String TALK_PATH_EXTRA = "talk_path";
 
     public static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -98,6 +106,12 @@ public final class Config {
 
     public static final String FCM_REMOTE_MESSAGE_TO = "to";
 
+    public static final String FCM_MESSAGE_TYPE = "type";
+
+    public static final String FCM_MESSAGE_TYPE_CHAT = "chat";
+
+    public static final String FCM_MESSAGE_TYPE_TALK = "talk";
+
     public static final String FCM_REMOTE_MESSAGE_DATA = "data";
 
     public static final String FCM_TOPIC_SUBSCRIBE = "/topics/";
@@ -115,4 +129,5 @@ public final class Config {
     public static final String USER_BIRTHYEAR = "birthyear";
 
     public static final String USER_GENDER = "gender";
+
 }

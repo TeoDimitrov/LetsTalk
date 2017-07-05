@@ -22,6 +22,9 @@ import com.sinch.android.rtc.calling.CallClientListener;
 import com.sinch.android.rtc.calling.CallListener;
 import com.wecode.letstalk.R;
 import com.wecode.letstalk.configuration.Config;
+import com.wecode.letstalk.core.notifications.asyncTask.SendNewTalkMessageNotification;
+import com.wecode.letstalk.domain.user.User;
+import com.wecode.letstalk.utils.FCMUtil;
 
 import java.util.List;
 import java.util.Timer;
@@ -42,6 +45,12 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView mStatusInfo;
 
+    private User mAuthor;
+
+    private User mRecipient;
+
+    private String mTalkPath;
+
     private String mCallerId;
 
     private String mRecipientId;
@@ -51,13 +60,20 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_talk);
         checkSystemWritePermission();
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            this.mCallerId = extras.getString(Config.SINCH_CALLER_ID);
-            this.mRecipientId = extras.getString(Config.SINCH_RECIPIENT_ID);
+            this.mAuthor = extras.getParcelable(Config.USER_AUTHOR_EXTRA);
+            this.mRecipient = extras.getParcelable(Config.USER_RECIPIENT_EXTRA);
+            this.mTalkPath = extras.getString(Config.TALK_PATH_EXTRA);
+            this.mCallerId = this.mAuthor.getEmail();
+            this.mRecipientId = this.mRecipient.getEmail();
+        }
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
         }
 
         this.mInfoText = (TextView) findViewById(R.id.info_text_id);
@@ -83,6 +99,12 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        FCMUtil.unsubscribe(this.mAuthor);
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_talk_id:
@@ -90,7 +112,7 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
                     mStatusInfo.setText("Calling...");
                     this.mCall = this.mSinchClient.getCallClient().callUser(mRecipientId);
                     this.mCall.addCallListener(new SinchCallListener());
-                    this.mInfoText.setText("Hang Up");
+                    this.sendNotification(mTalkPath,mAuthor,mRecipient);
                 } else {
                     this.mCall.answer();
                     this.countDuration();
@@ -102,9 +124,9 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
                     this.mStatusInfo.setText(null);
                     this.mCall.hangup();
                     this.mCall = null;
-                    this.mInfoText.setText("Call");
-                    finish();
                 }
+
+                finish();
                 break;
         }
     }
@@ -124,7 +146,6 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
         public void onCallEnded(Call endedCall) {
             //mCall ended by either party
             mCall = null;
-            mInfoText.setText("Call");
             setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
             finish();
         }
@@ -153,9 +174,9 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
             //Pick up the mCall!
             mStatusInfo.setText("Incoming call...");
             mCall = incomingCall;
-            //mCall.answer();
             mCall.addCallListener(new SinchCallListener());
-            mInfoText.setText("Hang Up");
+            String metaData = String.format("%s, %s", mRecipient.getGender(), mRecipient.getBirthDate());
+            mInfoText.setText(metaData);
         }
     }
 
@@ -179,5 +200,9 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
         };
 
         timer.schedule(timerTask, 1000, 1000);
+    }
+
+    private void sendNotification(String talkPath, User author, User recipient) {
+        new SendNewTalkMessageNotification(talkPath, author, recipient).execute();
     }
 }
