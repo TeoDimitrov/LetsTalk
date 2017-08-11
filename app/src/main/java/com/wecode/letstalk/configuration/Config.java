@@ -130,4 +130,5 @@ public final class Config {
 
     public static final String USER_GENDER = "gender";
 
+    public static final String USER_CALL_EXTRA = "call";
 }

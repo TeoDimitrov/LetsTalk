@@ -89,19 +89,24 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
                 .applicationSecret(Config.SINCH_SECRET)
                 .environmentHost(Config.SINCH_HOSTNAME)
                 .build();
-        //Listen for calls
-        this.mSinchClient.startListeningOnActiveConnection();
-        //Start client
-        this.mSinchClient.setSupportCalling(true);
-        this.mSinchClient.start();
-        //Listen
-        this.mSinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
+
+        mSinchClient.setSupportCalling(true);
+        mSinchClient.startListeningOnActiveConnection();
+        mSinchClient.start();
+
+        mSinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         FCMUtil.unsubscribe(this.mAuthor);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FCMUtil.subscribe(this.mAuthor);
     }
 
     @Override
@@ -164,7 +169,7 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onShouldSendPushNotification(Call call, List<PushPair> pushPairs) {
-            //don't worry about this right now
+            //Push notification
         }
     }
 

@@ -4,8 +4,8 @@ import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sinch.android.rtc.calling.Call;
 import com.wecode.letstalk.configuration.Config;
-import com.wecode.letstalk.domain.message.ChatMessage;
 import com.wecode.letstalk.domain.user.User;
 import com.wecode.letstalk.utils.FCMUtil;
 
@@ -26,6 +26,7 @@ public class SendNewTalkMessageNotification extends AsyncTask<String, Void, JSON
     private User mRecipient;
 
     private Gson mGson;
+
 
     public SendNewTalkMessageNotification(String talkPath, User author, User recipient) {
         this.mTalkPath = talkPath;

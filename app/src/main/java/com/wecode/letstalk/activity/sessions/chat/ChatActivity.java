@@ -177,6 +177,12 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        FCMUtil.subscribe(this.mAuthor);
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonSendMessage:

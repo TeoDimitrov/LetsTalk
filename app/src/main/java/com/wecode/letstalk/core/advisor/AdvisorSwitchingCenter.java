@@ -8,6 +8,7 @@ import com.wecode.letstalk.utils.DateTimeUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,7 +40,10 @@ public class AdvisorSwitchingCenter {
         boolean isAvailable = false;
         if (isAdvisor(advisor)) {
             Date utcStartBookingDate = DateTimeUtil.getUTCDateTimeFromDate(startBookingDate);
-            long utcStartBookingDay = Long.parseLong(new SimpleDateFormat("u").format(utcStartBookingDate));
+            Calendar c = Calendar.getInstance();
+            c.setTime(utcStartBookingDate);
+            long utcStartBookingDay = c.get(Calendar.DAY_OF_WEEK);
+            //long utcStartBookingDay = Long.parseLong(new SimpleDateFormat("u").format(utcStartBookingDate));
             for (WorkDay workDay : advisor.getSchedule().getWorkDays()) {
                 if (workDay.getId() == utcStartBookingDay && workDay.isEnabled()) {
                     if (this.isTimeSlotAvailable(workDay, startBookingDate)) {

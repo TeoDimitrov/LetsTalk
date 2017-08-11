@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="@string/account_chats"
-                android:textSize="26sp" />
+                android:textSize="26dp" />
 
             <TextView
                 android:id="@+id/chats_number"
@@ -32,7 +32,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/chats_text"
                 android:text="0"
-                android:textSize="26sp" />
+                android:textSize="26dp" />
 
             <TextView
                 android:id="@+id/paid_chats_text"
@@ -41,7 +41,7 @@
                 android:layout_below="@id/chats_text"
                 android:layout_marginTop="5dp"
                 android:text="@string/account_paid_chats"
-                android:textSize="26sp" />
+                android:textSize="26dp" />
 
             <TextView
                 android:id="@+id/paid_chats_number"
@@ -52,7 +52,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/paid_chats_text"
                 android:text="3"
-                android:textSize="26sp" />
+                android:textSize="26dp" />
 
             <Button
                 android:id="@+id/buy_chat"
@@ -65,7 +65,7 @@
                 android:textColor="@color/white"
                 android:text="@string/account_buy_chat"
                 android:padding="5dp"
-                android:textSize="16sp" />
+                android:textSize="16dp" />
 
         </RelativeLayout>
 
@@ -82,8 +82,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="@string/account_chats"
-                android:textSize="26sp" />
+                android:text="@string/account_talks"
+                android:textSize="26dp" />
 
             <TextView
                 android:id="@+id/talks_number"
@@ -93,7 +93,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/talks_text"
                 android:text="0"
-                android:textSize="26sp" />
+                android:textSize="26dp" />
 
             <TextView
                 android:id="@+id/paid_talks_text"
@@ -102,7 +102,7 @@
                 android:layout_below="@id/talks_text"
                 android:layout_marginTop="5dp"
                 android:text="@string/account_paid_chats"
-                android:textSize="26sp" />
+                android:textSize="26dp" />
 
             <TextView
                 android:id="@+id/paid_talks_number"
@@ -113,7 +113,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/paid_talks_text"
                 android:text="3"
-                android:textSize="26sp" />
+                android:textSize="26dp" />
 
             <Button
                 android:id="@+id/buy_talk"
@@ -126,7 +126,7 @@
                 android:textColor="@color/white"
                 android:text="@string/account_buy_talk"
                 android:padding="5dp"
-                android:textSize="16sp" />
+                android:textSize="16dp" />
 
         </RelativeLayout>
 

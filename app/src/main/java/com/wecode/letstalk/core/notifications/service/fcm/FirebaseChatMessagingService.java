@@ -13,6 +13,8 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sinch.android.rtc.calling.Call;
+import com.sinch.android.rtc.internal.client.DefaultCall;
 import com.wecode.letstalk.R;
 import com.wecode.letstalk.activity.sessions.chat.ChatActivity;
 import com.wecode.letstalk.activity.sessions.talk.TalkActivity;

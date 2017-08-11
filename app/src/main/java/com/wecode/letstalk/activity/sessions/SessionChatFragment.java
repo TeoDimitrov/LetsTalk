@@ -231,7 +231,8 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                 hourText.setText(String.valueOf(currentHour));
                 final EditText minutesText = (EditText) linearLayout.findViewById(R.id.booking_minutes);
                 int currentMinutes = Calendar.getInstance().get(Calendar.MINUTE);
-                minutesText.setText(String.valueOf(currentMinutes));
+                String currentMinutesString = "0" + String.valueOf(currentMinutes);
+                minutesText.setText(currentMinutesString.substring(currentMinutesString.length() - 2));
 
                 final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
                 alert
@@ -265,7 +266,7 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
 
                                 if(isTimeCorrectFormat) {
                                     final Calendar bookingStartDate = Calendar.getInstance();
-                                    bookingStartDate.set(year, month + 1, date, hour, minutes);
+                                    bookingStartDate.set(year, month, date, hour, minutes);
                                     addChatTimeFrame(bookingStartDate.getTime());
                                     alertDialog.dismiss();
                                 }
