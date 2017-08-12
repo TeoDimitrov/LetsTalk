@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 public class SendNewTalkMessageNotification extends AsyncTask<String, Void, JSONObject> {
 
@@ -27,12 +28,15 @@ public class SendNewTalkMessageNotification extends AsyncTask<String, Void, JSON
 
     private Gson mGson;
 
+    List<String> pushPayloads;
 
-    public SendNewTalkMessageNotification(String talkPath, User author, User recipient) {
+
+    public SendNewTalkMessageNotification(String talkPath, User author, User recipient, List<String> pushPayloads) {
         this.mTalkPath = talkPath;
         this.mAuthor = author;
         this.mRecipient = recipient;
         this.mGson = new GsonBuilder().create();
+        this.pushPayloads = pushPayloads;
     }
 
     @Override
@@ -81,6 +85,10 @@ public class SendNewTalkMessageNotification extends AsyncTask<String, Void, JSON
         //Recipient
         String jsonRecipient = this.mGson.toJson(this.mRecipient);
         jsonData.put(Config.USER_RECIPIENT_EXTRA, jsonRecipient);
+        //Sinch Push Payloads
+        String pushPayloads = this.mGson.toJson(this.pushPayloads);
+        jsonData.put(Config.SINCH_PUSH_PAYLOAD, pushPayloads);
+
         //Put the message data
         jsonRemoteMessage.put(Config.FCM_REMOTE_MESSAGE_DATA, jsonData);
 

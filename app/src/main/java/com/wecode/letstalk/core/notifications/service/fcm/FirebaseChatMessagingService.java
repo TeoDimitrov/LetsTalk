@@ -25,6 +25,9 @@ import com.wecode.letstalk.domain.user.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FirebaseChatMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
@@ -40,9 +43,6 @@ public class FirebaseChatMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() <= 0) {
             return;
         }
-
-        //Remove
-        Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
         String messageType = remoteMessage.getData().get(Config.FCM_MESSAGE_TYPE);
         switch (messageType){
@@ -105,24 +105,28 @@ public class FirebaseChatMessagingService extends FirebaseMessagingService {
         String talkPath = null;
         User author = null;
         User recipient = null;
+        List<String> sinchPayloads = null;
         try {
             talkPath = mGson.fromJson(jsonData.getString(Config.TALK_PATH_EXTRA), String.class);
             author = mGson.fromJson(jsonData.get(Config.USER_AUTHOR_EXTRA).toString(), User.class);
             recipient = mGson.fromJson(jsonData.get(Config.USER_RECIPIENT_EXTRA).toString(), User.class);
+            sinchPayloads = mGson.fromJson(jsonData.getString(Config.SINCH_PUSH_PAYLOAD), List.class);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        sendCallNotification(talkPath, author, recipient);
+        sendCallNotification(talkPath, author, recipient, sinchPayloads);
     }
 
-    private void sendCallNotification(String talkPath, User author, User recipient) {
+    private void sendCallNotification(String talkPath, User author, User recipient, List<String> sinchPayloads) {
         Intent intent = new Intent(this, TalkActivity.class);
         intent.putExtra(Config.TALK_PATH_EXTRA, talkPath);
         //The Recipient of the message will be the author in the activity!
         intent.putExtra(Config.USER_AUTHOR_EXTRA, recipient);
         intent.putExtra(Config.USER_RECIPIENT_EXTRA, author);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putStringArrayListExtra(Config.SINCH_PUSH_PAYLOAD, (ArrayList<String>) sinchPayloads);
+
         int requestId = talkPath.hashCode();
         PendingIntent pendingIntent = PendingIntent.getActivity(this, requestId, intent,
                 PendingIntent.FLAG_ONE_SHOT);

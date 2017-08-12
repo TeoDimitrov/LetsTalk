@@ -26,6 +26,7 @@ import com.wecode.letstalk.core.notifications.asyncTask.SendNewTalkMessageNotifi
 import com.wecode.letstalk.domain.user.User;
 import com.wecode.letstalk.utils.FCMUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -57,6 +58,8 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
 
     private int mCallDuration;
 
+    private List<String> mSinchPayloads;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +73,7 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
             this.mTalkPath = extras.getString(Config.TALK_PATH_EXTRA);
             this.mCallerId = this.mAuthor.getEmail();
             this.mRecipientId = this.mRecipient.getEmail();
+            this.mSinchPayloads = extras.getStringArrayList(Config.SINCH_PUSH_PAYLOAD);
         }
 
         if (getSupportActionBar() != null) {
@@ -92,9 +96,21 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
 
         mSinchClient.setSupportCalling(true);
         mSinchClient.startListeningOnActiveConnection();
+
+        mSinchClient.setSupportPushNotifications(true);
+
         mSinchClient.start();
 
+        mSinchClient.registerPushNotificationData(FCMUtil.createTopicName(this.mAuthor.getEmail()).getBytes());
+
         mSinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
+
+        if (this.mSinchPayloads != null) {
+            for (String sinchPayload : mSinchPayloads) {
+                this.mSinchClient.relayRemotePushNotificationPayload(sinchPayload);
+                this.mSinchClient.startListeningOnActiveConnection();
+            }
+        }
     }
 
     @Override
@@ -117,7 +133,6 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
                     mStatusInfo.setText("Calling...");
                     this.mCall = this.mSinchClient.getCallClient().callUser(mRecipientId);
                     this.mCall.addCallListener(new SinchCallListener());
-                    this.sendNotification(mTalkPath,mAuthor,mRecipient);
                 } else {
                     this.mCall.answer();
                     this.countDuration();
@@ -170,6 +185,12 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onShouldSendPushNotification(Call call, List<PushPair> pushPairs) {
             //Push notification
+            List<String> pushPayloads = new ArrayList<>();
+            for (PushPair pushPair : pushPairs) {
+                pushPayloads.add(pushPair.getPushPayload());
+            }
+
+            sendNotification(mTalkPath, mAuthor, mRecipient, pushPayloads);
         }
     }
 
@@ -207,7 +228,7 @@ public class TalkActivity extends AppCompatActivity implements View.OnClickListe
         timer.schedule(timerTask, 1000, 1000);
     }
 
-    private void sendNotification(String talkPath, User author, User recipient) {
-        new SendNewTalkMessageNotification(talkPath, author, recipient).execute();
+    private void sendNotification(String talkPath, User author, User recipient, List<String> pushPayloads) {
+        new SendNewTalkMessageNotification(talkPath, author, recipient, pushPayloads).execute();
     }
 }
