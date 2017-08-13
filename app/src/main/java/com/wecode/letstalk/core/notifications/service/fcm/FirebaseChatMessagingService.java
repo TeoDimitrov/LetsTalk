@@ -7,14 +7,11 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sinch.android.rtc.calling.Call;
-import com.sinch.android.rtc.internal.client.DefaultCall;
 import com.wecode.letstalk.R;
 import com.wecode.letstalk.activity.sessions.chat.ChatActivity;
 import com.wecode.letstalk.activity.sessions.talk.TalkActivity;
@@ -35,7 +32,7 @@ public class FirebaseChatMessagingService extends FirebaseMessagingService {
     private Gson mGson;
 
     public FirebaseChatMessagingService() {
-       mGson = new GsonBuilder().create();
+        mGson = new GsonBuilder().create();
     }
 
     @Override
@@ -45,7 +42,7 @@ public class FirebaseChatMessagingService extends FirebaseMessagingService {
         }
 
         String messageType = remoteMessage.getData().get(Config.FCM_MESSAGE_TYPE);
-        switch (messageType){
+        switch (messageType) {
             case Config.FCM_MESSAGE_TYPE_CHAT:
                 handleChatRemoteMessage(remoteMessage);
                 break;
@@ -55,7 +52,7 @@ public class FirebaseChatMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void handleChatRemoteMessage(RemoteMessage remoteMessage){
+    private void handleChatRemoteMessage(RemoteMessage remoteMessage) {
 
         JSONObject jsonData = new JSONObject(remoteMessage.getData());
         ChatMessage chatMessage = null;
@@ -100,7 +97,7 @@ public class FirebaseChatMessagingService extends FirebaseMessagingService {
         notificationManager.notify(requestId, notificationBuilder.build());
     }
 
-    private void handleTalkRemoteMessage(RemoteMessage remoteMessage){
+    private void handleTalkRemoteMessage(RemoteMessage remoteMessage) {
         JSONObject jsonData = new JSONObject(remoteMessage.getData());
         String talkPath = null;
         User author = null;

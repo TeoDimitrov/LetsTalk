@@ -104,7 +104,7 @@ public class AccountActivity extends AppCompatActivity implements OnClickListene
         }
     }
 
-    private void prepareRepositories(){
+    private void prepareRepositories() {
         mUserRepository = new UserRepository(Config.CHILD_USERS);
     }
 
@@ -134,7 +134,7 @@ public class AccountActivity extends AppCompatActivity implements OnClickListene
         }
     }
 
-    private void updateUserStats(){
+    private void updateUserStats() {
         mChatsTextView.setText(Integer.toString(mCurrentUser.getChats()));
         mPaidChatsTextView.setText(Integer.toString(mCurrentUser.getPaidChats()));
         mTalksTextView.setText(Integer.toString(mCurrentUser.getTalks()));
@@ -186,7 +186,7 @@ public class AccountActivity extends AppCompatActivity implements OnClickListene
         }
     }
 
-    private void purchaseItem(String sku){
+    private void purchaseItem(String sku) {
         try {
             PendingIntent pendingIntent = mBilling.purchasePrepaid(sku);
             startIntentSenderForResult(pendingIntent.getIntentSender(),
@@ -211,7 +211,7 @@ public class AccountActivity extends AppCompatActivity implements OnClickListene
                     String sku = jo.getString("productId");
                     String purchaseToken = jo.getString("purchaseToken");
                     mBilling.consumePrepaid(purchaseToken);
-                    switch (sku){
+                    switch (sku) {
                         case Billing.CHAT:
                             mCurrentUser.addPaidChat(Billing.CHAT_NUMBER);
                             mUserRepository.increaseChats(mCurrentUser.getEmail(), mCurrentUser.getPaidChats());
@@ -223,8 +223,7 @@ public class AccountActivity extends AppCompatActivity implements OnClickListene
                     }
 
                     this.updateUserStats();
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     Toast.makeText(this, R.string.purchase_unsuccessful, Toast.LENGTH_SHORT).show();
                 }
             } else {

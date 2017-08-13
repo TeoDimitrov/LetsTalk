@@ -52,12 +52,12 @@ public class UserRepository {
         this.mDatabaseReference.child(userPath).setValue(user);
     }
 
-    public void increaseChats(String username, int newChats){
+    public void increaseChats(String username, int newChats) {
         final String userPath = FirebaseUtils.clearUserName(username);
         this.mDatabaseReference.child(userPath).child(Config.CHILD_PAID_CHATS).setValue(newChats);
     }
 
-    public void increaseTalks(String username, int newTalks){
+    public void increaseTalks(String username, int newTalks) {
         final String userPath = FirebaseUtils.clearUserName(username);
         this.mDatabaseReference.child(userPath).child(Config.CHILD_PAID_TALKS).setValue(newTalks);
     }

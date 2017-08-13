@@ -264,7 +264,7 @@ public class SessionChatFragment extends Fragment implements OnClickListener {
                                     isTimeCorrectFormat = false;
                                 }
 
-                                if(isTimeCorrectFormat) {
+                                if (isTimeCorrectFormat) {
                                     final Calendar bookingStartDate = Calendar.getInstance();
                                     bookingStartDate.set(year, month, date, hour, minutes);
                                     addChatTimeFrame(bookingStartDate.getTime());

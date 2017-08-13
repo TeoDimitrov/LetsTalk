@@ -137,12 +137,13 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/layout_purchases">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/letstalk_logo"/>
+            android:src="@drawable/letstalk_logo" />
     </RelativeLayout>
 
 </RelativeLayout>

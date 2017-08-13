@@ -6,7 +6,7 @@
             android:id="@+id/nav_become_advisor"
             android:icon="@drawable/ic_assignment_ind_black_24dp"
             android:title="Become an Advisor"
-            android:visible="false"/>
+            android:visible="false" />
         <item
             android:id="@+id/nav_schedule"
             android:icon="@drawable/ic_assignment_ind_black_24dp"

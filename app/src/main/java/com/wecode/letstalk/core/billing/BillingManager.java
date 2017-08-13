@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
 
 public class BillingManager implements Billing {
 
@@ -28,7 +27,7 @@ public class BillingManager implements Billing {
 
     public List<Payable> getAvailableForPurchaseItems() throws RemoteException, JSONException {
         List<Payable> products = new ArrayList<>();
-        ArrayList<String> skuList = new ArrayList<> ();
+        ArrayList<String> skuList = new ArrayList<>();
         skuList.add(CHAT);
         skuList.add(TALK);
         Bundle querySkus = new Bundle();
